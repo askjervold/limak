@@ -60,6 +60,12 @@ namespace limakGame
             // TODO: Unload any non ContentManager content here
         }
 
+        // Defines the speed of the game (60 ticks per second)
+        private long deltaTicks = TimeSpan.TicksPerSecond / 60;
+
+        private long gameTicks = 0;
+        private long previousTicks = 0;
+
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -72,6 +78,18 @@ namespace limakGame
                 this.Exit();
 
             // TODO: Add your update logic here
+
+            long currentTicks = gameTime.TotalGameTime.Ticks;
+            long deltaTicks = currentTicks - this.previousTicks;
+
+            this.previousTicks = currentTicks;
+            this.gameTicks += deltaTicks;
+
+            while (this.gameTicks >= this.deltaTicks)
+            {
+                // Update routine in here!
+                this.gameTicks -= this.deltaTicks;
+            }
 
             base.Update(gameTime);
         }

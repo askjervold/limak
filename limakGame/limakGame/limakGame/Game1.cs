@@ -23,6 +23,7 @@ namespace limakGame
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            // TEST
         }
 
         /// <summary>

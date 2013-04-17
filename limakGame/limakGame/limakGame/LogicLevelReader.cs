@@ -14,15 +14,15 @@ namespace limakGame
     class LogicLevelReader
     {
         //the world object to be passed in through the constructor
-        World _world;
+        World world;
 
         //variables to convert between units
         const float unitToPixel = 60.0f;
         const float pixelToUnit = 1 / unitToPixel;
 
         //height and length of level, found by readFile()
-        private int levelHeight;
-        private int levelWidth;
+        private int _levelHeight;
+        private int _levelWidth;
 
         //types of characters found in the .txt file
         private string _ground = "#";
@@ -44,7 +44,7 @@ namespace limakGame
             // _world = world;
 
             // Temporary world for testing purposes
-            _world = new World(new Vector2(0, 9.81f));
+            world = new World(new Vector2(0, 9.81f));
 
             _platforms = new List<Body>();
             _enemies = new List<Body>();
@@ -61,8 +61,8 @@ namespace limakGame
                 text = System.IO.File.ReadAllLines(file + ".txt");
 
             //registers the dimensions of the level
-            levelHeight = text.Length;
-            levelWidth = text[levelHeight - 1].Length;
+            _levelHeight = text.Length;
+            _levelWidth = text[_levelHeight - 1].Length;
 
             createGround();
             //createPlatforms(); //TODO
@@ -83,7 +83,7 @@ namespace limakGame
 
 
             //create ground fixture, it assumes that the ground doesn't have any holes in it
-            _groundBody = BodyFactory.CreateRectangle(_world, str2.Length, 1, 1);
+            _groundBody = BodyFactory.CreateRectangle(world, str2.Length, 1, 1);
 
             //non-movable object.
             _groundBody.BodyType = BodyType.Static;
@@ -97,13 +97,15 @@ namespace limakGame
         public void createPlatforms()
         {
             // iterates through the entire level file and checks for a "_" which indicates a platform. If one is found, a body is added to the platform list
-            for (int i = 0; i < levelHeight; i++)
+            // Should be modified for GameObjects to note the position of the platform.
+            for (int i = 0; i < _levelHeight; i++)
             {
-                for (int j = 0; j < levelWidth; j++)
+                for (int j = 0; j < _levelWidth; j++)
                 {
                     if (text[i][j].Equals("_"))
                     {
-                        _platforms.Add(new Body(_world));
+                        // GameObject platform = new GameObject(game, new Vector2(j*unitToPixel, i*unitToPixel), 1*unitToPixel, height*unitToPixel, animation);
+                        _platforms.Add(new Body(world));
                     }
                     
                 }

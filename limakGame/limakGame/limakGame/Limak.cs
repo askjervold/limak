@@ -14,12 +14,12 @@ namespace limakGame
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class Limak : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
 
-        public Game1()
+        public Limak()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";

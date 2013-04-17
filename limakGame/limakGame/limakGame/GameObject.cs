@@ -89,7 +89,7 @@ namespace limakGame
 
             // Draw the current animation frame
 
-            SpriteBatch spriteBatch = ((Game1)this.Game).spriteBatch;
+            SpriteBatch spriteBatch = ((Limak)this.Game).spriteBatch;
             
             this.animation.Draw(spriteBatch, this.boundingBox);
 

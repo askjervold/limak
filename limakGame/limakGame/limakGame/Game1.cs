@@ -19,6 +19,10 @@ namespace limakGame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        //multiply units with these constants to convert between pixels and simulation units (meters)
+        const float unitToPixel = 60.0f;
+        const float pixelToUnit = 1 / unitToPixel;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);

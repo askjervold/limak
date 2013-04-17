@@ -26,6 +26,8 @@ namespace limakGame
         DIE
     }
 
+    public delegate void OnSpriteAnimationEvent();
+    
     class SpriteAnimation
     {
         private Texture2D sprite;
@@ -35,8 +37,8 @@ namespace limakGame
         private int nActions;
 
         private SpriteAction action = SpriteAction.STAND;
-        private SpriteEffects spriteEffect = SpriteEffects.None;
-        private SpriteDirection direction = SpriteDirection.LEFT;
+        private SpriteEffects spriteEffect;
+        private SpriteDirection direction;
         
         private Color color = Color.White;
 
@@ -51,17 +53,8 @@ namespace limakGame
         private Rectangle sourceRect;
         private Vector2 origin = new Vector2(0.0f, 0.0f);
 
-        /// <summary>
-        /// Resets the animation to default state. Used internally on action change.
-        /// </summary>
-        private void reset()
-        {
-            this.loop = true;
-            this.stopped = false;
-            this.timeElapsed = 0;
-            this.frame = 0;
-        }
-
+        private OnSpriteAnimationEvent onLoopEnd = null;
+        
         /// <summary>
         /// Creates a new animation from a sprite sheet. Animations contain all the frames used in a 2D sprite animation. Each row defines
         /// a new action for the animation. Each row consists of a number of frames.
@@ -79,6 +72,9 @@ namespace limakGame
             this.nFrames = numFrames;
             this.nActions = numRows;
             this.sourceRect = new Rectangle(0, 0, this.width, this.height);
+
+            this.Direction = SpriteDirection.RIGHT;
+
         }
 
         /// <summary>
@@ -124,6 +120,12 @@ namespace limakGame
                 {
                     // Stop animation if not looping
                     this.stopped = true;
+                    
+                    // Call event
+                    if(this.onLoopEnd != null) {
+                        this.onLoopEnd();
+                    }
+
                 }
                 else
                 {
@@ -138,6 +140,17 @@ namespace limakGame
                 this.timeElapsed -= this.animationDelay;
             }
         }
+        
+        /// <summary>
+        /// Resets the animation to default state.
+        /// </summary>
+        public void Reset()
+        {
+            this.loop = true;
+            this.stopped = false;
+            this.timeElapsed = 0;
+            this.frame = 0;
+        }
 
         // Getters and setters
 
@@ -150,7 +163,7 @@ namespace limakGame
             set
             {
                 this.action = value;
-                this.reset();
+                this.Reset();
             }
         }
 
@@ -165,11 +178,11 @@ namespace limakGame
                 this.direction = value;
                 if (this.direction == SpriteDirection.LEFT)
                 {
-                    this.spriteEffect = SpriteEffects.None;
+                    this.spriteEffect = SpriteEffects.FlipHorizontally;
                 }
                 else
                 {
-                    this.spriteEffect = SpriteEffects.FlipHorizontally;
+                    this.spriteEffect = SpriteEffects.None;
                 }
             }
         }
@@ -182,6 +195,34 @@ namespace limakGame
             get { return this.animationDelay; }
             set { this.animationDelay = value; }
         }
+
+        /// <summary>
+        /// Stop the animation from running.
+        /// </summary>
+        public bool Stopped
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Should animation loop?
+        /// </summary>
+        public bool Loop
+        {
+            get { return this.loop; }
+            set { this.loop = value; }
+        }
+
+        /// <summary>
+        /// End event for animation when it's done playing the current sub-animation.
+        /// Is only called if animation is not looping!
+        /// </summary>
+        public OnSpriteAnimationEvent OnLoopEnd
+        {
+            set { this.onLoopEnd = value; }
+        }
+
         
     }
 }

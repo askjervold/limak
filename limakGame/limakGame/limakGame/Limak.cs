@@ -40,6 +40,9 @@ namespace limakGame
             base.Initialize();
         }
 
+        Texture2D spriteSheetTest;
+        SpriteAnimation animation;
+
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -48,6 +51,23 @@ namespace limakGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            spriteSheetTest = this.Content.Load<Texture2D>("character2SampleNotAnimated");
+
+            animation = new SpriteAnimation(spriteSheetTest, 120, 120, 4, 4);
+            animation.AnimationDelay = 1000;
+            animation.Loop = false;
+            animation.Direction = SpriteDirection.LEFT;
+
+            /*void OnLoopEnd() {
+                animation.Direction = SpriteDirection.RIGHT;
+            }*/
+
+            animation.OnLoopEnd = delegate()
+            {
+                animation.Direction = SpriteDirection.RIGHT;
+                animation.Reset();
+            };
 
             // TODO: use this.Content to load your game content here
         }
@@ -79,18 +99,9 @@ namespace limakGame
                 this.Exit();
 
             // TODO: Add your update logic here
+            TimeSpan delta = gameTime.ElapsedGameTime;
 
-            long currentTicks = gameTime.TotalGameTime.Ticks;
-            long deltaTicks = currentTicks - this.previousTicks;
-
-            this.previousTicks = currentTicks;
-            this.gameTicks += deltaTicks;
-
-            while (this.gameTicks >= this.deltaTicks)
-            {
-                // Update routine in here!
-                this.gameTicks -= this.deltaTicks;
-            }
+            animation.Update(delta);
 
             base.Update(gameTime);
         }
@@ -104,7 +115,8 @@ namespace limakGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            this.animation.Draw(spriteBatch, new Rectangle(0, 0, 200, 200));
+            
             base.Draw(gameTime);
         }
     }

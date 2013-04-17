@@ -121,8 +121,50 @@ namespace limakGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            this.animation.Draw(spriteBatch, new Rectangle(0, 0, 200, 200));
+            //this.animation.Draw(spriteBatch, new Rectangle(0, 0, 200, 200));
             
+            Matrix m = new Matrix(
+                1.0f, 0.0f, 0.0f, 0.0f,
+                0.0f, 1.0f, 0.0f, 0.0f,
+                0.0f, 0.0f, 1.0f, 0.0f,
+                0.0f, 0.0f, 0.0f, 1.0f
+            );
+
+            m = Matrix.CreateScale(1.0f);// *Matrix.CreateTranslation(0.0f, 0.0f, 0.0f);
+
+            //m.Translation.X = 
+
+            Rectangle sourceRect = new Rectangle(0, 0, 120, 120);
+            Point spriteSize = new Point(120, 120);
+            Vector2 bodySize = new Vector2(1.0f, 1.0f);
+            Vector2 bodyPosition = new Vector2(0.0f, 0.0f);
+
+            spriteBatch.Begin(
+                SpriteSortMode.BackToFront, 
+                null, 
+                SamplerState.LinearClamp, 
+                DepthStencilState.Default, 
+                RasterizerState.CullNone,
+                null,
+                m
+            );
+            //this.spriteSheetTest
+            //spriteBatch.Begin(spriteSortMode, BlendState, SamplerState, DepthStencilState, RasterizerState, Effect, Matrix)
+
+            spriteBatch.Draw(
+                spriteSheetTest,
+                bodyPosition,
+                sourceRect,
+                Color.White,
+                0.0f, // rotation
+                new Vector2(0.0f, 0.0f), // origin
+                1.0f, // scale
+                SpriteEffects.None,
+                1.0f // layerdepth
+            );
+
+            spriteBatch.End();
+
             base.Draw(gameTime);
         }
     }

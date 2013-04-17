@@ -102,7 +102,7 @@ namespace limakGame
         {
 
             spriteBatch.Begin();
-
+            
             spriteBatch.Draw(
                 this.sprite, 
                 destinationRect, 

@@ -13,6 +13,9 @@ namespace limakGame
 {
     class LogicLevelReader
     {
+        //the world object to be passed in through the constructor
+        World _world;
+
         //types of characters found in the .txt file
         private string _ground = "#";
         private string _player = "|";
@@ -25,6 +28,15 @@ namespace limakGame
         
         //an array of string where each element is each line in the .txt file.
         string[] text;
+
+        //the constructor should receive the world object
+        public LogicLevelReader(World world)
+        {
+            // _world = world;
+
+            // Temporary world for testing purposes
+            _world = new World(new Vector2(0, 9.81f));
+        }
 
         //this reads the given file, we can change which file by inputting a different parameter.
         public void readFile(string file)
@@ -42,7 +54,8 @@ namespace limakGame
             
         }
 
-        public void createGround(){
+        public void createGround()
+        {
             //this method assumes that the ground is always on the lowest point, which all map should be.
             int first = text[text.Length-1].IndexOf(_ground);
             int last = text[text.Length-1].LastIndexOf(_ground);
@@ -51,7 +64,7 @@ namespace limakGame
 
 
             //create ground fixture, it assumes that the ground doesn't have any holes in it
-            _groundBody = BodyFactory.CreateRectangle(new World(new Vector2(0,9.81f)), str2.Length, 1, 1);
+            _groundBody = BodyFactory.CreateRectangle(_world, str2.Length, 1, 1);
 
             //non-movable object.
             _groundBody.IsStatic = true;
@@ -59,6 +72,11 @@ namespace limakGame
             _groundBody.Restitution = 0.3f;
             _groundBody.Friction = 0.5f;
              
+        }
+
+        public void createPlatforms()
+        {
+
         }
 
         public void createEnemies()

@@ -55,18 +55,24 @@ namespace limakGame
             spriteSheetTest = this.Content.Load<Texture2D>("character2SampleNotAnimated");
 
             animation = new SpriteAnimation(spriteSheetTest, 120, 120, 4, 4);
-            animation.AnimationDelay = 1000;
+            animation.AnimationDelay = 200; // 100ms between each frame
             animation.Loop = false;
-            animation.Direction = SpriteDirection.LEFT;
-
-            /*void OnLoopEnd() {
-                animation.Direction = SpriteDirection.RIGHT;
-            }*/
+            animation.Direction = SpriteDirection.RIGHT;
 
             animation.OnLoopEnd = delegate()
             {
-                animation.Direction = SpriteDirection.RIGHT;
+
+                if (animation.Direction == SpriteDirection.RIGHT)
+                {
+                    animation.Direction = SpriteDirection.LEFT;
+                }
+                else
+                {
+                    animation.Direction = SpriteDirection.RIGHT;
+                }
+                
                 animation.Reset();
+                animation.Loop = false;
             };
 
             // TODO: use this.Content to load your game content here

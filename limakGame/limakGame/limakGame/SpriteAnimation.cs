@@ -26,6 +26,9 @@ namespace limakGame
         DIE
     }
 
+    /// <summary>
+    /// Delegate for all sprite animation events.
+    /// </summary>
     public delegate void OnSpriteAnimationEvent();
     
     class SpriteAnimation
@@ -44,17 +47,25 @@ namespace limakGame
 
         private int animationDelay = 60; // Milliseconds between each frame change
         
-        private bool loop = true;
-        private bool stopped = false;
-
-        private int frame = 0;
-        private int timeElapsed = 0;
+        private bool loop;
+        private bool stopped;
+        private int frame;
+        private int timeElapsed;
 
         private Rectangle sourceRect;
         private Vector2 origin = new Vector2(0.0f, 0.0f);
 
         private OnSpriteAnimationEvent onLoopEnd = null;
         
+        /// <summary>
+        /// Update the source rectangle
+        /// </summary>
+        private void updateSourceRect() 
+        {
+            this.sourceRect.X = this.frame * this.width;
+            this.sourceRect.Y = (int)(this.action) * this.height;
+        }
+
         /// <summary>
         /// Creates a new animation from a sprite sheet. Animations contain all the frames used in a 2D sprite animation. Each row defines
         /// a new action for the animation. Each row consists of a number of frames.
@@ -67,13 +78,18 @@ namespace limakGame
         public SpriteAnimation(Texture2D spriteSheet, int frameWidth, int frameHeight, int numRows, int numFrames)
         {
             this.sprite = spriteSheet;
+            
             this.width = frameWidth;
             this.height = frameHeight;
             this.nFrames = numFrames;
             this.nActions = numRows;
+            
             this.sourceRect = new Rectangle(0, 0, this.width, this.height);
 
             this.Direction = SpriteDirection.RIGHT;
+            
+            // Set the animation controls to initial state
+            this.Reset();
 
         }
 
@@ -131,10 +147,7 @@ namespace limakGame
                 {
                     // Update active frame
                     this.frame = (this.frame + 1) % this.nFrames;
-
-                    // Update the source rectangle
-                    this.sourceRect.X = this.frame * this.width;
-                    this.sourceRect.Y = (int)(this.action) * this.height;
+                    this.updateSourceRect();
 
                 }
                 this.timeElapsed -= this.animationDelay;
@@ -150,6 +163,7 @@ namespace limakGame
             this.stopped = false;
             this.timeElapsed = 0;
             this.frame = 0;
+            this.updateSourceRect();
         }
 
         // Getters and setters

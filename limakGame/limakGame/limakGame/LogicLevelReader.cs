@@ -47,14 +47,14 @@ namespace limakGame
             else
                 text = System.IO.File.ReadAllLines(file + ".txt");
 
-            createGround();
+            //createGround();
             //createPlatforms(); //TODO
             createEnemies();
             
             
         }
 
-        public void createGround()
+        public void createGround(Vector2 vector)
         {
             //this method assumes that the ground is always on the lowest point, which all map should be.
             int first = text[text.Length-1].IndexOf(_ground);
@@ -64,8 +64,8 @@ namespace limakGame
 
 
             //create ground fixture, it assumes that the ground doesn't have any holes in it
-            _groundBody = BodyFactory.CreateRectangle(_world, str2.Length, 1, 1);
-
+            _groundBody = BodyFactory.CreateRectangle(_world, str2.Length, 1f, 1f, vector);
+            
             //non-movable object.
             _groundBody.IsStatic = true;
             //some copy-paste code

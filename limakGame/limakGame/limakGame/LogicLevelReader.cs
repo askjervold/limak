@@ -29,7 +29,7 @@ namespace limakGame
         //this reads the given file, we can change which file by inputting a different parameter.
         public void readFile(string file)
         {
-            bool includesTxt = file.StartsWith(".txt", System.StringComparison.OrdinalIgnoreCase);
+            bool includesTxt = file.EndsWith(".txt", System.StringComparison.OrdinalIgnoreCase);
             if(includesTxt)
                 text = System.IO.File.ReadAllLines(file);
             else
@@ -66,25 +66,21 @@ namespace limakGame
 
         }
 
-        public Body getGround()
+        public Body Ground
         {
-            return _groundBody;
+            get { return _groundBody; }
         }
 
 
-        public Body[] getPlatforms()
+        public Body[] Platforms
         {
-
-
-            return _platforms;
+            get { return _platforms; }
         }
 
 
-        public Body[] getEnemies()
+        public Body[] Enemies
         {
-
-
-            return _platforms;
+            get { return _enemies; }            
         }
     }
 }

@@ -122,23 +122,35 @@ namespace limakGame
 
             // TODO: Add your drawing code here
             //this.animation.Draw(spriteBatch, new Rectangle(0, 0, 200, 200));
-            
+
+            float PixelsPerMeter = 60.0f;
+
+            // Viewport offset in pixels (x, y)
+            Vector2 viewportOffset = new Vector2(0.0f, 0.0f);
+
             Matrix m = new Matrix(
-                1.0f, 0.0f, 0.0f, 0.0f,
-                0.0f, 1.0f, 0.0f, 0.0f,
+                1.0f * PixelsPerMeter, 0.0f, 0.0f, 0.0f,
+                0.0f, 1.0f * PixelsPerMeter, 0.0f, 0.0f,
                 0.0f, 0.0f, 1.0f, 0.0f,
-                0.0f, 0.0f, 0.0f, 1.0f
+                viewportOffset.X, viewportOffset.Y, 0.0f, 1.0f
             );
 
-            m = Matrix.CreateScale(1.0f);// *Matrix.CreateTranslation(0.0f, 0.0f, 0.0f);
-
-            //m.Translation.X = 
-
-            Rectangle sourceRect = new Rectangle(0, 0, 120, 120);
+            // Size of individual sprite frame. Given when initializing the sprite animation
             Point spriteSize = new Point(120, 120);
-            Vector2 bodySize = new Vector2(1.0f, 1.0f);
-            Vector2 bodyPosition = new Vector2(0.0f, 0.0f);
 
+            // Size of body in physics engine in meter.
+            Vector2 bodySize = new Vector2(1.0f, 2.0f);
+
+            // Current position of body in the physics engine
+            Vector2 bodyPosition = new Vector2(3.0f, 1.0f);
+
+            // Source rectangle in the sprite frame, units in pixels
+            Rectangle sourceRect = new Rectangle(spriteSize.X, 0, spriteSize.X, spriteSize.Y);
+
+            // Draw scale of sprite. Passed to sprite animation when drawing
+            Vector2 drawScale = new Vector2(bodySize.X / PixelsPerMeter, bodySize.Y / PixelsPerMeter);
+
+            // GameObject should do this with matrix from viewport
             spriteBatch.Begin(
                 SpriteSortMode.BackToFront, 
                 null, 
@@ -148,9 +160,8 @@ namespace limakGame
                 null,
                 m
             );
-            //this.spriteSheetTest
-            //spriteBatch.Begin(spriteSortMode, BlendState, SamplerState, DepthStencilState, RasterizerState, Effect, Matrix)
-
+            
+            // SpriteAnimation draws the frame
             spriteBatch.Draw(
                 spriteSheetTest,
                 bodyPosition,
@@ -158,7 +169,7 @@ namespace limakGame
                 Color.White,
                 0.0f, // rotation
                 new Vector2(0.0f, 0.0f), // origin
-                1.0f, // scale
+                drawScale, // scale
                 SpriteEffects.None,
                 1.0f // layerdepth
             );

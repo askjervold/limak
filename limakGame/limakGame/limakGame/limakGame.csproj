@@ -60,6 +60,9 @@
     <XnaCompressContent>true</XnaCompressContent>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FarseerPhysicsXNA">
+      <HintPath>..\..\..\..\limak-physics\references\Farseer Physics Engine 3.3 XNA\bin\x86\Debug\FarseerPhysicsXNA.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
@@ -107,9 +110,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameCharacter.cs" />
+    <Compile Include="GameObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="SpriteAnimation.cs" />
+    <Compile Include="Viewport.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

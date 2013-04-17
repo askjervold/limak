@@ -8,7 +8,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace limakGame
 {
-
+    /// <summary>
+    /// Enumeration of the facing directions of the animation
+    /// </summary>
     public enum SpriteDirection {
         LEFT = 0,
         RIGHT
@@ -33,40 +35,13 @@ namespace limakGame
         private int nActions;
 
         private SpriteAction action = SpriteAction.STAND;
-
-        public SpriteAction Action
-        {
-            get { return this.action; }
-            set 
-            { 
-                this.action = value;
-                this.reset();
-            }
-        }
-
         private SpriteEffects spriteEffect = SpriteEffects.None;
-
         private SpriteDirection direction = SpriteDirection.LEFT;
-
-        public SpriteDirection Direction
-        {
-            get { return this.direction; }
-            set
-            {
-                this.direction = value;
-                if (this.direction == SpriteDirection.LEFT) {
-                    this.spriteEffect = SpriteEffects.None;
-                }
-                else {
-                    this.spriteEffect = SpriteEffects.FlipHorizontally;
-                }
-            }
-        }
-
+        
         private Color color = Color.White;
 
         private int animationDelay = 60; // Milliseconds between each frame change
-
+        
         private bool loop = true;
         private bool stopped = false;
 
@@ -75,6 +50,17 @@ namespace limakGame
 
         private Rectangle sourceRect;
         private Vector2 origin = new Vector2(0.0f, 0.0f);
+
+        /// <summary>
+        /// Resets the animation to default state. Used internally on action change.
+        /// </summary>
+        private void reset()
+        {
+            this.loop = true;
+            this.stopped = false;
+            this.timeElapsed = 0;
+            this.frame = 0;
+        }
 
         /// <summary>
         /// Creates a new animation from a sprite sheet. Animations contain all the frames used in a 2D sprite animation. Each row defines
@@ -102,6 +88,9 @@ namespace limakGame
         /// <param name="destinationRect">Rectangle in screen coordinates in which the animation should be drawn.</param>
         public void Draw(SpriteBatch spriteBatch, Rectangle destinationRect)
         {
+
+            spriteBatch.Begin();
+
             spriteBatch.Draw(
                 this.sprite, 
                 destinationRect, 
@@ -111,7 +100,9 @@ namespace limakGame
                 this.origin, 
                 this.spriteEffect,
                 0.0f
-           );
+            );
+
+            spriteBatch.End();
         }
 
         /// <summary>
@@ -148,15 +139,49 @@ namespace limakGame
             }
         }
 
+        // Getters and setters
+
         /// <summary>
-        /// Resets the animation to default state. Used internally on action change.
+        /// Display action of the animation
         /// </summary>
-        private void reset()
+        public SpriteAction Action
         {
-            this.stopped = false;
-            this.timeElapsed = 0;
-            this.frame = 0;
+            get { return this.action; }
+            set
+            {
+                this.action = value;
+                this.reset();
+            }
         }
 
+        /// <summary>
+        /// Facing direction of the animation
+        /// </summary>
+        public SpriteDirection Direction
+        {
+            get { return this.direction; }
+            set
+            {
+                this.direction = value;
+                if (this.direction == SpriteDirection.LEFT)
+                {
+                    this.spriteEffect = SpriteEffects.None;
+                }
+                else
+                {
+                    this.spriteEffect = SpriteEffects.FlipHorizontally;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Animation delay given in microseconds.
+        /// </summary>
+        public int AnimationDelay
+        {
+            get { return this.animationDelay; }
+            set { this.animationDelay = value; }
+        }
+        
     }
 }

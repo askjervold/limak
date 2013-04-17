@@ -15,21 +15,21 @@ namespace limakGame
         /// <param name="width">Width in pixels</param>
         /// <param name="height">Height in pixels</param>
         /// <returns>Size of object in meters</returns>
-        public Vector2 pixelsToMeter(int width, int height);
+        Vector2 pixelsToMeter(int width, int height);
 
         /// <summary>
         /// Converts a world position to coordinates in the viewport
         /// </summary>
         /// <param name="position">Position from physics engine</param>
         /// <returns>Coordinates on screen</returns>
-        public Point positionToScreenCoordinates(Vector2 position);
+        Point positionToScreenCoordinates(Vector2 position);
 
         /// <summary>
         /// Checks whether the game object is visible on the screen
         /// </summary>
         /// <param name="gameObject">Game object</param>
         /// <returns>True if the object is in the current viewport</returns>
-        public bool isVisible(GameObject gameObject);
+        bool isVisible(GameObject gameObject);
 
     }
 }

@@ -6,6 +6,8 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using FarseerPhysics.Dynamics;
+
 namespace limakGame
 {
     class GameCharacter : GameObject
@@ -15,5 +17,10 @@ namespace limakGame
         {
 
         }*/
+
+        public GameCharacter(Game game, World world, Vector2 position, Vector2 size, SpriteAnimation animation) : base(game, world, position, size, animation)
+        {
+            // TODO
+        }
     }
 }

@@ -29,10 +29,7 @@ namespace limakGame
         private GameObjectAction action;
         private SpriteAnimation animation;
 
-        private Vector2 position;
-
-        private Rectangle boundingBox;
-
+        private Vector2 size;
         private Body body;
 
         /// <summary>
@@ -45,9 +42,9 @@ namespace limakGame
         /// <param name="animation"></param>
         public GameObject(Game game, World world, Vector2 position, Vector2 size, SpriteAnimation animation) : base(game)
         {
-            this.position = position;
-            this.boundingBox = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
             this.animation = animation;
+            
+            this.size = size;
 
             this.body = FarseerPhysics.Factories.BodyFactory.CreateRectangle(world, size.X, size.Y, 1.0f);
             
@@ -81,17 +78,23 @@ namespace limakGame
         /// <param name="gameTime"></param>
         public override void Draw(GameTime gameTime)
         {
-            // Update the bounding box of our object
+            Limak game = ((Limak)this.Game);
+            SpriteBatch spriteBatch = game.spriteBatch;
 
-            // TODO: world coordinates => viewport coordinates
-            this.boundingBox.X = (int)this.body.Position.X;
-            this.boundingBox.Y = (int)this.body.Position.Y;
+            spriteBatch.Begin(
+                SpriteSortMode.BackToFront, 
+                null, 
+                SamplerState.LinearClamp, 
+                DepthStencilState.Default, 
+                RasterizerState.CullNone,
+                null,
+                game.camera.Transform
+            );
 
             // Draw the current animation frame
+            this.animation.Draw(spriteBatch, this.body.Position, this.size * game.camera.DrawScale);
 
-            SpriteBatch spriteBatch = ((Limak)this.Game).spriteBatch;
-            
-            this.animation.Draw(spriteBatch, this.boundingBox);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

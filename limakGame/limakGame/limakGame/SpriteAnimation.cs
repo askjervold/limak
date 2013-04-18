@@ -94,27 +94,26 @@ namespace limakGame
         }
 
         /// <summary>
-        /// Draws the active frame for the sprite animation.
+        /// Draws the current sprite frame onto the active sprite batch operation
         /// </summary>
         /// <param name="spriteBatch"></param>
-        /// <param name="destinationRect">Rectangle in screen coordinates in which the animation should be drawn.</param>
-        public void Draw(SpriteBatch spriteBatch, Rectangle destinationRect)
+        /// <param name="position"></param>
+        /// <param name="scale"></param>
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, Vector2 scale)
         {
 
-            spriteBatch.Begin();
-            
             spriteBatch.Draw(
-                this.sprite, 
-                destinationRect, 
-                this.sourceRect, 
-                this.color,
-                0,
-                this.origin, 
+                this.sprite,
+                position,
+                this.sourceRect,
+                Color.White,
+                0.0f, // rotation
+                this.origin, // origin
+                scale, // scale
                 this.spriteEffect,
-                0.0f
+                0.0f // layerdepth
             );
 
-            spriteBatch.End();
         }
 
         /// <summary>

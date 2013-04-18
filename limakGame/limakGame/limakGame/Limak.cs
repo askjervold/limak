@@ -17,8 +17,12 @@ namespace limakGame
     /// </summary>
     public class Limak : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
+        private GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
+        
+        public World world;
+        public Camera2d camera;
+
 
         public Limak()
         {
@@ -36,6 +40,12 @@ namespace limakGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+
+            // Create new Farseer world
+            this.world = new World(new Vector2(0.0f, 9.82f));
+
+            // New camera
+            this.camera = new Camera2d(new Vector2(0.0f, 0.0f));
 
             base.Initialize();
         }

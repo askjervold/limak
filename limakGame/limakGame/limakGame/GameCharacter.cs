@@ -11,7 +11,7 @@ using FarseerPhysics.Collision.Shapes;
 
 namespace limakGame
 {
-    class GameCharacter : GameObject
+    public class GameCharacter : GameObject
     {
 
         private Vector2 moveLinearImpulse = new Vector2(1.2f, 0.0f);

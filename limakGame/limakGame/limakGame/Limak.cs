@@ -19,9 +19,14 @@ namespace limakGame
     {
         private GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
-        
+
+        private SpriteFont font;
+
         public World world;
         public Camera2D camera;
+        public CharacterInputController characterController;
+
+        private GameCharacter character;
 
         public Limak()
         {
@@ -46,6 +51,18 @@ namespace limakGame
             // New camera
             this.camera = new Camera2D(new Vector2(0.0f, 0.0f));
 
+            // new controlller!
+            this.characterController = new CharacterInputController(0, 
+                new Keys[] {
+                    Keys.Left, // WALK_LEFT
+                    Keys.Right, // WALK_RIGHT
+                    Keys.Up, // JUMP
+                    Keys.Down, // CROUCH
+                    Keys.Z, // ACTION1
+                    Keys.X // ACTION2
+                }
+            );
+
             base.Initialize();
         }
 
@@ -58,21 +75,34 @@ namespace limakGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+
+            font = this.Content.Load<SpriteFont>("SpriteFont1");
+
             Texture2D spriteSheetTest = this.Content.Load<Texture2D>("character2SampleNotAnimated");
 
             SpriteAnimation animation = new SpriteAnimation(spriteSheetTest, 120, 120, 4, 4);
-            
-            GameObject character = new GameCharacter(
+
+            character = new GameCharacter(
                 this, 
                 this.world, 
                 new Vector2(0.0f, 0.0f), // position (meter)
                 new Vector2(1.0f, 1.0f), // size (meter)
                 animation
             );
-
-            character.Action = GameObjectAction.WALK;
+            
+            //character.Action = GameObjectAction.WALK;
 
             this.Components.Add(character);
+
+            // Bind this as our player 1 character
+            this.characterController.BindCharacter(character);
+
+            // Add a little ground
+            Body ground = FarseerPhysics.Factories.BodyFactory.CreateRectangle(world, 60.0f, 1.0f, 1.0f);
+            
+            ground.BodyType = BodyType.Static;
+            ground.Friction = 10.0f;
+            ground.Position = new Vector2(-10.0f, 5.0f);
 
             /*animation.AnimationDelay = 200; // 100ms between each frame
             animation.Loop = false;
@@ -117,6 +147,8 @@ namespace limakGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            this.characterController.Update();
+
             this.world.Step(((float)gameTime.ElapsedGameTime.Milliseconds) / 1000.0f);
 
             base.Update(gameTime);
@@ -129,6 +161,13 @@ namespace limakGame
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            this.spriteBatch.Begin();
+
+            this.spriteBatch.DrawString(this.font, "Action: " + character.Action.ToString(), new Vector2(5.0f, 0.0f), Color.White);
+            this.spriteBatch.DrawString(this.font, "Direction: " + character.Direction.ToString(), new Vector2(5.0f, 20.0f), Color.White);
+
+            this.spriteBatch.End();
 
             base.Draw(gameTime);
         }

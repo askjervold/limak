@@ -31,7 +31,7 @@ namespace limakGame
     /// </summary>
     public delegate void OnSpriteAnimationEvent();
     
-    class SpriteAnimation
+    public class SpriteAnimation
     {
         private Texture2D sprite;
         private int width;

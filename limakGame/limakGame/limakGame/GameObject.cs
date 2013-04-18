@@ -32,7 +32,7 @@ namespace limakGame
         RIGHT
     }
 
-    class GameObject : DrawableGameComponent
+    public class GameObject : DrawableGameComponent
     {
         
         protected GameObjectAction action;
@@ -61,8 +61,8 @@ namespace limakGame
 
             this.body = FarseerPhysics.Factories.BodyFactory.CreateRectangle(world, size.X, size.Y, 1.0f);
             this.body.BodyType = BodyType.Dynamic;
-            this.body.Friction = 0.2f;
-            this.body.Restitution = 0.2f;
+            this.body.Friction = 2.0f;
+            this.body.Restitution = 0.0f;
             this.body.Position = position;
 
         }
@@ -115,8 +115,10 @@ namespace limakGame
         {
             set
             {
-                this.facingDirection = value;
-                this.animation.Direction = (SpriteDirection)this.facingDirection;
+                if(this.facingDirection != value) {
+                    this.facingDirection = value;
+                    this.animation.Direction = (SpriteDirection)this.facingDirection;
+                }
             }
             get
             {
@@ -127,9 +129,12 @@ namespace limakGame
         public GameObjectAction Action
         {
             set { 
-                this.action = value; 
-                // Map GameObjectAction to SpriteAction. They're identical for now...
-                this.animation.Action = (SpriteAction)value;
+                // TODO: shouldn't be allowed to change action if dying
+                if(this.action != value) {
+                    this.action = value;
+                    // Map GameObjectAction to SpriteAction. They're identical for now...
+                    this.animation.Action = (SpriteAction)value;
+                }
             }
             get { return this.action; }
         }

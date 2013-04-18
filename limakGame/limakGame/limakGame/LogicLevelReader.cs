@@ -34,6 +34,7 @@ namespace limakGame
         private Body _groundBody; 
         private List<Body> _platforms;
         private List<Body> _enemies;
+        private GameObject _playerObject;
         
         //an array of string where each element is each line in the .txt file.
         string[] text;
@@ -71,6 +72,16 @@ namespace limakGame
             createEnemies();
             
             
+        }
+
+        public void createPlayer()
+        {
+            Vector2 start = new Vector2(0, 0);
+            Vector2 size = new Vector2(2, 2);
+            _playerObject = new GameObject(game, _world,  start,  size, animation);
+        
+        
+
         }
 
         public void createGround(Vector2 vector)

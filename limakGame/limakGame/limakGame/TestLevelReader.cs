@@ -106,7 +106,7 @@ namespace limakGame
             _llr.createGround(groundPosition);
             // Get the ground.
             _groundBody = _llr.Ground;
-
+            _groundBody.BodyType = BodyType.Static;
         }
 
         /// <summary>

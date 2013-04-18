@@ -23,14 +23,25 @@ namespace limakGame
         DIE
     }
 
+    /// <summary>
+    /// Working direction of the object
+    /// </summary>
+    public enum GameObjectDirection
+    {
+        LEFT = 0,
+        RIGHT
+    }
+
     class GameObject : DrawableGameComponent
     {
         
-        private GameObjectAction action;
+        protected GameObjectAction action;
         private SpriteAnimation animation;
 
-        private Vector2 size;
-        private Body body;
+        protected Vector2 size;
+        protected Body body;
+
+        protected GameObjectDirection facingDirection;
 
         /// <summary>
         /// Base class for interactive game objects.
@@ -43,16 +54,15 @@ namespace limakGame
         public GameObject(Game game, World world, Vector2 position, Vector2 size, SpriteAnimation animation) : base(game)
         {
             this.animation = animation;
-            
+
+            this.Direction = GameObjectDirection.RIGHT;
+
             this.size = size;
 
             this.body = FarseerPhysics.Factories.BodyFactory.CreateRectangle(world, size.X, size.Y, 1.0f);
-            
             this.body.BodyType = BodyType.Dynamic;
-            
             this.body.Friction = 0.2f;
             this.body.Restitution = 0.2f;
-
             this.body.Position = position;
 
         }
@@ -101,7 +111,20 @@ namespace limakGame
 
         // Getters & setters
 
-        GameObjectAction Action
+        public GameObjectDirection Direction
+        {
+            set
+            {
+                this.facingDirection = value;
+                this.animation.Direction = (SpriteDirection)this.facingDirection;
+            }
+            get
+            {
+                return this.facingDirection;
+            }
+        }
+
+        public GameObjectAction Action
         {
             set { 
                 this.action = value; 

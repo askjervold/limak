@@ -41,7 +41,7 @@ namespace limakGame
             // TODO: Add your initialization logic here
 
             // Physics world
-            this.world = new World(new Vector2(0.0f, 9.82f));
+            this.world = new World(new Vector2(0.0f, 7.00f));
 
             // New camera
             this.camera = new Camera2D(new Vector2(0.0f, 0.0f));
@@ -62,7 +62,7 @@ namespace limakGame
 
             SpriteAnimation animation = new SpriteAnimation(spriteSheetTest, 120, 120, 4, 4);
             
-            GameObject gameObject = new GameObject(
+            GameObject character = new GameCharacter(
                 this, 
                 this.world, 
                 new Vector2(0.0f, 0.0f), // position (meter)
@@ -70,7 +70,9 @@ namespace limakGame
                 animation
             );
 
-            this.Components.Add(gameObject);
+            character.Action = GameObjectAction.WALK;
+
+            this.Components.Add(character);
 
             /*animation.AnimationDelay = 200; // 100ms between each frame
             animation.Loop = false;

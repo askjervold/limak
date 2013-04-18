@@ -28,6 +28,8 @@ namespace limakGame
 
         private GameCharacter character;
 
+        Texture2D blackTexture;
+
         public Limak()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -63,6 +65,10 @@ namespace limakGame
                 }
             );
 
+            // Create all black texture
+            blackTexture = new Texture2D(GraphicsDevice, 1, 1);
+            blackTexture.SetData(new Color[] { Color.Black });
+
             base.Initialize();
         }
 
@@ -79,23 +85,35 @@ namespace limakGame
             font = this.Content.Load<SpriteFont>("SpriteFont1");
 
             Texture2D spriteSheetTest = this.Content.Load<Texture2D>("character2SampleNotAnimated");
+            Texture2D bunny = this.Content.Load<Texture2D>("test2");
 
-            SpriteAnimation animation = new SpriteAnimation(spriteSheetTest, 120, 120, 4, 4);
+            SpriteAnimation bunnyAnimation = new SpriteAnimation(bunny, 128, 128, 7, 7);
+            bunnyAnimation.AnimationDelay = 100;
 
             character = new GameCharacter(
                 this, 
                 this.world, 
                 new Vector2(0.0f, 0.0f), // position (meter)
                 new Vector2(1.0f, 1.0f), // size (meter)
-                animation
+                bunnyAnimation
             );
-            
-            //character.Action = GameObjectAction.WALK;
 
             this.Components.Add(character);
 
             // Bind this as our player 1 character
             this.characterController.BindCharacter(character);
+
+
+            // Enter the noob
+            GameCharacter noob = new GameCharacter(
+                this,
+                this.world,
+                new Vector2(5.0f, 0.0f), // position (meter)
+                new Vector2(2.0f, 1.5f), // size (meter)
+                new SpriteAnimation(spriteSheetTest, 120, 120, 4, 4)
+            );
+
+            this.Components.Add(noob);
 
             // Add a little ground
             Body ground = FarseerPhysics.Factories.BodyFactory.CreateRectangle(world, 60.0f, 1.0f, 1.0f);
@@ -166,6 +184,9 @@ namespace limakGame
 
             this.spriteBatch.DrawString(this.font, "Action: " + character.Action.ToString(), new Vector2(5.0f, 0.0f), Color.White);
             this.spriteBatch.DrawString(this.font, "Direction: " + character.Direction.ToString(), new Vector2(5.0f, 20.0f), Color.White);
+
+            // Draw ground
+            spriteBatch.Draw(blackTexture, new Rectangle(0, 5 * 60, 800, 60), Color.Black);
 
             this.spriteBatch.End();
 

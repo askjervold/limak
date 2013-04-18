@@ -80,6 +80,12 @@ namespace limakGame
                     }
                     break;
                 
+                case CharacterInputAction.JUMP:
+                    if(state) {
+                        this.character.Jump();
+                    }
+                    break;
+
                 default:
                     break;
             }

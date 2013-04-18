@@ -21,8 +21,7 @@ namespace limakGame
         public SpriteBatch spriteBatch;
         
         public World world;
-        public Camera2d camera;
-
+        public Camera2D camera;
 
         public Limak()
         {
@@ -41,18 +40,14 @@ namespace limakGame
         {
             // TODO: Add your initialization logic here
 
-            // Create new Farseer world
+            // Physics world
             this.world = new World(new Vector2(0.0f, 9.82f));
 
             // New camera
-            this.camera = new Camera2d(new Vector2(0.0f, 0.0f));
+            this.camera = new Camera2D(new Vector2(0.0f, 0.0f));
 
             base.Initialize();
         }
-
-        Texture2D spriteSheetTest;
-        SpriteAnimation animation;
-        GameObject gameObject;
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
@@ -63,16 +58,16 @@ namespace limakGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            spriteSheetTest = this.Content.Load<Texture2D>("character2SampleNotAnimated");
+            Texture2D spriteSheetTest = this.Content.Load<Texture2D>("character2SampleNotAnimated");
 
-            animation = new SpriteAnimation(spriteSheetTest, 120, 120, 4, 4);
+            SpriteAnimation animation = new SpriteAnimation(spriteSheetTest, 120, 120, 4, 4);
             
-            gameObject = new GameObject(
+            GameObject gameObject = new GameObject(
                 this, 
                 this.world, 
-                new Vector2(0.0f, 0.0f), 
-                new Vector2(1.0f, 1.0f), 
-                this.animation
+                new Vector2(0.0f, 0.0f), // position (meter)
+                new Vector2(1.0f, 1.0f), // size (meter)
+                animation
             );
 
             this.Components.Add(gameObject);

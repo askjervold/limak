@@ -25,7 +25,7 @@ namespace limakGame
         bool isVisible(GameObject gameObject);
     }
 
-    public class Camera2d
+    public class Camera2D
     {
         /// <summary>
         /// Number of pixels per meter
@@ -41,7 +41,7 @@ namespace limakGame
         /// Creates a new 2D camera
         /// </summary>
         /// <param name="position">Camera viewport offset in pixels</param>
-        public Camera2d(Vector2 position)
+        public Camera2D(Vector2 position)
         {
             m_Position = position;
         }

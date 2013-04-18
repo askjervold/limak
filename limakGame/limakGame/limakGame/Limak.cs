@@ -52,6 +52,7 @@ namespace limakGame
 
         Texture2D spriteSheetTest;
         SpriteAnimation animation;
+        GameObject gameObject;
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
@@ -65,7 +66,18 @@ namespace limakGame
             spriteSheetTest = this.Content.Load<Texture2D>("character2SampleNotAnimated");
 
             animation = new SpriteAnimation(spriteSheetTest, 120, 120, 4, 4);
-            animation.AnimationDelay = 200; // 100ms between each frame
+            
+            gameObject = new GameObject(
+                this, 
+                this.world, 
+                new Vector2(0.0f, 0.0f), 
+                new Vector2(1.0f, 1.0f), 
+                this.animation
+            );
+
+            this.Components.Add(gameObject);
+
+            /*animation.AnimationDelay = 200; // 100ms between each frame
             animation.Loop = false;
             animation.Direction = SpriteDirection.RIGHT;
 
@@ -83,7 +95,7 @@ namespace limakGame
                 
                 animation.Reset();
                 animation.Loop = false;
-            };
+            };*/
 
             // TODO: use this.Content to load your game content here
         }
@@ -97,12 +109,6 @@ namespace limakGame
             // TODO: Unload any non ContentManager content here
         }
 
-        // Defines the speed of the game (60 ticks per second)
-        private long deltaTicks = TimeSpan.TicksPerSecond / 60;
-
-        private long gameTicks = 0;
-        private long previousTicks = 0;
-
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -114,10 +120,7 @@ namespace limakGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            // TODO: Add your update logic here
-            TimeSpan delta = gameTime.ElapsedGameTime;
-
-            animation.Update(delta);
+            this.world.Step(((float)gameTime.ElapsedGameTime.Milliseconds) / 1000.0f);
 
             base.Update(gameTime);
         }
@@ -129,62 +132,6 @@ namespace limakGame
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
-            //this.animation.Draw(spriteBatch, new Rectangle(0, 0, 200, 200));
-
-            float PixelsPerMeter = 60.0f;
-
-            // Viewport offset in pixels (x, y)
-            Vector2 viewportOffset = new Vector2(0.0f, 0.0f);
-
-            Matrix m = new Matrix(
-                1.0f * PixelsPerMeter, 0.0f, 0.0f, 0.0f,
-                0.0f, 1.0f * PixelsPerMeter, 0.0f, 0.0f,
-                0.0f, 0.0f, 1.0f, 0.0f,
-                viewportOffset.X, viewportOffset.Y, 0.0f, 1.0f
-            );
-
-            // Size of individual sprite frame. Given when initializing the sprite animation
-            Point spriteSize = new Point(120, 120);
-
-            // Size of body in physics engine in meter.
-            Vector2 bodySize = new Vector2(1.0f, 2.0f);
-
-            // Current position of body in the physics engine
-            Vector2 bodyPosition = new Vector2(3.0f, 1.0f);
-
-            // Source rectangle in the sprite frame, units in pixels
-            Rectangle sourceRect = new Rectangle(spriteSize.X, 0, spriteSize.X, spriteSize.Y);
-
-            // Draw scale of sprite. Passed to sprite animation when drawing
-            Vector2 drawScale = new Vector2(bodySize.X / PixelsPerMeter, bodySize.Y / PixelsPerMeter);
-
-            // GameObject should do this with matrix from viewport
-            spriteBatch.Begin(
-                SpriteSortMode.BackToFront, 
-                null, 
-                SamplerState.LinearClamp, 
-                DepthStencilState.Default, 
-                RasterizerState.CullNone,
-                null,
-                m
-            );
-            
-            // SpriteAnimation draws the frame
-            spriteBatch.Draw(
-                spriteSheetTest,
-                bodyPosition,
-                sourceRect,
-                Color.White,
-                0.0f, // rotation
-                new Vector2(0.0f, 0.0f), // origin
-                drawScale, // scale
-                SpriteEffects.None,
-                1.0f // layerdepth
-            );
-
-            spriteBatch.End();
 
             base.Draw(gameTime);
         }

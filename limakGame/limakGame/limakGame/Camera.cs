@@ -51,10 +51,10 @@ namespace limakGame
         /// </summary>
         /// <param name="gameObject"></param>
         /// <returns></returns>
-        public bool isVisible(GameObject gameObject)
+        /*public bool isVisible(GameObject gameObject)
         {
             return true;
-        }
+        }*/
 
         /// <summary>
         /// Returns a scaling vector for graphics drawn in pixels

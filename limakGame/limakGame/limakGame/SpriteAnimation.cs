@@ -53,7 +53,7 @@ namespace limakGame
         private int timeElapsed;
 
         private Rectangle sourceRect;
-        private Vector2 origin = new Vector2(0.0f, 0.0f);
+        private Vector2 origin = new Vector2(0.5f, 0.5f);
 
         private OnSpriteAnimationEvent onLoopEnd = null;
         
@@ -86,6 +86,8 @@ namespace limakGame
             
             this.sourceRect = new Rectangle(0, 0, this.width, this.height);
 
+            this.origin = new Vector2(this.width/2, this.height/2);
+
             this.Direction = SpriteDirection.RIGHT;
             
             // Set the animation controls to initial state
@@ -99,7 +101,7 @@ namespace limakGame
         /// <param name="spriteBatch"></param>
         /// <param name="position"></param>
         /// <param name="scale"></param>
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, Vector2 scale)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, Vector2 scale, float rotation)
         {
 
             spriteBatch.Draw(
@@ -107,7 +109,7 @@ namespace limakGame
                 position,
                 this.sourceRect,
                 Color.White,
-                0.0f, // rotation
+                rotation, // rotation
                 this.origin, // origin
                 scale, // scale
                 this.spriteEffect,

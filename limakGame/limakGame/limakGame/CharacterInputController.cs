@@ -26,7 +26,7 @@ namespace limakGame
         public CharacterInputController(PlayerIndex playerIndex, Keys[] keyMapping)
             : base(playerIndex, keyMapping)
         {
-
+            // Unused as of yet
         }
 
         protected override void onInputChange(InputAction inputAction, bool state)
@@ -86,6 +86,10 @@ namespace limakGame
 
         }
 
+        /// <summary>
+        /// Bind this controller to a GameCharacter
+        /// </summary>
+        /// <param name="character"></param>
         public void BindCharacter(GameCharacter character)
         {
             this.character = character;

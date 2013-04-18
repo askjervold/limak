@@ -59,12 +59,13 @@ namespace limakGame
 
             this.size = size;
 
-            this.body = FarseerPhysics.Factories.BodyFactory.CreateRectangle(world, size.X, size.Y, 2.0f);
+            this.body = FarseerPhysics.Factories.BodyFactory.CreateRectangle(world, size.X, size.Y, 5.0f);
             this.body.BodyType = BodyType.Dynamic;
-            this.body.Friction = 2.0f;
+            this.body.Friction = 0.2f;
             this.body.Restitution = 0.01f;
             //this.body.LinearDamping = 3.0f;
-            this.body.AngularDamping = 3.0f;
+            //this.body.AngularDamping = 3.0f;
+            this.body.Inertia = 5.0f;
             this.body.Position = position;
 
         }
@@ -104,7 +105,8 @@ namespace limakGame
             );
 
             // Draw the current animation frame
-            this.animation.Draw(spriteBatch, this.body.Position, this.size * game.camera.DrawScale);
+
+            this.animation.Draw(spriteBatch, this.body.Position, this.size * game.camera.DrawScale, this.body.Rotation);
 
             spriteBatch.End();
 

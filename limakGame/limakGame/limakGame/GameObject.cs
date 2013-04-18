@@ -59,10 +59,12 @@ namespace limakGame
 
             this.size = size;
 
-            this.body = FarseerPhysics.Factories.BodyFactory.CreateRectangle(world, size.X, size.Y, 1.0f);
+            this.body = FarseerPhysics.Factories.BodyFactory.CreateRectangle(world, size.X, size.Y, 2.0f);
             this.body.BodyType = BodyType.Dynamic;
             this.body.Friction = 2.0f;
-            this.body.Restitution = 0.0f;
+            this.body.Restitution = 0.01f;
+            //this.body.LinearDamping = 3.0f;
+            this.body.AngularDamping = 3.0f;
             this.body.Position = position;
 
         }

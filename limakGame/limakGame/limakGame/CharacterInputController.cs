@@ -41,27 +41,45 @@ namespace limakGame
             switch(action) 
             {
                 case CharacterInputAction.WALK_LEFT:
-                    if (state)
-                    {
-                        this.character.Direction = GameObjectDirection.LEFT;
-                        this.character.Action = GameObjectAction.WALK;
-                    }
-                    else
-                    {
-                        this.character.Action = GameObjectAction.STAND;
-                    }
-                    break;
                 case CharacterInputAction.WALK_RIGHT:
+
+                    CharacterInputAction mirrorAction;
+                    GameObjectDirection direction;
+                    GameObjectDirection mirrorDirection;
+                
+                    if(action == CharacterInputAction.WALK_LEFT)
+                    {
+                        direction = GameObjectDirection.LEFT;
+                        mirrorDirection = GameObjectDirection.RIGHT;
+                        mirrorAction = CharacterInputAction.WALK_RIGHT;
+                    } else 
+                    {
+                        direction = GameObjectDirection.RIGHT;
+                        mirrorDirection = GameObjectDirection.LEFT;
+                        mirrorAction = CharacterInputAction.WALK_LEFT;
+                    }
+                    
                     if (state)
                     {
-                        this.character.Direction = GameObjectDirection.RIGHT;
+                        // Walk key was pressed, start walking in that direction
+                        this.character.Direction = direction;
                         this.character.Action = GameObjectAction.WALK;
                     }
                     else
                     {
-                        this.character.Action = GameObjectAction.STAND;
+                        // Walk key unpressed
+                        if(!this.keyStates[(int)mirrorAction]) {
+                            // The other walk key is not pressed either, we can stop walking
+                            this.character.Action = GameObjectAction.STAND;
+                        }
+                        else
+                        {
+                            // The other walk key is down, we need to continue walking but change direction
+                            this.character.Direction = mirrorDirection;
+                        }
                     }
                     break;
+                
                 default:
                     break;
             }

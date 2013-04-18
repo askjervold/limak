@@ -14,7 +14,7 @@ namespace limakGame
     public class GameCharacter : GameObject
     {
 
-        private Vector2 moveLinearImpulse = new Vector2(1.2f, 0.0f);
+        private Vector2 moveLinearImpulse = new Vector2(1.0f, -0.1f);
         private Vector2 maxLinearVelocity = new Vector2(5.0f, 5.0f);
 
         public GameCharacter(Game game, World world, Vector2 position, Vector2 size, SpriteAnimation animation) 

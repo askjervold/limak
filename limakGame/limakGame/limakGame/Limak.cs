@@ -46,7 +46,7 @@ namespace limakGame
             // TODO: Add your initialization logic here
 
             // Physics world
-            this.world = new World(new Vector2(0.0f, 7.00f));
+            this.world = new World(new Vector2(0.0f, 10.00f));
 
             // New camera
             this.camera = new Camera2D(new Vector2(0.0f, 0.0f));

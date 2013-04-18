@@ -29,6 +29,7 @@ namespace limakGame
         private GameCharacter character;
 
         Texture2D blackTexture;
+        Texture2D background;
 
         public Limak()
         {
@@ -81,6 +82,7 @@ namespace limakGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            background = this.Content.Load<Texture2D>("bgtest");
 
             font = this.Content.Load<SpriteFont>("SpriteFont1");
 
@@ -94,7 +96,7 @@ namespace limakGame
                 this, 
                 this.world, 
                 new Vector2(0.0f, 0.0f), // position (meter)
-                new Vector2(1.0f, 1.0f), // size (meter)
+                new Vector2(2.0f, 2.0f), // size (meter)
                 bunnyAnimation
             );
 
@@ -105,12 +107,12 @@ namespace limakGame
 
 
             // Enter the noob
-            GameCharacter noob = new GameCharacter(
+            GameObject noob = new GameObject(
                 this,
                 this.world,
                 new Vector2(5.0f, 0.0f), // position (meter)
-                new Vector2(2.0f, 1.5f), // size (meter)
-                new SpriteAnimation(spriteSheetTest, 120, 120, 4, 4)
+                new Vector2(2.0f, 2.0f), // size (meter)
+                new SpriteAnimation(this.Content.Load<Texture2D>("box"), 120, 120, 1, 1)
             );
 
             this.Components.Add(noob);
@@ -120,7 +122,7 @@ namespace limakGame
             
             ground.BodyType = BodyType.Static;
             ground.Friction = 10.0f;
-            ground.Position = new Vector2(-10.0f, 5.0f);
+            ground.Position = new Vector2(-10.0f, 8.0f);
 
             /*animation.AnimationDelay = 200; // 100ms between each frame
             animation.Loop = false;
@@ -185,9 +187,12 @@ namespace limakGame
             this.spriteBatch.DrawString(this.font, "Action: " + character.Action.ToString(), new Vector2(5.0f, 0.0f), Color.White);
             this.spriteBatch.DrawString(this.font, "Direction: " + character.Direction.ToString(), new Vector2(5.0f, 20.0f), Color.White);
 
-            // Draw ground
-            spriteBatch.Draw(blackTexture, new Rectangle(0, 5 * 60, 800, 60), Color.Black);
+            // Draw background
+            spriteBatch.Draw(background, new Rectangle(0, 0, 800, 600), Color.White);
 
+            // Draw ground
+            /*spriteBatch.Draw(blackTexture, new Rectangle(0, 5 * 60, 800, 60), Color.Black);*/
+            
             this.spriteBatch.End();
 
             base.Draw(gameTime);

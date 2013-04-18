@@ -63,7 +63,7 @@ namespace limakGame
         {
             get 
             {
-                float s = 1.0f / PixelsPerMeter;
+                float s = .5f / PixelsPerMeter;
                 return new Vector2(s, s);
             }
         }

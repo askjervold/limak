@@ -50,7 +50,7 @@ namespace limakGame
 
         public void Jump()
         {
-            this.body.ApplyForce(new Vector2(0.0f, -2000.0f));
+            this.body.ApplyForce(new Vector2(0.0f, -3000.0f));
         }
 
     }

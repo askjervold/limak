@@ -27,80 +27,149 @@ namespace limakGame
 
     public class Camera2D
     {
-        /// <summary>
-        /// Number of pixels per meter
-        /// </summary>
         private const float PixelsPerMeter = 60;
 
         private Vector2 m_Position;
-
-        bool transformCached = false;
-        Matrix _transform;
+        private Viewport m_Viewport;
+        private Matrix m_TransformMatrix;
+        private bool m_TransformCached = false;
 
         /// <summary>
         /// Creates a new 2D camera
         /// </summary>
-        /// <param name="position">Camera viewport offset in pixels</param>
+        /// <param name="position">The camera's position in world coordinates</param>
         public Camera2D(Vector2 position)
         {
             m_Position = position;
         }
 
         /// <summary>
-        /// Determines whether the game object is inside the current viewport
+        /// Determines if the game object is within the camera's viewport.
         /// </summary>
-        /// <param name="gameObject"></param>
-        /// <returns></returns>
-        /*public bool isVisible(GameObject gameObject)
+        public bool IsVisible(GameObject gameObject)
         {
-            return true;
-        }*/
+            RectangleF visibleArea = new RectangleF(m_Position.X, m_Position.Y, m_Viewport.Width, m_Viewport.Height);
+            RectangleF objectArea = new RectangleF(gameObject.Position, gameObject.Size);
+
+            return visibleArea.Intersects(objectArea);
+        }
+
+        #region Static Methods
 
         /// <summary>
-        /// Returns a scaling vector for graphics drawn in pixels
+        /// Converts a float in pixels to meters.
         /// </summary>
-        public Vector2 DrawScale
+        public static float ToMeters(float pixels)
         {
-            get 
-            {
-                float s = .5f / PixelsPerMeter;
-                return new Vector2(s, s);
-            }
+            return pixels / PixelsPerMeter;
         }
 
         /// <summary>
-        /// Sets the position of the camera
+        /// Converts a Vector2 in pixels to meters.
+        /// </summary>
+        public static Vector2 ToMeters(Vector2 pixels)
+        {
+            return new Vector2(ToMeters(pixels.X), ToMeters(pixels.Y));
+        }
+
+        /// <summary>
+        /// Converts a float in meters to pixels.
+        /// </summary>
+        public static float ToPixels(float meters)
+        {
+            return meters * PixelsPerMeter;
+        }
+
+        /// <summary>
+        /// Converts a Vector2 in meters to pixels.
+        /// </summary>
+        public static Vector2 ToPixels(Vector2 meters)
+        {
+            return new Vector2(ToPixels(meters.X), ToPixels(meters.Y));
+        }
+
+        #endregion
+
+        /// <summary>
+        /// The camera's position in world coordinates.
         /// </summary>
         public Vector2 Position
         {
             get { return m_Position; }
-            set { 
+            set
+            {
                 m_Position = value;
-                // Update transform
-                transformCached = false;
+                m_TransformCached = false;
             }
         }
 
         /// <summary>
         /// Returns the transformation for graphics drawn in meters
         /// </summary>
-        public Matrix Transform
+        public Matrix TransformMatrix
         {
             get
             {
-                if (!transformCached)
+                if (!m_TransformCached)
                 {
-                    transformCached = true;
-                    // Scale() * Translate()
-                    _transform = new Matrix(
-                        1.0f * PixelsPerMeter, 0.0f, 0.0f, 0.0f,
-                        0.0f, 1.0f * PixelsPerMeter, 0.0f, 0.0f,
+                    m_TransformMatrix = new Matrix(
+                        PixelsPerMeter, 0.0f, 0.0f, 0.0f,
+                        0.0f, PixelsPerMeter, 0.0f, 0.0f,
                         0.0f, 0.0f, 1.0f, 0.0f,
                         m_Position.X, m_Position.Y, 0.0f, 1.0f
                     );
+
+                    m_TransformCached = true;
                 }
-                return _transform;
+                return m_TransformMatrix;
             }
+        }
+    }
+
+    public struct RectangleF
+    {
+        public float X;
+        public float Y;
+        public float Width;
+        public float Height;
+
+        public float Left
+        {
+            get { return this.X; }
+        }
+
+        public float Right
+        {
+            get { return this.X + this.Width; }
+        }
+
+        public float Top
+        {
+            get { return this.Y; }
+        }
+
+        public float Bottom
+        {
+            get { return this.Y + this.Height; }
+        }
+
+        public RectangleF(Vector2 position, Vector2 size)
+            : this(position.X, position.Y, size.X, size.Y)
+        {
+
+        }
+
+        public RectangleF(float x, float y, float width, float height)
+        {
+            this.X = x;
+            this.Y = y;
+            this.Width = width;
+            this.Height = height;
+        }
+
+        public bool Intersects(RectangleF other)
+        {
+            return this.Left <= other.Right && other.Left <= this.Right && this.Top <= other.Bottom && other.Top <= this.Bottom;
         }
     }
 }

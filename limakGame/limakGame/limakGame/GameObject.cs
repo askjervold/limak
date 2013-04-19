@@ -101,12 +101,12 @@ namespace limakGame
                 DepthStencilState.Default, 
                 RasterizerState.CullNone,
                 null,
-                game.camera.Transform
+                game.camera.TransformMatrix
             );
 
             // Draw the current animation frame
 
-            this.animation.Draw(spriteBatch, this.body.Position, this.size * game.camera.DrawScale, this.body.Rotation);
+            this.animation.Draw(spriteBatch, this.body.Position, Camera2D.ToMeters(this.size), this.body.Rotation);
 
             spriteBatch.End();
 
@@ -143,5 +143,20 @@ namespace limakGame
             get { return this.action; }
         }
 
+        public Vector2 Position
+        {
+            get
+            {
+                return this.body.Position;
+            }
+        }
+
+        public Vector2 Size
+        {
+            get
+            {
+                return this.size;
+            }
+        }
     }
 }

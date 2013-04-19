@@ -106,7 +106,7 @@ namespace limakGame
 
             // Draw the current animation frame
 
-            this.animation.Draw(spriteBatch, this.body.Position, Camera2D.ToMeters(this.size), this.body.Rotation);
+            this.animation.Draw(spriteBatch, this.body.Position, Camera2D.ToMeters(this.size) / 2.0f, this.body.Rotation);
 
             spriteBatch.End();
 

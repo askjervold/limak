@@ -19,6 +19,9 @@ namespace limakGame
     {
         GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
+        //Model and view in MVC, menus/interfaces
+        GameState gameState;
+        View view;
 
         public Limak()
         {
@@ -75,6 +78,11 @@ namespace limakGame
                 animation.Loop = false;
             };
 
+            //GUI
+            gameState = new GameState(this);
+            view = new View(gameState, this.Content, this.GraphicsDevice);
+            view.Load();
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -100,16 +108,201 @@ namespace limakGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
 
-            // TODO: Add your update logic here
-            TimeSpan delta = gameTime.ElapsedGameTime;
+            //Common form P1 & P2
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || GamePad.GetState(PlayerIndex.Two).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.R))
+                gameState.BackPressed();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed || GamePad.GetState(PlayerIndex.Two).Buttons.Start == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                gameState.StartPressed();
 
-            animation.Update(delta);
+            // PLAYER 1
+            if (GamePad.GetState(PlayerIndex.One).IsConnected)
+            {//GAMEPAD#1
+                if (gameState.getCurrentGameState() == State.Playing)
+                {
+                    //Inside game/ State.Playing
+                    //TODO: 
+                }
+                else
+                {
+                    if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed)
+                        gameState.APressed();
+                    if (GamePad.GetState(PlayerIndex.One).Buttons.B == ButtonState.Pressed)
+                        gameState.BPressed();
+                    //if (GamePad.GetState(PlayerIndex.One).Buttons.X == ButtonState.Pressed)
+                    //if (GamePad.GetState(PlayerIndex.One).Buttons.Y == ButtonState.Pressed)
+                    if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y < 0)
+                    {
+                        gameState.updateButtonChangeState(State.ButtonDown);
+                    }
+                    else if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y > 0)
+                    {
+                        gameState.updateButtonChangeState(State.ButtonUp);
+                    }
+                    else if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X < 0)
+                    {
+                        gameState.LeftPressed();
+                    }
+                    else if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X > 0)
+                    {
+                        gameState.RightPressed();
+                    }
+                }
+            }
+            else
+            {//KEYBOARD
+                if (gameState.getCurrentGameState() == State.Playing)
+                {
+                    //Inside game/ State.Playing
+                    //TODO: 
+                }
+                else
+                {
+                    if ( Keyboard.GetState().IsKeyDown(Keys.N))
+                        gameState.APressed();
+                    if ( Keyboard.GetState().IsKeyDown(Keys.M))
+                        gameState.BPressed();
+                    //if ( Keyboard.GetState().IsKeyDown(Keys.J))
+                    //if ( Keyboard.GetState().IsKeyDown(Keys.K))
+                    if ( Keyboard.GetState().IsKeyDown(Keys.Down))
+                    {
+                        gameState.updateButtonChangeState(State.ButtonDown);
+                    }
+                    else if ( Keyboard.GetState().IsKeyDown(Keys.Up))
+                    {
+                        gameState.updateButtonChangeState(State.ButtonUp);
+                    }
+                    else if ( Keyboard.GetState().IsKeyDown(Keys.Left))
+                    {
+                        gameState.LeftPressed();
+                    }
+                    else if ( Keyboard.GetState().IsKeyDown(Keys.Right))
+                    {
+                        gameState.RightPressed();
+                    }
+                }
+            }
 
-            base.Update(gameTime);
+            // PLAYER 2
+            if (GamePad.GetState(PlayerIndex.Two).IsConnected)
+            {//GAMEPAD#2
+                if (gameState.getCurrentGameState() == State.Playing)
+                {
+                    //Inside game/ State.Playing
+                    //TODO: 
+                }
+                else
+                {
+                    if (GamePad.GetState(PlayerIndex.Two).Buttons.A == ButtonState.Pressed)
+                        gameState.APressed2();
+                    if (GamePad.GetState(PlayerIndex.Two).Buttons.B == ButtonState.Pressed)
+                        gameState.BPressed();
+                    //if (GamePad.GetState(PlayerIndex.Two).Buttons.X == ButtonState.Pressed)
+                    //if (GamePad.GetState(PlayerIndex.Two).Buttons.Y == ButtonState.Pressed)
+                    if (GamePad.GetState(PlayerIndex.Two).Buttons.Start == ButtonState.Pressed)
+                        gameState.StartPressed();
+
+                    if (GamePad.GetState(PlayerIndex.Two).ThumbSticks.Left.Y < 0)
+                    {
+                        gameState.updateButtonChangeState(State.ButtonDown);
+                    }
+                    else if (GamePad.GetState(PlayerIndex.Two).ThumbSticks.Left.Y > 0)
+                    {
+                        gameState.updateButtonChangeState(State.ButtonUp);
+                    }
+                    else if (GamePad.GetState(PlayerIndex.Two).ThumbSticks.Left.X < 0)
+                    {
+                        gameState.LeftPressed2();
+                    }
+                    else if (GamePad.GetState(PlayerIndex.Two).ThumbSticks.Left.X > 0)
+                    {
+                        gameState.RightPressed2();
+                    }
+                }
+            }
+            else if (GamePad.GetState(PlayerIndex.One).IsConnected)
+            {
+                if (gameState.getCurrentGameState() == State.Playing)
+                {
+                    //Inside game/ State.Playing
+                    //TODO: 
+                }
+                else
+                {
+                    if (Keyboard.GetState().IsKeyDown(Keys.N))
+                        gameState.APressed2();
+                    if (Keyboard.GetState().IsKeyDown(Keys.M))
+                        gameState.BPressed();
+                    //if (Keyboard.GetState().IsKeyDown(Keys.J))
+                    //if (Keyboard.GetState().IsKeyDown(Keys.K))
+                    if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                    {
+                        gameState.updateButtonChangeState(State.ButtonDown);
+                    }
+                    else if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                    {
+                        gameState.updateButtonChangeState(State.ButtonUp);
+                    }
+                    else if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                    {
+                        gameState.LeftPressed2();
+                    }
+                    else if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                    {
+                        gameState.RightPressed2();
+                    }
+                }
+            }
+            else
+            {//KEYBOARD
+                if (gameState.getCurrentGameState() == State.Playing)
+                {
+                    //Inside game/ State.Playing
+                    //TODO: 
+                }
+                else
+                {
+                    if (Keyboard.GetState().IsKeyDown(Keys.Tab))
+                        gameState.APressed2();
+                    if (Keyboard.GetState().IsKeyDown(Keys.Q))
+                        gameState.BPressed();
+                    //if (Keyboard.GetState().IsKeyDown(Keys.D1))  
+                    //if (Keyboard.GetState().IsKeyDown(Keys.D2))
+                    if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+                        gameState.StartPressed();
+
+                    if (Keyboard.GetState().IsKeyDown(Keys.S))
+                    {
+                        gameState.updateButtonChangeState(State.ButtonDown);
+                    }
+                    else if (Keyboard.GetState().IsKeyDown(Keys.W))
+                    {
+                        gameState.updateButtonChangeState(State.ButtonUp);
+                    }
+                    else if (Keyboard.GetState().IsKeyDown(Keys.A))
+                    {
+                        gameState.LeftPressed2();
+                    }
+                    else if (Keyboard.GetState().IsKeyDown(Keys.D))
+                    {
+                        gameState.RightPressed2();
+                    }
+                }
+            }
+
+
+            if (gameState.getCurrentGameState() != State.Pause)
+            {   
+                //Update logic while State.Playing
+                 // TODO: Add your update logic here
+                TimeSpan delta = gameTime.ElapsedGameTime;
+
+                animation.Update(delta);
+
+                base.Update(gameTime);
+            }
+
+           
         }
 
         /// <summary>
@@ -121,8 +314,22 @@ namespace limakGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            this.animation.Draw(spriteBatch, new Rectangle(0, 0, 200, 200));
-            
+
+            switch (gameState.getCurrentGameState())
+            {
+                case State.Playing:
+                    //All drawing while gameState = State.Playing
+                    this.animation.Draw(spriteBatch, new Rectangle(0, 0, 200, 200));
+                    
+                    break;
+                default:
+                    //All other drawing (menu etc.)
+                    spriteBatch.Begin();
+                    view.Draw(spriteBatch);
+                    spriteBatch.End();
+                    break;
+            }
+
             base.Draw(gameTime);
         }
     }

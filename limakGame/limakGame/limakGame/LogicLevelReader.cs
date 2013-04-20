@@ -42,10 +42,7 @@ namespace limakGame
         //the constructor should receive the world object
         public LogicLevelReader(World world)
         {
-            // _world = world;
-
-            // Temporary world for testing purposes
-            world = new World(new Vector2(0, 9.81f));
+            this.world = world;
 
             _platforms = new List<Body>();
             _enemies = new List<Body>();

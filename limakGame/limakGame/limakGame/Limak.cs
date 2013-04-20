@@ -26,6 +26,8 @@ namespace limakGame
         public Camera2D camera;
         public CharacterInputController characterController;
 
+        Map map;
+
         private GameCharacter character;
 
         Texture2D blackTexture;
@@ -82,12 +84,20 @@ namespace limakGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            background = this.Content.Load<Texture2D>("bgtest");
+            // Setup the map
+            this.map = new Map(this, "level.txt");
 
+            this.Components.Add(this.map);
+
+            // Setup misc graphics
+
+            background = this.Content.Load<Texture2D>("bgtest");
             font = this.Content.Load<SpriteFont>("SpriteFont1");
 
             Texture2D spriteSheetTest = this.Content.Load<Texture2D>("character2SampleNotAnimated");
             Texture2D bunny = this.Content.Load<Texture2D>("test2");
+
+            // Setup the game character
 
             SpriteAnimation bunnyAnimation = new SpriteAnimation(bunny, 128, 128, 7, 7);
             bunnyAnimation.AnimationDelay = 100;
@@ -104,7 +114,6 @@ namespace limakGame
 
             // Bind this as our player 1 character
             this.characterController.BindCharacter(character);
-
 
             // Enter the noob
             GameObject noob = new GameObject(
@@ -197,5 +206,15 @@ namespace limakGame
 
             base.Draw(gameTime);
         }
+
+        /// <summary>
+        /// Add a new game object to the map
+        /// </summary>
+        /// <param name="gameObject"></param>
+        public void addGameObject(GameObject gameObject) 
+        {
+            this.Components.Add(gameObject);
+        }
+
     }
 }

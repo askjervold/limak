@@ -10,9 +10,17 @@ namespace limakGame
         /// </summary>
         static void Main(string[] args)
         {
+<<<<<<< HEAD
             using (Limak game = new Limak())
+=======
+            /*using (Game1 game = new Game1())
+>>>>>>> origin/limak-hd
             {
                 game.Run();
+            }*/
+            using (TestLevelReader tlr = new TestLevelReader())
+            {
+                tlr.Run();
             }
         }
     }

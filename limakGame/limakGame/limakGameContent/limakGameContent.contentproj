@@ -42,6 +42,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Compile Include="character2SampleNotAnimated.png">
       <Name>character2SampleNotAnimated</Name>
       <Importer>TextureImporter</Importer>
@@ -66,11 +67,21 @@
     </Compile>
     <Compile Include="mainMenu2.png">
       <Name>mainMenu2</Name>
+=======
+    <Compile Include="ground.png">
+      <Name>ground</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="platform.png">
+      <Name>platform</Name>
+>>>>>>> origin/limak-hd
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Compile Include="SpriteFont1.spritefont">
       <Name>SpriteFont1</Name>
       <Importer>FontDescriptionImporter</Importer>
@@ -80,22 +91,38 @@
   <ItemGroup>
     <Compile Include="test2.png">
       <Name>test2</Name>
+=======
+    <Compile Include="groundBlock.png">
+      <Name>groundBlock</Name>
+>>>>>>> origin/limak-hd
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Compile Include="bgtest.png">
       <Name>bgtest</Name>
+=======
+    <Compile Include="goo.png">
+      <Name>goo</Name>
+>>>>>>> origin/limak-hd
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Compile Include="box.png">
       <Name>box</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+=======
+    <Compile Include="text.spritefont">
+      <Name>text</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+>>>>>>> origin/limak-hd
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

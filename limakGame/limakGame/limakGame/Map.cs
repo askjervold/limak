@@ -21,6 +21,8 @@ namespace limakGame
             // TODO: 
             // finish loading the level in LogicLevelReader
             // add the components to the game by using ((Limak)game).addGameObject(GameObject gameObject)
+            //((Limak)game).addGameObject(GameObject gameObject)
+
 
         }
 
@@ -36,8 +38,12 @@ namespace limakGame
         /// <param name="gameTime"></param>
         public override void Draw(GameTime gameTime)
         {
+            Random random = new Random();
             
             Limak game = ((Limak)this.Game);
+            Rectangle groundToDraw = new Rectangle(0,12, 1000,1);//level.Ground.Position.X,level.Ground.Position.Y,...);
+            //Rectangle groundToDraw = new Rectangle((int)level.Ground.Position.X, (int)level.Ground.Position.Y, 4000, 60);
+            
 
             game.spriteBatch.Begin(
                 SpriteSortMode.BackToFront,
@@ -50,7 +56,8 @@ namespace limakGame
             );
 
             // Draw map here!
-
+            game.spriteBatch.Draw(game.Content.Load<Texture2D>("groundBlock"), new Vector2(0, 7.5f), groundToDraw, Color.White, 0, new Vector2(0, 0), Camera2D.ToMeters(50), SpriteEffects.None, 0);
+            
             /*game.spriteBatch.Draw(
                 Texture2D sprite,
                 Vector2 position, // position in farseer meter

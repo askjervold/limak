@@ -88,6 +88,7 @@ namespace limakGame
             this.map = new Map(this, "level.txt");
 
             this.Components.Add(this.map);
+            
 
             // Setup misc graphics
 
@@ -190,7 +191,7 @@ namespace limakGame
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            map.Draw(gameTime);
             this.spriteBatch.Begin();
 
             this.spriteBatch.DrawString(this.font, "Action: " + character.Action.ToString(), new Vector2(5.0f, 0.0f), Color.White);

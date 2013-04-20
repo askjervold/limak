@@ -33,8 +33,12 @@ namespace limakGame
         //types of bodies created and returned to the draw class.
         private Body _groundBody; 
         private List<Body> _platforms;
-        private List<Body> _enemies;
+        private List<GameObject> _enemies;
         private GameObject _playerObject;
+
+        //sprite animations
+        private SpriteAnimation _playerAnimation;
+        private SpriteAnimation _enemyAnimation;
         
         //an array of string where each element is each line in the .txt file.
         string[] text;
@@ -45,7 +49,7 @@ namespace limakGame
             this.world = world;
 
             _platforms = new List<Body>();
-            _enemies = new List<Body>();
+            _enemies = new List<GameObject>();
             
         }
 
@@ -76,6 +80,7 @@ namespace limakGame
             Vector2 start = new Vector2(0, 0);
             Vector2 size = new Vector2(2, 2);
             // TODO:
+             //_playerAnimation = new SpriteAnimation( 120,120,4,7)
             //_playerObject = new GameObject(game, _world,  start,  size, animation);
         
         
@@ -94,7 +99,8 @@ namespace limakGame
 
 
             //create ground fixture, it assumes that the ground doesn't have any holes in it
-            _groundBody = BodyFactory.CreateRectangle(world, str2.Length, 1f, 1f, vector);
+            _groundBody = BodyFactory.CreateRectangle(world, str2.Length, 1,1,new Vector2(_levelWidth/2, levelHeight));
+            _groundBody = BodyFactory.CreateRectangle(world, 60.0f, 1.0f, 1.0f);
             
 
             //non-movable object.
@@ -110,15 +116,22 @@ namespace limakGame
         {
             // iterates through the entire level file and checks for a "_" which indicates a platform. If one is found, a body is added to the platform list
             // Should be modified for GameObjects to note the position of the platform.
+            bool onPlatform = false;
             for (int i = 0; i < _levelHeight; i++)
             {
                 for (int j = 0; j < _levelWidth; j++)
                 {
-                    if (text[i][j].Equals("_"))
+                    if (text[i][j].Equals(_platform) && onPlatform == false)
                     {
                         // GameObject platform = new GameObject(game, new Vector2(j*unitToPixel, i*unitToPixel), 1*unitToPixel, height*unitToPixel, animation);
-                        _platforms.Add(new Body(world));
+                        onPlatform = true;
+                        Body platformTemp = BodyFactory.CreateRectangle(world, 4, 1, 1, new Vector2(j + 2, i));
+                        _platforms.Add(platformTemp);
+                        
                     }
+                    if (text[i][j].Equals(" ")) 
+                        onPlatform = false;
+
                     
                 }
 
@@ -130,7 +143,20 @@ namespace limakGame
 
         public void createEnemies()
         {
+            /*
+            for (int i = 0; i < _levelHeight; i++)
+            {
+                for (int j = 0; j < _levelWidth; j++)
+                {
+                    if (text[i][j].Equals(_enemy))
+                    {
+                        //GameObject enemyTemp = new GameObject(game, world, new Vector2(j,0),new Vector2(1,1),animation);
+                        //_enemies.Add(enemyTemp);
+                    }
+                }
 
+
+            }*/
         }
 
         public Body Ground
@@ -145,7 +171,7 @@ namespace limakGame
         }
 
 
-        public List<Body> Enemies
+        public List<GameObject> Enemies
         {
             get { return _enemies; }            
         }

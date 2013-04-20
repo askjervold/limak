@@ -78,7 +78,8 @@ namespace limakGame
         {
             Vector2 start = new Vector2(0, 0);
             Vector2 size = new Vector2(2, 2);
-            _playerObject = new GameObject(game, _world,  start,  size, animation);
+            // TODO:
+            //_playerObject = new GameObject(game, _world,  start,  size, animation);
         
         
 

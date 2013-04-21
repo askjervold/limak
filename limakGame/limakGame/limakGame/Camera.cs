@@ -49,7 +49,7 @@ namespace limakGame
         public bool IsVisible(GameObject gameObject)
         {
             RectangleF visibleArea = new RectangleF(m_Position.X, m_Position.Y, m_Viewport.Width, m_Viewport.Height);
-            RectangleF objectArea = new RectangleF(gameObject.Position, gameObject.Size);
+            RectangleF objectArea = new RectangleF(ToPixels(gameObject.Position), gameObject.Size);
 
             return visibleArea.Intersects(objectArea);
         }

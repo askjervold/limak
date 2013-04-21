@@ -34,7 +34,9 @@ namespace limakGame
         private Body _groundBody; 
         private List<Body> _platforms;
         private List<GameObject> _enemies;
-        private GameObject _playerObject;
+        private GameObject _player1Object;
+
+        private Vector2 _groundPosition;
 
         //sprite animations
         private SpriteAnimation _playerAnimation;
@@ -69,7 +71,7 @@ namespace limakGame
             _levelWidth = text[_levelHeight - 1].Length;
 
 //            createGround();
-            //createPlatforms(); //TODO
+            createPlatforms(); //TODO
             createEnemies();
             
             
@@ -99,8 +101,10 @@ namespace limakGame
 
 
             //create ground fixture, it assumes that the ground doesn't have any holes in it
-            _groundBody = BodyFactory.CreateRectangle(world, str2.Length, 1,1,new Vector2(_levelWidth/2, levelHeight));
-            _groundBody = BodyFactory.CreateRectangle(world, 60.0f, 1.0f, 1.0f);
+            _groundBody = BodyFactory.CreateRectangle(world, str2.Length, 1,1);
+            _groundPosition = new Vector2(_levelWidth / 2, levelHeight);
+            _groundBody.Position = _groundPosition;
+            //_groundBody = BodyFactory.CreateRectangle(world, 60.0f, 1.0f, 1.0f);
             
 
             //non-movable object.
@@ -121,22 +125,37 @@ namespace limakGame
             {
                 for (int j = 0; j < _levelWidth; j++)
                 {
-                    if (text[i][j].Equals(_platform) && onPlatform == false)
-                    {
-                        // GameObject platform = new GameObject(game, new Vector2(j*unitToPixel, i*unitToPixel), 1*unitToPixel, height*unitToPixel, animation);
-                        onPlatform = true;
-                        Body platformTemp = BodyFactory.CreateRectangle(world, 4, 1, 1, new Vector2(j + 2, i));
-                        _platforms.Add(platformTemp);
                         
+                    try
+                    {
+                        Console.Write(text[i][j]);
+                        if (text[i][j].Equals(_platform))
+                        {
+                            Console.WriteLine("gfdgfdgdhgfdyrthcv,juybgikbliyvbulyvkutvujvujtgvckutgvtgvkktf");
+                            // GameObject platform = new GameObject(game, new Vector2(j*unitToPixel, i*unitToPixel), 1*unitToPixel, height*unitToPixel, animation);
+                            onPlatform = true;
+                            //CreateRectangle(world, width, height, density, positionVector);
+                            Body platformTemp = BodyFactory.CreateRectangle(world, 4, 1, 1, new Vector2(j + 2, i));
+                            Console.Write("hei");
+                            _platforms.Add(platformTemp);
+
+                        }
+                        if (text[i][j].Equals(" "))
+                            onPlatform = false;
                     }
-                    if (text[i][j].Equals(" ")) 
-                        onPlatform = false;
+                    catch
+                    {
+                        break;
+                    }
+                    
 
                     
-                }
 
+                }
+                Console.WriteLine();
                 
             }
+            Console.Write(_platforms.Count);
 
             
         }
@@ -164,6 +183,15 @@ namespace limakGame
             get { return _groundBody; }
         }
 
+        public GameObject player1
+        {
+            get { return _player1Object; }
+        }
+
+        public Vector2 GroundPosition
+        {
+            get { return _groundPosition; }
+        }
 
         public List<Body> Platforms
         {
@@ -174,6 +202,16 @@ namespace limakGame
         public List<GameObject> Enemies
         {
             get { return _enemies; }            
+        }
+
+        public int levelHeight //should be 12, but who knows
+        {
+            get { return _levelHeight; }
+        }
+
+        public int levelWidth
+        {
+            get { return _levelWidth; }
         }
     }
 }

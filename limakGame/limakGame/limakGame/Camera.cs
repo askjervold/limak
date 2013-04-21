@@ -25,7 +25,7 @@ namespace limakGame
         bool isVisible(GameObject gameObject);
     }
 
-    public class Camera2D
+    public class Camera2D : GameComponent
     {
         private const float PixelsPerMeter = 60;
 
@@ -38,9 +38,10 @@ namespace limakGame
         /// Creates a new 2D camera
         /// </summary>
         /// <param name="position">The camera's position in world coordinates</param>
-        public Camera2D(Vector2 position)
+        public Camera2D(Game game, Vector2 position, Viewport viewport) : base(game)
         {
             m_Position = position;
+            m_Viewport = viewport;
         }
 
         /// <summary>
@@ -116,13 +117,35 @@ namespace limakGame
                         PixelsPerMeter, 0.0f, 0.0f, 0.0f,
                         0.0f, PixelsPerMeter, 0.0f, 0.0f,
                         0.0f, 0.0f, 1.0f, 0.0f,
-                        m_Position.X, m_Position.Y, 0.0f, 1.0f
+                        -m_Position.X, -m_Position.Y, 0.0f, 1.0f
                     );
 
                     m_TransformCached = true;
                 }
                 return m_TransformMatrix;
             }
+        }
+
+        List<GameObject> characters = new List<GameObject>();
+
+        public void AddCharacter(GameObject character)
+        {
+            characters.Add(character);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            Vector2 average = Vector2.Zero;
+            foreach (GameObject character in characters)
+            {
+                average += character.Position;
+            }
+
+            average /= characters.Count;
+            average = ToPixels(average);
+
+            Vector2 cameraPosition = new Vector2(average.X - m_Viewport.Width / 2, average.Y - m_Viewport.Height / 2);
+            Position = cameraPosition;
         }
     }
 

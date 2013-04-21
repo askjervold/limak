@@ -54,7 +54,7 @@ namespace limakGame
             this.world = new World(new Vector2(0.0f, 10.00f));
 
             // New camera
-            this.camera = new Camera2D(new Vector2(0.0f, 0.0f));
+            this.camera = new Camera2D(this, new Vector2(0.0f, 0.0f), GraphicsDevice.Viewport);
 
             // new controlller!
             this.characterController = new CharacterInputController(0, 
@@ -88,6 +88,7 @@ namespace limakGame
             this.map = new Map(this, "level.txt");
 
             this.Components.Add(this.map);
+            this.Components.Add(camera);
             
 
             // Setup misc graphics
@@ -110,6 +111,8 @@ namespace limakGame
                 new Vector2(2.0f, 2.0f), // size (meter)
                 bunnyAnimation
             );
+
+            camera.AddCharacter(character);
 
             this.Components.Add(character);
 

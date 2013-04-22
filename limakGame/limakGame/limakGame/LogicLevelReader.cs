@@ -34,9 +34,9 @@ namespace limakGame
         private Body _groundBody; 
         private List<Body> _platforms;
         private List<GameObject> _enemies;
+        private List<Vector2> _enemyPositions;
         private GameObject _player1Object;
 
-        private Vector2 _groundPosition;
 
         //sprite animations
         private SpriteAnimation _playerAnimation;
@@ -52,7 +52,8 @@ namespace limakGame
 
             _platforms = new List<Body>();
             _enemies = new List<GameObject>();
-            
+            _enemyPositions = new List<Vector2>();
+                        
         }
 
         //this reads the given file, we can change which file by inputting a different parameter.
@@ -73,6 +74,10 @@ namespace limakGame
 //            createGround();
             createPlatforms(); //TODO
             createEnemies();
+            createGround();
+            Console.WriteLine("ENEMY POS");
+            createEnemyPositions();
+            Console.WriteLine("ENEMY POS DONE");
             
             
         }
@@ -82,14 +87,14 @@ namespace limakGame
             Vector2 start = new Vector2(0, 0);
             Vector2 size = new Vector2(2, 2);
             // TODO:
-             //_playerAnimation = new SpriteAnimation( 120,120,4,7)
+            //_playerAnimation = new SpriteAnimation(120,120,4,7)
             //_playerObject = new GameObject(game, _world,  start,  size, animation);
         
         
 
         }
 
-        public void createGround(Vector2 vector)
+        public void createGround()
         //assumes no holes in the ground, creating a single body representing the entire ground floor
         {
             //this method assumes that the ground is always on the lowest point, which all map should be.
@@ -101,9 +106,7 @@ namespace limakGame
 
 
             //create ground fixture, it assumes that the ground doesn't have any holes in it
-            _groundBody = BodyFactory.CreateRectangle(world, str2.Length, 1,1);
-            _groundPosition = new Vector2(_levelWidth / 2, levelHeight);
-            _groundBody.Position = _groundPosition;
+            _groundBody = BodyFactory.CreateRectangle(world, str2.Length, 1, 1, new Vector2(0 / 2, levelHeight - 1));
             //_groundBody = BodyFactory.CreateRectangle(world, 60.0f, 1.0f, 1.0f);
             
 
@@ -178,6 +181,52 @@ namespace limakGame
             }*/
         }
 
+        public void createEnemyPositions()
+        {
+            for (int i = 0; i < _levelHeight; i++)
+            {
+                
+                    try
+                    {
+                        int j = 0;
+                        while ((i = text[i].IndexOf('@', j)) != -1 && j < _levelWidth)
+                        {
+                            Console.WriteLine("AAAA");
+                            // C.
+                            // Print out the substring.
+                            _enemyPositions.Add(new Vector2(i, j));
+
+                            // D.
+                            // Increment the index.
+                            j++;
+                        }
+
+                    }
+
+                     /*   if (text[i][j].Equals("n")) Console.WriteLine("NEWLINE");
+                        //Console.Write("\tI:" + i + " J:" + j + " tegn:" + text[i][j]);
+                        if (text[i][j].Equals(_enemy))
+                        {
+                            _enemyPositions.Add(new Vector2(i, j));
+                        }
+                    }*/
+                    catch
+                    {
+                    }
+             
+
+
+            }
+            Vector2 a =new Vector2(0, 2f);
+            _enemyPositions.Add(a);
+            Console.WriteLine("\n\n\n\n\n"+_enemyPositions.Count);
+        }
+
+        public List<Vector2> getEnemyPos
+        {
+            get { return _enemyPositions; }
+        }
+
         public Body Ground
         {
             get { return _groundBody; }
@@ -188,10 +237,6 @@ namespace limakGame
             get { return _player1Object; }
         }
 
-        public Vector2 GroundPosition
-        {
-            get { return _groundPosition; }
-        }
 
         public List<Body> Platforms
         {

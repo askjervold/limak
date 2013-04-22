@@ -131,11 +131,11 @@ namespace limakGame
             this.Components.Add(noob);
 
             // Add a little ground
-            Body ground = FarseerPhysics.Factories.BodyFactory.CreateRectangle(world, 60.0f, 1.0f, 1.0f);
+           // Body ground = FarseerPhysics.Factories.BodyFactory.CreateRectangle(world, 60.0f, 1.0f, 1.0f);
             
-            ground.BodyType = BodyType.Static;
-            ground.Friction = 10.0f;
-            ground.Position = new Vector2(-10.0f, 8.0f);
+            //ground.BodyType = BodyType.Static;
+            //ground.Friction = 10.0f;
+            //ground.Position = new Vector2(-10.0f, 8.0f);
 
             /*animation.AnimationDelay = 200; // 100ms between each frame
             animation.Loop = false;

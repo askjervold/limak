@@ -128,7 +128,7 @@ namespace limakGame
             {
                 for (int j = 0; j < _levelWidth; j++)
                 {
-                    if (text[i][j].Equals("n")) break;
+                    /*if (text[i][j].Equals("n")) break;
                     try
                     {
                         Console.Write(text[i][j]);
@@ -149,7 +149,7 @@ namespace limakGame
                     catch
                     {
                         break;
-                    }
+                    }*/
 
 
 
@@ -186,7 +186,7 @@ namespace limakGame
             for (int i = 0; i < _levelHeight; i++)
             {
 
-                try
+                /*try
                 {
                     int j = 0;
                     while ((i = text[i].IndexOf('@', j)) != -1 && j < _levelWidth)
@@ -210,11 +210,11 @@ namespace limakGame
                         _enemyPositions.Add(new Vector2(i, j));
                     }
                 }*/
-                catch
+              /*  catch
                 {
                 }
 
-
+            */
 
             }
             Vector2 a = new Vector2(0, 2f);

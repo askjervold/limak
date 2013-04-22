@@ -125,7 +125,7 @@ namespace limakGame
             {
                 for (int j = 0; j < _levelWidth; j++)
                 {
-                        
+                    if (text[i][j].Equals("n")) break;
                     try
                     {
                         Console.Write(text[i][j]);

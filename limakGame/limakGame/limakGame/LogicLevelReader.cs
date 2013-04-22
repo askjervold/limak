@@ -31,15 +31,17 @@ namespace limakGame
         private string _enemy = "@";
 
         //types of bodies created and returned to the draw class.
-        private Body _groundBody; 
+        private Body _groundBody;
         private List<Body> _platforms;
         private List<GameObject> _enemies;
-        private GameObject _playerObject;
+        private List<Vector2> _enemyPositions;
+        private GameObject _player1Object;
+
 
         //sprite animations
         private SpriteAnimation _playerAnimation;
         private SpriteAnimation _enemyAnimation;
-        
+
         //an array of string where each element is each line in the .txt file.
         string[] text;
 
@@ -50,14 +52,15 @@ namespace limakGame
 
             _platforms = new List<Body>();
             _enemies = new List<GameObject>();
-            
+            _enemyPositions = new List<Vector2>();
+
         }
 
         //this reads the given file, we can change which file by inputting a different parameter.
         public void readFile(string file)
         {
             bool includesTxt = file.EndsWith(".txt", System.StringComparison.OrdinalIgnoreCase);
-            if(includesTxt)
+            if (includesTxt)
                 text = System.IO.File.ReadAllLines(file);
             else
                 text = System.IO.File.ReadAllLines(file + ".txt");
@@ -68,11 +71,15 @@ namespace limakGame
             _levelHeight = text.Length;
             _levelWidth = text[_levelHeight - 1].Length;
 
-//            createGround();
-            //createPlatforms(); //TODO
+            //            createGround();
+            createPlatforms(); //TODO
             createEnemies();
-            
-            
+            createGround();
+            Console.WriteLine("ENEMY POS");
+            createEnemyPositions();
+            Console.WriteLine("ENEMY POS DONE");
+
+
         }
 
         public void createPlayer()
@@ -80,14 +87,14 @@ namespace limakGame
             Vector2 start = new Vector2(0, 0);
             Vector2 size = new Vector2(2, 2);
             // TODO:
-             //_playerAnimation = new SpriteAnimation( 120,120,4,7)
+            //_playerAnimation = new SpriteAnimation(120,120,4,7)
             //_playerObject = new GameObject(game, _world,  start,  size, animation);
-        
-        
+
+
 
         }
 
-        public void createGround(Vector2 vector)
+        public void createGround()
         //assumes no holes in the ground, creating a single body representing the entire ground floor
         {
             //this method assumes that the ground is always on the lowest point, which all map should be.
@@ -99,9 +106,9 @@ namespace limakGame
 
 
             //create ground fixture, it assumes that the ground doesn't have any holes in it
-            _groundBody = BodyFactory.CreateRectangle(world, str2.Length, 1,1,new Vector2(_levelWidth/2, levelHeight));
-            _groundBody = BodyFactory.CreateRectangle(world, 60.0f, 1.0f, 1.0f);
-            
+            _groundBody = BodyFactory.CreateRectangle(world, str2.Length, 1, 1, new Vector2(0 / 2, levelHeight - 1));
+            //_groundBody = BodyFactory.CreateRectangle(world, 60.0f, 1.0f, 1.0f);
+
 
             //non-movable object.
             _groundBody.BodyType = BodyType.Static;
@@ -109,7 +116,7 @@ namespace limakGame
             //some copy-paste code
             _groundBody.Restitution = 0.3f;
             _groundBody.Friction = 0.5f;
-             
+
         }
 
         public void createPlatforms()
@@ -121,24 +128,39 @@ namespace limakGame
             {
                 for (int j = 0; j < _levelWidth; j++)
                 {
-                    if (text[i][j].Equals(_platform) && onPlatform == false)
+                    if (text[i][j].Equals("n")) break;
+                    try
                     {
-                        // GameObject platform = new GameObject(game, new Vector2(j*unitToPixel, i*unitToPixel), 1*unitToPixel, height*unitToPixel, animation);
-                        onPlatform = true;
-                        Body platformTemp = BodyFactory.CreateRectangle(world, 4, 1, 1, new Vector2(j + 2, i));
-                        _platforms.Add(platformTemp);
-                        
+                        Console.Write(text[i][j]);
+                        if (text[i][j].Equals(_platform))
+                        {
+                            Console.WriteLine("gfdgfdgdhgfdyrthcv,juybgikbliyvbulyvkutvujvujtgvckutgvtgvkktf");
+                            // GameObject platform = new GameObject(game, new Vector2(j*unitToPixel, i*unitToPixel), 1*unitToPixel, height*unitToPixel, animation);
+                            onPlatform = true;
+                            //CreateRectangle(world, width, height, density, positionVector);
+                            Body platformTemp = BodyFactory.CreateRectangle(world, 4, 1, 1, new Vector2(j + 2, i));
+                            Console.Write("hei");
+                            _platforms.Add(platformTemp);
+
+                        }
+                        if (text[i][j].Equals(" "))
+                            onPlatform = false;
                     }
-                    if (text[i][j].Equals(" ")) 
-                        onPlatform = false;
+                    catch
+                    {
+                        break;
+                    }
 
-                    
+
+
+
                 }
+                Console.WriteLine();
 
-                
             }
+            Console.Write(_platforms.Count);
 
-            
+
         }
 
         public void createEnemies()
@@ -159,9 +181,60 @@ namespace limakGame
             }*/
         }
 
+        public void createEnemyPositions()
+        {
+            for (int i = 0; i < _levelHeight; i++)
+            {
+
+                try
+                {
+                    int j = 0;
+                    while ((i = text[i].IndexOf('@', j)) != -1 && j < _levelWidth)
+                    {
+                        Console.WriteLine("AAAA");
+                        // C.
+                        // Print out the substring.
+                        _enemyPositions.Add(new Vector2(i, j));
+
+                        // D.
+                        // Increment the index.
+                        j++;
+                    }
+
+                }
+
+                 /*   if (text[i][j].Equals("n")) Console.WriteLine("NEWLINE");
+                    //Console.Write("\tI:" + i + " J:" + j + " tegn:" + text[i][j]);
+                    if (text[i][j].Equals(_enemy))
+                    {
+                        _enemyPositions.Add(new Vector2(i, j));
+                    }
+                }*/
+                catch
+                {
+                }
+
+
+
+            }
+            Vector2 a = new Vector2(0, 2f);
+            _enemyPositions.Add(a);
+            Console.WriteLine("\n\n\n\n\n" + _enemyPositions.Count);
+        }
+
+        public List<Vector2> getEnemyPos
+        {
+            get { return _enemyPositions; }
+        }
+
         public Body Ground
         {
             get { return _groundBody; }
+        }
+
+        public GameObject player1
+        {
+            get { return _player1Object; }
         }
 
 
@@ -173,7 +246,17 @@ namespace limakGame
 
         public List<GameObject> Enemies
         {
-            get { return _enemies; }            
+            get { return _enemies; }
+        }
+
+        public int levelHeight //should be 12, but who knows
+        {
+            get { return _levelHeight; }
+        }
+
+        public int levelWidth
+        {
+            get { return _levelWidth; }
         }
     }
 }

@@ -406,10 +406,10 @@ namespace limakGame
                         currentButtonChosen = 0;
                         updateState(State.Pause);
                         break;
-                    case State.Pause:
-                        updateState(State.Playing);
-                        //currentButtonChosen = 0;
-                        break;
+                    //case State.Pause:
+                    //    updateState(State.Playing);
+                    //    //currentButtonChosen = 0;
+                    //    break;
                 }
                 canReloadAfterElapsedTime = false;
             }

@@ -55,9 +55,9 @@ namespace limakGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            spriteSheetTest = this.Content.Load<Texture2D>("character2SampleNotAnimated");
+            spriteSheetTest = this.Content.Load<Texture2D>("character1_animated");
 
-            animation = new SpriteAnimation(spriteSheetTest, 120, 120, 4, 4);
+            animation = new SpriteAnimation(spriteSheetTest, 120, 480, 4, 6);
             animation.AnimationDelay = 200; // 100ms between each frame
             animation.Loop = false;
             animation.Direction = SpriteDirection.RIGHT;
@@ -319,7 +319,7 @@ namespace limakGame
             {
                 case State.Playing:
                     //All drawing while gameState = State.Playing
-                    this.animation.Draw(spriteBatch, new Rectangle(0, 0, 200, 200));
+                    this.animation.Draw(spriteBatch, new Rectangle(0, 0, 120, 480));
                     
                     break;
                 default:

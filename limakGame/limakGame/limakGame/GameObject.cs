@@ -23,17 +23,25 @@ namespace limakGame
         DIE
     }
 
-    class GameObject : DrawableGameComponent
+    /// <summary>
+    /// Working direction of the object
+    /// </summary>
+    public enum GameObjectDirection
+    {
+        LEFT = 0,
+        RIGHT
+    }
+
+    public class GameObject : DrawableGameComponent
     {
         
-        private GameObjectAction action;
+        protected GameObjectAction action;
         private SpriteAnimation animation;
 
-        private Vector2 position;
+        protected Vector2 size;
+        protected Body body;
 
-        private Rectangle boundingBox;
-
-        private Body body;
+        protected GameObjectDirection facingDirection;
 
         /// <summary>
         /// Base class for interactive game objects.
@@ -45,17 +53,19 @@ namespace limakGame
         /// <param name="animation"></param>
         public GameObject(Game game, World world, Vector2 position, Vector2 size, SpriteAnimation animation) : base(game)
         {
-            this.position = position;
-            this.boundingBox = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
             this.animation = animation;
 
-            this.body = FarseerPhysics.Factories.BodyFactory.CreateRectangle(world, size.X, size.Y, 1.0f);
-            
-            this.body.BodyType = BodyType.Dynamic;
-            
-            this.body.Friction = 0.2f;
-            this.body.Restitution = 0.2f;
+            this.Direction = GameObjectDirection.RIGHT;
 
+            this.size = size;
+
+            this.body = FarseerPhysics.Factories.BodyFactory.CreateRectangle(world, size.X, size.Y, 1.5f);
+            this.body.BodyType = BodyType.Dynamic;
+            this.body.Friction = 1.0f;
+            this.body.Restitution = 0.01f;
+            //this.body.LinearDamping = 3.0f;
+            //this.body.AngularDamping = 3.0f;
+            this.body.Inertia = 5.0f;
             this.body.Position = position;
 
         }
@@ -81,32 +91,72 @@ namespace limakGame
         /// <param name="gameTime"></param>
         public override void Draw(GameTime gameTime)
         {
-            // Update the bounding box of our object
+            Limak game = ((Limak)this.Game);
+            SpriteBatch spriteBatch = game.spriteBatch;
 
-            // TODO: world coordinates => viewport coordinates
-            this.boundingBox.X = (int)this.body.Position.X;
-            this.boundingBox.Y = (int)this.body.Position.Y;
+            spriteBatch.Begin(
+                SpriteSortMode.BackToFront, 
+                null, 
+                SamplerState.LinearClamp, 
+                DepthStencilState.Default, 
+                RasterizerState.CullNone,
+                null,
+                game.camera.TransformMatrix
+            );
 
             // Draw the current animation frame
 
-            SpriteBatch spriteBatch = ((Limak)this.Game).spriteBatch;
-            
-            this.animation.Draw(spriteBatch, this.boundingBox);
+            this.animation.Draw(spriteBatch, this.body.Position, Camera2D.ToMeters(this.size) / 2.0f, this.body.Rotation);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
 
         // Getters & setters
 
-        GameObjectAction Action
+        public GameObjectDirection Direction
+        {
+            set
+            {
+                if(this.facingDirection != value) {
+                    this.facingDirection = value;
+                    this.animation.Direction = (SpriteDirection)this.facingDirection;
+                }
+            }
+            get
+            {
+                return this.facingDirection;
+            }
+        }
+
+        public GameObjectAction Action
         {
             set { 
-                this.action = value; 
-                // Map GameObjectAction to SpriteAction. They're identical for now...
-                this.animation.Action = (SpriteAction)value;
+                // TODO: shouldn't be allowed to change action if dying
+                if(this.action != value) {
+                    this.action = value;
+                    // Map GameObjectAction to SpriteAction. They're identical for now...
+                    this.animation.Action = (SpriteAction)value;
+                }
             }
             get { return this.action; }
         }
 
+        public Vector2 Position
+        {
+            get
+            {
+                return this.body.Position;
+            }
+        }
+
+        public Vector2 Size
+        {
+            get
+            {
+                return this.size;
+            }
+        }
     }
 }

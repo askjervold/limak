@@ -25,10 +25,13 @@ namespace limakGame
         private int _levelWidth;
 
         //types of characters found in the .txt file
-        private string _ground = "#";
-        private string _platform = "_";
-        private string _player = "|";
-        private string _enemy = "@";
+        private char _ground = '#';
+        private char _platform = '_';
+        private char _player = '|';
+        private char _enemy = '@';
+        private char _empty = ' ';
+        private char _end = 'n';
+
 
         //types of bodies created and returned to the draw class.
         private Body _groundBody1;
@@ -70,15 +73,11 @@ namespace limakGame
             else
                 text = System.IO.File.ReadAllLines(file + ".txt");
 
-            //createGround();
-
             //registers the dimensions of the level
             _levelHeight = text.Length;
             _levelWidth = text[_levelHeight - 1].Length;
 
-            //            createGround();
-            createPlatforms(); //TODO
-            createEnemies();
+            createPlatforms();
             createGround();
             createEnemyPositions();
 
@@ -103,26 +102,19 @@ namespace limakGame
         {
             //this method assumes that the ground is always on the lowest point, which all map should be.
             int levelHeight = text.Length - 1;
-            //int first = text[levelHeight].IndexOf(_ground);
-            //int last = text[levelHeight].LastIndexOf(_ground);
-            //string str2 = text[levelHeight].Substring(first, last - first); // gets the width of level.
-            //_groundSprite = Content.Load<Texture2D>("groundSprite"); // 512px x 64px =>   8m x 1m
-
-
-
-
+            
             int start = 0;
             bool lastFloor = false;
 
 
             for (int i = 0; i < _levelWidth; i++)
             {
-                if (text[levelHeight][i] == '#' && !lastFloor)
+                if (text[levelHeight][i] == _ground && !lastFloor)
                 {
                     start = i;
                     lastFloor = true;
                 }
-                else if ((text[levelHeight][i] == ' ' || text[levelHeight][i] == 'n') && lastFloor)
+                else if ((text[levelHeight][i] == _empty || text[levelHeight][i] == _end) && lastFloor)
                 {
                     Body temp = BodyFactory.CreateRectangle(world, (i - 1) - start, 1, 1, new Vector2((start), levelHeight));
                     //non-movable object.
@@ -140,9 +132,13 @@ namespace limakGame
                 }
 
             }
-            
 
             
+            //old method for non-hole ground, isn't used anymore but I want to keep it if we might use it later.
+            //int first = text[levelHeight].IndexOf(_ground);
+            //int last = text[levelHeight].LastIndexOf(_ground);
+            //string str2 = text[levelHeight].Substring(first, last - first); // gets the width of level.
+            //_groundSprite = Content.Load<Texture2D>("groundSprite"); // 512px x 64px =>   8m x 1m
 
 
 
@@ -162,38 +158,34 @@ namespace limakGame
 
         public void createPlatforms()
         {
-            // iterates through the entire level file and checks for a "_" which indicates a platform. If one is found, a body is added to the platform list
-            // Should be modified for GameObjects to note the position of the platform.
+           
             bool onPlatform = false;
+            int start = 0;
             for (int i = 0; i < _levelHeight; i++)
             {
                 for (int j = 0; j < _levelWidth; j++)
                 {
-                    /*if (text[i][j].Equals("n")) break;
-                    try
+                    if (text[i][j] == _platform && !onPlatform)
                     {
-                        Console.Write(text[i][j]);
-                        if (text[i][j].Equals(_platform))
-                        {
-                            Console.WriteLine("gfdgfdgdhgfdyrthcv,juybgikbliyvbulyvkutvujvujtgvckutgvtgvkktf");
-                            // GameObject platform = new GameObject(game, new Vector2(j*unitToPixel, i*unitToPixel), 1*unitToPixel, height*unitToPixel, animation);
-                            onPlatform = true;
-                            //CreateRectangle(world, width, height, density, positionVector);
-                            Body platformTemp = BodyFactory.CreateRectangle(world, 4, 1, 1, new Vector2(j + 2, i));
-                            Console.Write("hei");
-                            _platforms.Add(platformTemp);
-
-                        }
-                        if (text[i][j].Equals(" "))
-                            onPlatform = false;
+                        start = i;
+                        Console.WriteLine(i);
+                        onPlatform= true;
                     }
-                    catch
+                    else if ((text[i][j] == _empty || text[i][j] == _end || text[i][j] == _enemy)&& onPlatform)
                     {
-                        break;
-                    }*/
+                        Body temp = BodyFactory.CreateRectangle(world, (j - 1) - start, 1, 1, new Vector2((start), i));
+                        //non-movable object.
 
 
+                        temp.BodyType = BodyType.Static;
 
+                        //some copy-paste code
+                        temp.Restitution = 0.3f;
+                        temp.Friction = 0.5f;
+
+                        _platforms.Add(temp);
+                        onPlatform= false;
+                    }
 
                 }
 
@@ -202,41 +194,22 @@ namespace limakGame
 
         }
 
-        public void createEnemies()
-        {
-            /*
-            for (int i = 0; i < _levelHeight; i++)
-            {
-                for (int j = 0; j < _levelWidth; j++)
-                {
-                    if (text[i][j].Equals(_enemy))
-                    {
-                        //GameObject enemyTemp = new GameObject(game, world, new Vector2(j,0),new Vector2(1,1),animation);
-                        //_enemies.Add(enemyTemp);
-                    }
-                }
-
-
-            }*/
-        }
 
         public void createEnemyPositions()
         {
             for (int i = 0; i < _levelHeight; i++)
             {
-                int j = 0;
-                try//in case we get an error
+                for(int j = 0; j<_levelWidth; j++)
                 {
-                    while (((j=text[i].IndexOf('@', j)) != -1) && j < _levelWidth)
+                    if(text[i][j] == _end)
+                        break;
+                    if(text[i][j] == _enemy)
                     {
                         _enemyPositions.Add(new Vector2(j, i));
-                        j++;
                     }
 
                 }
-                catch
-                {
-                }
+                
 
             
 

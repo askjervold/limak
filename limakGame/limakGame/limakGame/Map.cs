@@ -62,9 +62,10 @@ namespace limakGame
             for (int i = 0; i < level.Platforms.Count; i++)
             {
 
+                Rectangle platformToDraw = new Rectangle((int)level.Platforms[i].Position.X + /*(int)(level.groundWidths[i] / 2)*/ + 1, (int)level.Platforms[i].Position.Y, 2, 2);
 
-                Rectangle platform = new Rectangle(0, 6, 4, 1);
-                platformsToDraw.Add(platform);
+                
+                platformsToDraw.Add(platformToDraw);
             }
             for (int i = 0; i < level.Ground.Count; i++)
             {
@@ -97,7 +98,7 @@ namespace limakGame
             //game.spriteBatch.Draw(game.Content.Load<Texture2D>("groundBlock"), new Vector2(level.Ground.Position.X - (level.levelWidth / 2), level.Ground.Position.Y - 0.5f), groundToDraw, Color.White, 0, new Vector2(0, 0), Camera2D.ToMeters(50), SpriteEffects.None, 0);
             for (int i = 0; i < platformsToDraw.Count; i++)
             {
-                //game.spriteBatch.Draw(game.Content.Load<Texture2D>("groundBlock"), new Vector2(0, i), groundToDraw, Color.White, 0, new Vector2(0, 0), Camera2D.ToMeters(50), SpriteEffects.None, 0);
+                game.spriteBatch.Draw(game.Content.Load<Texture2D>("groundBlock"), new Vector2(level.Platforms[i].Position.X, level.Platforms[i].Position.Y-0.5f), platformsToDraw[i], Color.White, 0, new Vector2(0, 0), Camera2D.ToMeters(50), SpriteEffects.None, 0);
             }
             /*game.spriteBatch.Draw(
                 Texture2D sprite,

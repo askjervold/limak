@@ -34,6 +34,7 @@ namespace limakGame
         private Body _groundBody1;
         private List<Body> _platforms;
         private List<Body> _groundBody;
+        private List<int> _groundWidths;
         private List<GameObject> _enemies;
         private List<Vector2> _enemyPositions;
         private GameObject _player1Object;
@@ -52,6 +53,7 @@ namespace limakGame
             this.world = world;
 
             _groundBody = new List<Body>();
+            _groundWidths = new List<int>();
             _platforms = new List<Body>();
             _enemies = new List<GameObject>();
             _enemyPositions = new List<Vector2>();
@@ -120,10 +122,13 @@ namespace limakGame
                     start = i;
                     lastFloor = true;
                 }
-                if ((text[levelHeight][i] == ' ' || text[levelHeight][i] == 'n') && lastFloor)
+                else if ((text[levelHeight][i] == ' ' || text[levelHeight][i] == 'n') && lastFloor)
                 {
-                    Body temp = BodyFactory.CreateRectangle(world, (i - 1) - start, 1, 1, new Vector2(((i - 1) - start)/2.0f, levelHeight - 1));
+                    Body temp = BodyFactory.CreateRectangle(world, (i - 1) - start, 1, 1, new Vector2((start), levelHeight));
                     //non-movable object.
+
+                    _groundWidths.Add((i - 1) - start);
+
                     temp.BodyType = BodyType.Static;
 
                     //some copy-paste code
@@ -131,6 +136,7 @@ namespace limakGame
                     temp.Friction = 0.5f;
                     
                     _groundBody.Add(temp);
+                    lastFloor = false;
                 }
 
             }
@@ -246,6 +252,11 @@ namespace limakGame
         public Body Ground1
         {
             get { return _groundBody1; }
+        }
+
+        public List<int> groundWidths
+        {
+            get { return _groundWidths; }
         }
 
         public List<Body> Ground

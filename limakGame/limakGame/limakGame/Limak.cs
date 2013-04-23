@@ -26,7 +26,7 @@ namespace limakGame
         private SpriteFont font;
 
         public World world;
-        public Camera2D camera;
+        public Camera camera;
         public CharacterInputController characterController;
 
         Map map;
@@ -57,7 +57,7 @@ namespace limakGame
             this.world = new World(new Vector2(0.0f, 10.00f));
 
             // New camera
-            this.camera = new Camera2D((Game)this, new Vector2(0.0f, 0.0f), GraphicsDevice.Viewport);
+            this.camera = new Camera((Game)this, new Vector2(0.0f, 0.0f), GraphicsDevice.Viewport);
 
             // new controlller!
             this.characterController = new CharacterInputController(0,

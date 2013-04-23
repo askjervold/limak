@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace limakGame
 {
-    public class Camera2D : GameComponent
+    public class Camera : GameComponent
     {
         private const float PixelsPerMeter = 60;
 
@@ -20,7 +20,7 @@ namespace limakGame
         /// Creates a new 2D camera
         /// </summary>
         /// <param name="position">The camera's position in world coordinates</param>
-        public Camera2D(Game game, Vector2 position, Viewport viewport) : base(game)
+        public Camera(Game game, Vector2 position, Viewport viewport) : base(game)
         {
             m_Position = position;
             m_Viewport = viewport;

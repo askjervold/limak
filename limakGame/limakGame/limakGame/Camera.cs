@@ -9,8 +9,6 @@ namespace limakGame
 {
     public class Camera : GameComponent
     {
-        private const float PixelsPerMeter = 60;
-
         private Vector2 m_Position;
         private Viewport m_Viewport;
         private Matrix m_TransformMatrix;
@@ -32,46 +30,10 @@ namespace limakGame
         public bool IsVisible(GameObject gameObject)
         {
             RectangleF visibleArea = new RectangleF(m_Position.X, m_Position.Y, m_Viewport.Width, m_Viewport.Height);
-            RectangleF objectArea = new RectangleF(ToPixels(gameObject.Position.X), ToPixels(gameObject.Position.Y), gameObject.Size.X, gameObject.Size.Y);
+            RectangleF objectArea = new RectangleF(Convert.ToPixels(gameObject.Position.X), Convert.ToPixels(gameObject.Position.Y), gameObject.Size.X, gameObject.Size.Y);
 
             return visibleArea.Intersects(objectArea);
         }
-
-        #region Static Methods
-
-        /// <summary>
-        /// Converts a float in pixels to meters.
-        /// </summary>
-        public static float ToMeters(float pixels)
-        {
-            return pixels / PixelsPerMeter;
-        }
-
-        /// <summary>
-        /// Converts a Vector2 in pixels to meters.
-        /// </summary>
-        public static Vector2 ToMeters(Vector2 pixels)
-        {
-            return new Vector2(ToMeters(pixels.X), ToMeters(pixels.Y));
-        }
-
-        /// <summary>
-        /// Converts a float in meters to pixels.
-        /// </summary>
-        public static float ToPixels(float meters)
-        {
-            return meters * PixelsPerMeter;
-        }
-
-        /// <summary>
-        /// Converts a Vector2 in meters to pixels.
-        /// </summary>
-        public static Vector2 ToPixels(Vector2 meters)
-        {
-            return new Vector2(ToPixels(meters.X), ToPixels(meters.Y));
-        }
-
-        #endregion
 
         /// <summary>
         /// The camera's position in world coordinates.
@@ -96,8 +58,8 @@ namespace limakGame
                 if (!m_TransformCached)
                 {
                     m_TransformMatrix = new Matrix(
-                        PixelsPerMeter, 0.0f, 0.0f, 0.0f,
-                        0.0f, PixelsPerMeter, 0.0f, 0.0f,
+                        Convert.PixelsPerMeter, 0.0f, 0.0f, 0.0f,
+                        0.0f, Convert.PixelsPerMeter, 0.0f, 0.0f,
                         0.0f, 0.0f, 1.0f, 0.0f,
                         -m_Position.X, -m_Position.Y, 0.0f, 1.0f
                     );
@@ -124,7 +86,7 @@ namespace limakGame
             }
 
             average /= characters.Count;
-            average = ToPixels(average);
+            average = Convert.ToPixels(average);
 
             Vector2 cameraPosition = new Vector2(average.X - m_Viewport.Width / 2, average.Y - m_Viewport.Height / 2);
             Position = cameraPosition;

@@ -58,12 +58,6 @@ namespace limakGame
             float y = m_Star.Position.Y - (height / 2.0f);
 
             m_Camera.WorldViewport = new RectangleF(x, y, width, height);
-
-            /*m_Camera.WorldViewport = new RectangleF(
-                m_Star.Position.X - Convert.ToMeters(m_Camera.ScreenViewport.Width) / 2, 
-                m_Star.Position.Y - Convert.ToMeters(m_Camera.ScreenViewport.Height) / 2,
-                Convert.ToMeters(m_Camera.ScreenViewport.Width),
-                Convert.ToMeters(m_Camera.ScreenViewport.Height));*/
         }
     }
 }

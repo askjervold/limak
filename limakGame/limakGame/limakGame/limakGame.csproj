@@ -122,14 +122,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Limak.cs" />
+    <Compile Include="RectangleF.cs" />
     <Compile Include="SpriteAnimation.cs" />
     <Compile Include="View.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
-    <Content Include="level.txt" >
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory> 
+    <Content Include="level.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>

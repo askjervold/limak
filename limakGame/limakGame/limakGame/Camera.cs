@@ -7,24 +7,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace limakGame
 {
-    interface Camera
-    {
-        /// <summary>
-        /// Converts pixel resolution into meter for Farseer
-        /// </summary>
-        /// <param name="width">Width in pixels</param>
-        /// <param name="height">Height in pixels</param>
-        /// <returns>Size of object in meters</returns>
-        Vector2 pixelsToMeter(int width, int height);
-
-        /// <summary>
-        /// Checks whether the game object is visible on the screen
-        /// </summary>
-        /// <param name="gameObject">Game object</param>
-        /// <returns>True if the object is in the current viewport</returns>
-        bool isVisible(GameObject gameObject);
-    }
-
     public class Camera2D : GameComponent
     {
         private const float PixelsPerMeter = 60;
@@ -50,7 +32,7 @@ namespace limakGame
         public bool IsVisible(GameObject gameObject)
         {
             RectangleF visibleArea = new RectangleF(m_Position.X, m_Position.Y, m_Viewport.Width, m_Viewport.Height);
-            RectangleF objectArea = new RectangleF(ToPixels(gameObject.Position), gameObject.Size);
+            RectangleF objectArea = new RectangleF(ToPixels(gameObject.Position.X), ToPixels(gameObject.Position.Y), gameObject.Size.X, gameObject.Size.Y);
 
             return visibleArea.Intersects(objectArea);
         }
@@ -146,53 +128,6 @@ namespace limakGame
 
             Vector2 cameraPosition = new Vector2(average.X - m_Viewport.Width / 2, average.Y - m_Viewport.Height / 2);
             Position = cameraPosition;
-        }
-    }
-
-    public struct RectangleF
-    {
-        public float X;
-        public float Y;
-        public float Width;
-        public float Height;
-
-        public float Left
-        {
-            get { return this.X; }
-        }
-
-        public float Right
-        {
-            get { return this.X + this.Width; }
-        }
-
-        public float Top
-        {
-            get { return this.Y; }
-        }
-
-        public float Bottom
-        {
-            get { return this.Y + this.Height; }
-        }
-
-        public RectangleF(Vector2 position, Vector2 size)
-            : this(position.X, position.Y, size.X, size.Y)
-        {
-
-        }
-
-        public RectangleF(float x, float y, float width, float height)
-        {
-            this.X = x;
-            this.Y = y;
-            this.Width = width;
-            this.Height = height;
-        }
-
-        public bool Intersects(RectangleF other)
-        {
-            return this.Left <= other.Right && other.Left <= this.Right && this.Top <= other.Bottom && other.Top <= this.Bottom;
         }
     }
 }

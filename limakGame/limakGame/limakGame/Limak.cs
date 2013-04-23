@@ -138,7 +138,7 @@ namespace limakGame
             this.Components.Add(noob);
 
             // Add a little ground
-            Body ground = FarseerPhysics.Factories.BodyFactory.CreateRectangle(world, 60.0f, 1.0f, 1.0f);
+            /*Body ground = FarseerPhysics.Factories.BodyFactory.CreateRectangle(world, 60.0f, 1.0f, 1.0f);
 
             ground.BodyType = BodyType.Static;
             ground.Friction = 10.0f;

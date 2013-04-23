@@ -167,15 +167,14 @@ namespace limakGame
                 {
                     if (text[i][j] == _platform && !onPlatform)
                     {
-                        start = i;
-                        Console.WriteLine(i);
+                        start = j;
                         onPlatform= true;
                     }
                     else if ((text[i][j] == _empty || text[i][j] == _end || text[i][j] == _enemy)&& onPlatform)
                     {
                         Body temp = BodyFactory.CreateRectangle(world, (j - 1) - start, 1, 1, new Vector2((start), i));
                         //non-movable object.
-
+                        Console.WriteLine("platform created @" + (start) + ","+i);
 
                         temp.BodyType = BodyType.Static;
 

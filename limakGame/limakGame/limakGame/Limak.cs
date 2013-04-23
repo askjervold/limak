@@ -27,6 +27,7 @@ namespace limakGame
 
         public World world;
         public Camera camera;
+        CameraMan cameraMan;
         public CharacterInputController characterController;
 
         Map map;
@@ -57,7 +58,7 @@ namespace limakGame
             this.world = new World(new Vector2(0.0f, 10.00f));
 
             // New camera
-            this.camera = new Camera((Game)this, new Vector2(0.0f, 0.0f), GraphicsDevice.Viewport);
+            this.camera = new Camera();
 
             // new controlller!
             this.characterController = new CharacterInputController(0,
@@ -95,7 +96,6 @@ namespace limakGame
             this.map = new Map(this, "level.txt");
 
             this.Components.Add(this.map);
-            this.Components.Add(camera);
 
 
             // Setup misc graphics
@@ -119,7 +119,8 @@ namespace limakGame
                 bunnyAnimation
             );
 
-            camera.AddCharacter(character);
+            this.cameraMan = new CameraMan(this, this.camera, character);
+            this.Components.Add(cameraMan);
 
             this.Components.Add(character);
 

@@ -7,89 +7,68 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace limakGame
 {
-    public class Camera : GameComponent
+    public class Camera
     {
-        private Vector2 m_Position;
-        private Viewport m_Viewport;
-        private Matrix m_TransformMatrix;
-        private bool m_TransformCached = false;
+        private const float PixelsPerMeter = Convert.PixelsPerMeter;
+        
+        private RectangleF m_WorldViewport;
+        private RectangleF m_ScreenViewport;
 
-        /// <summary>
-        /// Creates a new 2D camera
-        /// </summary>
-        /// <param name="position">The camera's position in world coordinates</param>
-        public Camera(Game game, Vector2 position, Viewport viewport) : base(game)
+        public Camera()
         {
-            m_Position = position;
-            m_Viewport = viewport;
+            m_ScreenViewport = new RectangleF(0.0f, 0.0f, 800.0f, 480.0f);
+            m_WorldViewport = new RectangleF(0.0f, 0.0f, 30.0f, 15.0f);
         }
 
-        /// <summary>
-        /// Determines if the game object is within the camera's viewport.
-        /// </summary>
-        public bool IsVisible(GameObject gameObject)
+        public RectangleF ScreenViewport
         {
-            RectangleF visibleArea = new RectangleF(m_Position.X, m_Position.Y, m_Viewport.Width, m_Viewport.Height);
-            RectangleF objectArea = new RectangleF(Convert.ToPixels(gameObject.Position.X), Convert.ToPixels(gameObject.Position.Y), gameObject.Size.X, gameObject.Size.Y);
-
-            return visibleArea.Intersects(objectArea);
+            get { return m_ScreenViewport; }
         }
 
-        /// <summary>
-        /// The camera's position in world coordinates.
-        /// </summary>
-        public Vector2 Position
+        public RectangleF WorldViewport
         {
-            get { return m_Position; }
-            set
-            {
-                m_Position = value;
-                m_TransformCached = false;
-            }
+            get { return m_WorldViewport; }
+            set { m_WorldViewport = value; }
         }
 
-        /// <summary>
-        /// Returns the transformation for graphics drawn in meters
-        /// </summary>
         public Matrix TransformMatrix
         {
             get
             {
-                if (!m_TransformCached)
-                {
-                    m_TransformMatrix = new Matrix(
-                        Convert.PixelsPerMeter, 0.0f, 0.0f, 0.0f,
-                        0.0f, Convert.PixelsPerMeter, 0.0f, 0.0f,
-                        0.0f, 0.0f, 1.0f, 0.0f,
-                        -m_Position.X, -m_Position.Y, 0.0f, 1.0f
-                    );
-
-                    m_TransformCached = true;
-                }
-                return m_TransformMatrix;
+                return Matrix.CreateScale(PixelsPerMeter, PixelsPerMeter, 0.0f) *
+                    Matrix.CreateTranslation(-m_WorldViewport.X * PixelsPerMeter, -m_WorldViewport.Y * PixelsPerMeter, 0.0f) *
+                    Matrix.CreateScale(m_ScreenViewport.Width / (m_WorldViewport.Width * PixelsPerMeter), m_ScreenViewport.Height / (m_WorldViewport.Height * PixelsPerMeter), 0.0f);
             }
         }
+    }
 
-        List<GameObject> characters = new List<GameObject>();
-
-        public void AddCharacter(GameObject character)
+    public class CameraMan : GameComponent
+    {
+        private Camera m_Camera;
+        private GameObject m_Star;
+        private int m_GroundLevel = 12;
+        
+        public CameraMan(Game game, Camera camera, GameObject star)
+            : base(game)
         {
-            characters.Add(character);
+            m_Camera = camera;
+            m_Star = star;
         }
 
         public override void Update(GameTime gameTime)
         {
-            Vector2 average = Vector2.Zero;
-            foreach (GameObject character in characters)
-            {
-                average += character.Position;
-            }
+            float height = (m_GroundLevel - m_Star.Position.Y) * 2.0f;
+            float width = (Convert.ToMeters(m_Camera.ScreenViewport.Width) * height) / Convert.ToMeters(m_Camera.ScreenViewport.Height);
+            float x = m_Star.Position.X - (width / 2.0f);
+            float y = m_Star.Position.Y - (height / 2.0f);
 
-            average /= characters.Count;
-            average = Convert.ToPixels(average);
+            m_Camera.WorldViewport = new RectangleF(x, y, width, height);
 
-            Vector2 cameraPosition = new Vector2(average.X - m_Viewport.Width / 2, average.Y - m_Viewport.Height / 2);
-            Position = cameraPosition;
+            /*m_Camera.WorldViewport = new RectangleF(
+                m_Star.Position.X - Convert.ToMeters(m_Camera.ScreenViewport.Width) / 2, 
+                m_Star.Position.Y - Convert.ToMeters(m_Camera.ScreenViewport.Height) / 2,
+                Convert.ToMeters(m_Camera.ScreenViewport.Width),
+                Convert.ToMeters(m_Camera.ScreenViewport.Height));*/
         }
     }
 }

@@ -52,7 +52,7 @@ namespace limakGame
 
         public override void Update(GameTime gameTime)
         {
-            float height = (m_GroundLevel - m_Star.Position.Y) * 2.0f;
+            float height = MathHelper.Clamp((m_GroundLevel - m_Star.Position.Y) * 2.0f, 8.0f, 80.0f);
             float width = (Convert.ToMeters(m_Camera.ScreenViewport.Width) * height) / Convert.ToMeters(m_Camera.ScreenViewport.Height);
             float x = m_Star.Position.X - (width / 2.0f);
             float y = m_Star.Position.Y - (height / 2.0f);

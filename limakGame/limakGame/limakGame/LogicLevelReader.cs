@@ -38,10 +38,11 @@ namespace limakGame
         private List<Body> _platforms;
         private List<Body> _groundBody;
         private List<int> _groundWidths;
+        private List<int> _platformWidths;
         private List<GameObject> _enemies;
         private List<Vector2> _enemyPositions;
         private GameObject _player1Object;
-
+        private List<int> _holesInground;
 
         //sprite animations
         private SpriteAnimation _playerAnimation;
@@ -80,7 +81,7 @@ namespace limakGame
             createPlatforms();
             createGround();
             createEnemyPositions();
-
+            findHolesInGround();
 
         }
         //this might not be used.
@@ -116,10 +117,12 @@ namespace limakGame
                 }
                 else if ((text[levelHeight][i] == _empty || text[levelHeight][i] == _end) && lastFloor)
                 {
-                    Body temp = BodyFactory.CreateRectangle(world, (i - 1) - start, 1, 1, new Vector2((start), levelHeight));
+                    int width = i - start;
+                    Body temp = BodyFactory.CreateRectangle(world, width, 1, 1, new Vector2((start)+width/2, levelHeight));
                     //non-movable object.
+                    Console.WriteLine("ground created @" + (start) + "," + i + " width:" + (width));
 
-                    _groundWidths.Add((i - 1) - start);
+                    _groundWidths.Add(width);
 
                     temp.BodyType = BodyType.Static;
 
@@ -156,6 +159,21 @@ namespace limakGame
 
         }
 
+
+        public void findHolesInGround()
+        {
+            _holesInground = new List<int>();
+            int levelHeight = _levelHeight - 1;
+            for (int i = 0; i < _levelWidth; i++)
+            {
+                if (text[levelHeight][i] == _empty || text[levelHeight][i] == _end)
+                {
+                    _holesInground.Add(i);
+                }
+            }
+
+        }
+
         public void createPlatforms()
         {
            
@@ -172,9 +190,8 @@ namespace limakGame
                     }
                     else if ((text[i][j] == _empty || text[i][j] == _end || text[i][j] == _enemy)&& onPlatform)
                     {
-                        Body temp = BodyFactory.CreateRectangle(world, (j - 1) - start, 1, 1, new Vector2((start), i));
+                        Body temp = BodyFactory.CreateRectangle(world, (j) - start, 1, 1, new Vector2((start), i));
                         //non-movable object.
-                        Console.WriteLine("platform created @" + (start) + ","+i);
 
                         temp.BodyType = BodyType.Static;
 
@@ -229,6 +246,11 @@ namespace limakGame
         public List<int> groundWidths
         {
             get { return _groundWidths; }
+        }
+
+        public List<int> holes
+        {
+            get { return _holesInground; }
         }
 
         public List<Body> Ground

@@ -290,6 +290,15 @@ namespace limakGame
                     myBackground.Draw(spriteBatch);
                     // Draw ground
                     /*spriteBatch.Draw(blackTexture, new Rectangle(0, 5 * 60, 800, 60), Color.Black);*/
+
+                    var score1 = "Player 1: " + player1.getScore().ToString();
+                    var score2 = "Player 2: " + player2.getScore().ToString();
+
+                    var pos1 = Vector2.Zero;
+                    var pos2 = new Vector2(GraphicsDevice.Viewport.Width - font.MeasureString(score2).X, 0);
+
+                    spriteBatch.DrawString(font, score1, pos1, Color.White);
+                    spriteBatch.DrawString(font, score2, pos2, Color.White);
             
                     this.spriteBatch.End();
                     break;
@@ -454,12 +463,12 @@ namespace limakGame
             
 
             // Add a little ground
-            Body ground = FarseerPhysics.Factories.BodyFactory.CreateRectangle(world, 60.0f, 1.0f, 1.0f);
+            /*Body ground = FarseerPhysics.Factories.BodyFactory.CreateRectangle(world, 60.0f, 1.0f, 1.0f);
 
             ground.BodyType = BodyType.Static;
             ground.Friction = 10.0f;
             ground.Position = new Vector2(-10.0f, 8.0f);
-
+            */
         }
 
         public bool Player1CollisionWithEnemy(Fixture f1, Fixture f2, Contact contact)

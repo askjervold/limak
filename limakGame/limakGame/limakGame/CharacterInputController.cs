@@ -22,11 +22,13 @@ namespace limakGame
     public class CharacterInputController : InputController
     {
         protected GameCharacter character = null;
+        private PlayerIndex playerIndex;
 
         public CharacterInputController(PlayerIndex playerIndex, Keys[] keyMapping)
             : base(playerIndex, keyMapping)
         {
             // Unused as of yet
+            this.playerIndex = playerIndex;
         }
 
         protected override void onInputChange(InputAction inputAction, bool state)
@@ -35,7 +37,6 @@ namespace limakGame
                 // No use in doing anything!
                 return;
             }
-
             CharacterInputAction action = (CharacterInputAction)inputAction;
 
             switch(action) 
@@ -90,6 +91,12 @@ namespace limakGame
                     break;
             }
 
+        }
+
+
+        protected override void onInputChangeForPad()
+        {
+            
         }
 
         /// <summary>

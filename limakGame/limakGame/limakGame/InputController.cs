@@ -17,7 +17,8 @@ namespace limakGame
         UP,
         DOWN,
         A,
-        B
+        B,
+        START
     }
 
     public abstract class InputController
@@ -57,19 +58,25 @@ namespace limakGame
         /// </summary>
         public void Update()
         {
-            
-            for(int i = 0; i < this.keyMapping.Length; i++) {
-                
-                bool keyState = Keyboard.GetState(this.playerIndex).IsKeyDown(this.keyMapping[i]);
-
-                if (keyState != this.keyStates[i])
-                {
-                    this.onInputChange((InputAction)i, keyState);
-                    this.keyStates[i] = keyState;
-                }
-                
+            if (GamePad.GetState(playerIndex).IsConnected)
+            {
+                onInputChangeForPad();
             }
-            
+            else
+            {
+                for (int i = 0; i < this.keyMapping.Length; i++)
+                {
+
+                    bool keyState = Keyboard.GetState(PlayerIndex.One).IsKeyDown(this.keyMapping[i]);
+
+                    if (keyState != this.keyStates[i])
+                    {
+                        this.onInputChange((InputAction)i, keyState);
+                        this.keyStates[i] = keyState;
+                    }
+
+                }
+            }
         }
 
         /// <summary>
@@ -78,5 +85,7 @@ namespace limakGame
         /// <param name="inputAction"></param>
         /// <param name="state"></param>
         protected abstract void onInputChange(InputAction inputAction, bool state);
+
+        protected abstract void onInputChangeForPad();
     }
 }

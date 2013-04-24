@@ -50,15 +50,7 @@ namespace limakGame
 
 
 
-        public int levelWidth
-        {
-            get { return level.levelWidth; }
-        }
-
-        public int levelHeight
-        {
-            get { return level.levelHeight; }
-        }
+        
 
         /// <summary>
         /// Draws the entire game map
@@ -95,23 +87,26 @@ namespace limakGame
                 DepthStencilState.Default,
                 RasterizerState.CullNone,
                 null,
-                game.camera.TransformMatrix
+                game.Camera.TransformMatrix
             );
 
             // Draw map here!
+
             for (int i = 0; i < groundsToDraw.Count; i++)
             {
                 //this method adds the ground, it's not correct as of now, i need to get the ground width before it can be drawn correctly.
-                game.spriteBatch.Draw(game.Content.Load<Texture2D>("groundBlock"), new Vector2(level.Ground[i].Position.X, level.Ground[i].Position.Y-0.5f), groundsToDraw[i], Color.White, 0, new Vector2(0, 0), Camera2D.ToMeters(60), SpriteEffects.None, 0);
+                game.spriteBatch.Draw(game.Content.Load<Texture2D>("groundBlock"), new Vector2(level.Ground[i].Position.X, level.Ground[i].Position.Y-0.5f), groundsToDraw[i], Color.White, 0, new Vector2(0, 0), Convert.ToMeters(60), SpriteEffects.None, 0);
 
 
 
             }
             //game.spriteBatch.Draw(game.Content.Load<Texture2D>("groundBlock"), new Vector2(level.Ground.Position.X - (level.levelWidth / 2), level.Ground.Position.Y - 0.5f), groundToDraw, Color.White, 0, new Vector2(0, 0), Camera2D.ToMeters(50), SpriteEffects.None, 0);
             for (int i = 0; i < platformsToDraw.Count; i++)
+
             {
-                game.spriteBatch.Draw(game.Content.Load<Texture2D>("groundBlock"), new Vector2(level.Platforms[i].Position.X-0.5f, level.Platforms[i].Position.Y-0.5f), platformsToDraw[i], Color.White, 0, new Vector2(0, 0), Camera2D.ToMeters(60), SpriteEffects.None, 0);
+                game.spriteBatch.Draw(game.Content.Load<Texture2D>("groundBlock"), new Vector2(level.Platforms[i].Position.X-0.5f, level.Platforms[i].Position.Y-0.5f), platformsToDraw[i], Color.White, 0, new Vector2(0, 0), Convert.ToMeters(60), SpriteEffects.None, 0);
                 //game.spriteBatch.Draw(
+
             }
             /*game.spriteBatch.Draw(
                 Texture2D sprite,
@@ -128,6 +123,24 @@ namespace limakGame
             game.spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        //returning certain properties that other classes might need.
+
+        public int levelWidth
+        {
+            get { return level.levelWidth; }
+        }
+
+        public int levelHeight
+        {
+            get { return level.levelHeight; }
+        }
+
+
+        public List<int> holes
+        {
+            get { return level.holes; }
         }
     }
 }

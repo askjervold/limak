@@ -38,10 +38,11 @@ namespace limakGame
         private List<Body> _platforms;
         private List<Body> _groundBody;
         private List<int> _groundWidths;
+        private List<int> _platformWidths;
         private List<GameObject> _enemies;
         private List<Vector2> _enemyPositions;
         private GameObject _player1Object;
-
+        private List<int> _holesInground;
 
         //sprite animations
         private SpriteAnimation _playerAnimation;
@@ -80,7 +81,7 @@ namespace limakGame
             createPlatforms();
             createGround();
             createEnemyPositions();
-
+            findHolesInGround();
 
         }
         //this might not be used.
@@ -117,7 +118,7 @@ namespace limakGame
                 else if ((text[levelHeight][i] == _empty || text[levelHeight][i] == _end) && lastFloor)
                 {
                     int width = i - start;
-                    Body temp = BodyFactory.CreateRectangle(world, width, 1, 1, new Vector2((start), levelHeight));
+                    Body temp = BodyFactory.CreateRectangle(world, width, 1, 1, new Vector2((start)+width/2, levelHeight));
                     //non-movable object.
                     Console.WriteLine("ground created @" + (start) + "," + i + " width:" + (width));
 
@@ -155,6 +156,21 @@ namespace limakGame
             ////some copy-paste code
             //_groundBody1.Restitution = 0.3f;
             //_groundBody1.Friction = 0.5f;
+
+        }
+
+
+        public void findHolesInGround()
+        {
+            _holesInground = new List<int>();
+            int levelHeight = _levelHeight - 1;
+            for (int i = 0; i < _levelWidth; i++)
+            {
+                if (text[levelHeight][i] == _empty || text[levelHeight][i] == _end)
+                {
+                    _holesInground.Add(i);
+                }
+            }
 
         }
 
@@ -230,6 +246,11 @@ namespace limakGame
         public List<int> groundWidths
         {
             get { return _groundWidths; }
+        }
+
+        public List<int> holes
+        {
+            get { return _holesInground; }
         }
 
         public List<Body> Ground

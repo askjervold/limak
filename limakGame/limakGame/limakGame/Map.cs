@@ -75,11 +75,11 @@ namespace limakGame
                 DepthStencilState.Default,
                 RasterizerState.CullNone,
                 null,
-                game.camera.TransformMatrix
+                game.Camera.TransformMatrix
             );
 
             // Draw map here!
-            game.spriteBatch.Draw(game.Content.Load<Texture2D>("groundBlock"), new Vector2(level.Ground.Position.X - level.levelWidth / 2, level.Ground.Position.Y - 0.5f), groundToDraw, Color.White, 0, new Vector2(0, 0), Camera2D.ToMeters(50), SpriteEffects.None, 0);
+            game.spriteBatch.Draw(game.Content.Load<Texture2D>("groundBlock"), new Vector2(level.Ground.Position.X - level.levelWidth / 2, level.Ground.Position.Y - 0.5f), groundToDraw, Color.White, 0, new Vector2(0, 0), Convert.ToMeters(50), SpriteEffects.None, 0);
             /*for (int i = 0; i < platformsToDraw.Count; i++)
             {
                 game.spriteBatch.Draw(game.Content.Load<Texture2D>("groundBlock"), new Vector2(0, i), groundToDraw, Color.White, 0, new Vector2(0, 0), Camera2D.ToMeters(50), SpriteEffects.None, 0);

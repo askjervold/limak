@@ -100,10 +100,9 @@ namespace limakGame
                         player1MenuDone = true;
                         break;
                     case State.CharacterMenu:
-                        //TODO.. have to wain on player 2
-                        //updateState(State.Playing);
                         updateButtonChangeState(State.ButtonMiddle);
                         player1CharacterDone = true;
+
                         break;
                     case State.Pause:
                         if (currentButtonChosen == 0)

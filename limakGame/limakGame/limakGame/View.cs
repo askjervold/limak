@@ -146,37 +146,36 @@ namespace limakGame
             b_cDh2 = new Button(content.Load<Texture2D>("cDh_on"), content.Load<Texture2D>("cDh"), graphics, sizeVec2);
             b_cDh2.setPosition(posVec3);
 
-           
-    //TODO: change texture2d when pictures added
-            b_FrameLimak = new Button(content.Load<Texture2D>("characterFrameLimak"), content.Load<Texture2D>("characterFrameLimak"), graphics, sizeVec1);
+         ////
+            b_FrameLimak = new Button(content.Load<Texture2D>("characterFrame2"), content.Load<Texture2D>("characterFrame2"), graphics, sizeVec1);
             b_FrameLimak.setPosition(posVec2);
 
-            b_FrameSral = new Button(content.Load<Texture2D>("characterFrameSral"), content.Load<Texture2D>("characterFrameSral"), graphics, sizeVec1);
+            b_FrameSral = new Button(content.Load<Texture2D>("characterFrame1"), content.Load<Texture2D>("characterFrame1"), graphics, sizeVec1);
             b_FrameSral.setPosition(posVec2);
 
-            b_FrameBokaj = new Button(content.Load<Texture2D>("characterFrameSral"), content.Load<Texture2D>("characterFrameSral"), graphics, sizeVec1);
+            b_FrameBokaj = new Button(content.Load<Texture2D>("characterFrame5"), content.Load<Texture2D>("characterFrame5"), graphics, sizeVec1);
             b_FrameBokaj.setPosition(posVec2);
 
-            b_FrameNudua = new Button(content.Load<Texture2D>("characterFrameSral"), content.Load<Texture2D>("characterFrameSral"), graphics, sizeVec1);
+            b_FrameNudua = new Button(content.Load<Texture2D>("characterFrame3"), content.Load<Texture2D>("characterFrame3"), graphics, sizeVec1);
             b_FrameNudua.setPosition(posVec2);
 
-            b_FrameDh = new Button(content.Load<Texture2D>("characterFrameSral"), content.Load<Texture2D>("characterFrameSral"), graphics, sizeVec1);
+            b_FrameDh = new Button(content.Load<Texture2D>("characterFrame4"), content.Load<Texture2D>("characterFrame4"), graphics, sizeVec1);
             b_FrameDh.setPosition(posVec2);
 
           ////
-            b_FrameLimak2 = new Button(content.Load<Texture2D>("characterFrameLimak"), content.Load<Texture2D>("characterFrameLimak"), graphics, sizeVec1);
+            b_FrameLimak2 = new Button(content.Load<Texture2D>("characterFrame2"), content.Load<Texture2D>("characterFrame2"), graphics, sizeVec1);
             b_FrameLimak2.setPosition(posVec1);
 
-            b_FrameSral2 = new Button(content.Load<Texture2D>("characterFrameSral"), content.Load<Texture2D>("characterFrameSral"), graphics, sizeVec1);
+            b_FrameSral2 = new Button(content.Load<Texture2D>("characterFrame1"), content.Load<Texture2D>("characterFrame1"), graphics, sizeVec1);
             b_FrameSral2.setPosition(posVec1);
 
-            b_FrameBokaj2 = new Button(content.Load<Texture2D>("characterFrameSral"), content.Load<Texture2D>("characterFrameSral"), graphics, sizeVec1);
+            b_FrameBokaj2 = new Button(content.Load<Texture2D>("characterFrame5"), content.Load<Texture2D>("characterFrame5"), graphics, sizeVec1);
             b_FrameBokaj2.setPosition(posVec1);
 
-            b_FrameNudua2 = new Button(content.Load<Texture2D>("characterFrameSral"), content.Load<Texture2D>("characterFrameSral"), graphics, sizeVec1);
+            b_FrameNudua2 = new Button(content.Load<Texture2D>("characterFrame3"), content.Load<Texture2D>("characterFrame3"), graphics, sizeVec1);
             b_FrameNudua2.setPosition(posVec1);
 
-            b_FrameDh2 = new Button(content.Load<Texture2D>("characterFrameSral"), content.Load<Texture2D>("characterFrameSral"), graphics, sizeVec1);
+            b_FrameDh2 = new Button(content.Load<Texture2D>("characterFrame4"), content.Load<Texture2D>("characterFrame4"), graphics, sizeVec1);
             b_FrameDh2.setPosition(posVec1);
 
         }

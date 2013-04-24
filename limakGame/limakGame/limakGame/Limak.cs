@@ -277,7 +277,7 @@ namespace limakGame
 
                     //this.animation.Draw(spriteBatch, new Rectangle(0, 0, 120, 480));
                      GraphicsDevice.Clear(Color.CornflowerBlue);
-       //             map.Draw(gameTime);
+                    map.Draw(gameTime);
                     this.spriteBatch.Begin();
                     //this.spriteBatch.DrawString(this.font, "Action: " + character.Action.ToString(), new Vector2(5.0f, 0.0f), Color.White);
                     //this.spriteBatch.DrawString(this.font, "Direction: " + character.Direction.ToString(), new Vector2(5.0f, 20.0f), Color.White);
@@ -315,9 +315,9 @@ namespace limakGame
         public void GameLoading()
         {
             // Setup the map
-            // this.map = new Map(this, "level.txt");
+             this.map = new Map(this, "level.txt");
 
-            //this.Components.Add(this.map);
+            this.Components.Add(this.map);
             
 
             // Setup misc graphics

@@ -156,51 +156,6 @@ namespace limakGame
 
         }
 
-<<<<<<< HEAD
-        //public void createPlatforms()
-        //{
-        //    // iterates through the entire level file and checks for a "_" which indicates a platform. If one is found, a body is added to the platform list
-        //    // Should be modified for GameObjects to note the position of the platform.
-        //    bool onPlatform = false;
-        //    for (int i = 0; i < _levelHeight; i++)
-        //    {
-        //        for (int j = 0; j < _levelWidth; j++)
-        //        {
-        //            if (text[i][j].Equals("n")) break;
-        //            try
-        //            {
-        //                Console.Write(text[i][j]);
-        //                if (text[i][j].Equals(_platform))
-        //                {
-        //                    Console.WriteLine("gfdgfdgdhgfdyrthcv,juybgikbliyvbulyvkutvujvujtgvckutgvtgvkktf");
-        //                    // GameObject platform = new GameObject(game, new Vector2(j*unitToPixel, i*unitToPixel), 1*unitToPixel, height*unitToPixel, animation);
-        //                    onPlatform = true;
-        //                    //CreateRectangle(world, width, height, density, positionVector);
-        //                    Body platformTemp = BodyFactory.CreateRectangle(world, 4, 1, 1, new Vector2(j + 2, i));
-        //                    Console.Write("hei");
-        //                    _platforms.Add(platformTemp);
-
-        //                }
-        //                if (text[i][j].Equals(" "))
-        //                    onPlatform = false;
-        //            }
-        //            catch
-        //            {
-        //                break;
-        //            }
-
-
-
-
-        //        }
-        //        Console.WriteLine();
-
-        //    }
-        //    Console.Write(_platforms.Count);
-
-
-        //}
-=======
         public void createPlatforms()
         {
            
@@ -237,7 +192,6 @@ namespace limakGame
 
 
         }
->>>>>>> 5150ffb1392ca155072d6d70d0a83ff80eb2a432
 
 
         public void createEnemyPositions()

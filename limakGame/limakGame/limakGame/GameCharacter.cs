@@ -13,7 +13,6 @@ namespace limakGame
 {
     public class GameCharacter : GameObject
     {
-
         private Vector2 moveForce = new Vector2(500.0f, 0.0f);
         private Vector2 maxLinearVelocity = new Vector2(5.0f, 999.0f);
 

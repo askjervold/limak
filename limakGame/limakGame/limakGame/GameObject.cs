@@ -43,8 +43,6 @@ namespace limakGame
 
         protected GameObjectDirection facingDirection;
 
-        private bool isDead { get; set; }
-
         /// <summary>
         /// Base class for interactive game objects.
         /// </summary>
@@ -142,6 +140,8 @@ namespace limakGame
                     this.action = value;
                     // Map GameObjectAction to SpriteAction. They're identical for now...
                     this.animation.Action = (SpriteAction)value;
+
+                    if (value == GameObjectAction.DIE) this.animation.Loop = false;
                 }
             }
             get { return this.action; }
@@ -161,6 +161,11 @@ namespace limakGame
             {
                 return this.size;
             }
+        }
+
+        public Fixture getFixture()
+        {
+            return body.FixtureList[0];
         }
     }
 }

@@ -25,12 +25,25 @@ namespace limakGame
 
 
         //Get Set: score
-        public void setScore(int score)
+        private void setScore(int score)
         {
             this.score = score;
         }
-        public int getScore(){
+        public int getScore()
+        {
             return this.score;
+        }
+        public void increaseScore(int amount)
+        {
+            this.score = this.score + amount;
+        }
+
+
+        public void Revive()
+        {
+            this.isDead = false;
+            
+            // Do more stuff to make the player alive again
         }
 
     }

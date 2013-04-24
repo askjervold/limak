@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using FarseerPhysics.Dynamics;
+using FarseerPhysics.Dynamics.Contacts;
+
 
 namespace limakGame
 {
@@ -233,6 +235,7 @@ namespace limakGame
             {
                 this.menuInputController.Update();
                 this.menuInputController2.Update();
+
             }
             else
             {
@@ -416,7 +419,7 @@ namespace limakGame
                 new Vector2(2.0f, 2.0f), // size (meter)
                 player2Animation,
                 PlayerIndex.Two
-            );
+            ); 
 
             //Add camera man
             m_CameraMan = new CameraMan(this, new Camera(), player1);
@@ -430,8 +433,13 @@ namespace limakGame
             this.character1Controller.BindCharacter(player1);
             this.character2Controller.BindCharacter(player2);
 
-
-
+            //Collision detection
+            player1.getFixture().OnCollision += Player1CollisionWithEnemy;
+            player1.getFixture().OnCollision += Player1PickUpCoin;
+            player1.getFixture().OnCollision += PlayerPlayerCollision;
+            player2.getFixture().OnCollision += Player2CollisionWithEnemy;
+            player2.getFixture().OnCollision += Player2PickUpCoin;
+            player2.getFixture().OnCollision += PlayerPlayerCollision;
 
             // Enter the noob
             GameObject noob = new GameObject(
@@ -452,6 +460,103 @@ namespace limakGame
             ground.Friction = 10.0f;
             ground.Position = new Vector2(-10.0f, 8.0f);
 
+        }
+
+        public bool Player1CollisionWithEnemy(Fixture f1, Fixture f2, Contact contact)
+        {
+            foreach (GameEnemy enemy in this.Components)
+            {
+                if (enemy.getFixture() == f2)
+                {
+                    if (/* contact is between bottom of f1 and top of f2 */true) {
+                        enemy.Die();
+                        player1.increaseScore(10);
+                        player1.Jump();
+                    }
+                    else {
+                        player1.Die();
+                    }
+
+                    break;
+                }
+            }
+            
+
+            return true;
+        }
+
+        public bool Player2CollisionWithEnemy(Fixture f1, Fixture f2, Contact contact)
+        {
+            foreach (GameEnemy enemy in this.Components)
+            {
+                if (enemy.getFixture() == f2)
+                {
+                    if (/* contact is between bottom of f1 and top of f2 */true)
+                    {
+                        enemy.Die();
+                        player2.increaseScore(10);
+                        player2.Jump();
+                        
+                    }
+                    else
+                    {
+                        player2.Die();
+                    }
+
+                    break;
+                }
+            }
+
+            return true;
+        }
+
+        public bool Player1PickUpCoin(Fixture f1, Fixture f2, Contact contact)
+        {
+            foreach (GameCoin coin in this.Components)
+            {
+                if (coin.getFixture() == f2)
+                {
+                    Components.Remove(coin);
+                    player1.increaseScore(1);
+                }
+            }
+            
+            return true;
+        }
+
+        public bool Player2PickUpCoin(Fixture f1, Fixture f2, Contact contact)
+        {
+            foreach (GameCoin coin in this.Components)
+            {
+                if (coin.getFixture() == f2)
+                {
+                    Components.Remove(coin);
+                    player2.increaseScore(1);
+                }
+            }
+
+            return true;
+        }
+
+        public bool PlayerPlayerCollision(Fixture f1, Fixture f2, Contact contact)
+        {
+            if (player1.getFixture() == f2)
+            {
+                if (player1.IsDead()) // Shouldn't this work with just "if (player1.isDead)"?
+                {
+                    player1.Revive();
+                }
+            }
+
+            if (player2.getFixture() == f2)
+            {
+                if (player2.IsDead()) 
+                {
+                    player2.Revive();
+                }
+            }
+
+            return true;
         }
     }
 }

@@ -287,6 +287,15 @@ namespace limakGame
                     myBackground.Draw(spriteBatch);
                     // Draw ground
                     /*spriteBatch.Draw(blackTexture, new Rectangle(0, 5 * 60, 800, 60), Color.Black);*/
+
+                    var score1 = "Player 1: " + player1.getScore().ToString();
+                    var score2 = "Player 2: " + player2.getScore().ToString();
+
+                    var pos1 = Vector2.Zero;
+                    var pos2 = new Vector2(GraphicsDevice.Viewport.Width - font.MeasureString(score2).X, 0);
+
+                    spriteBatch.DrawString(font, score1, pos1, Color.White);
+                    spriteBatch.DrawString(font, score2, pos2, Color.White);
             
                     this.spriteBatch.End();
                     break;

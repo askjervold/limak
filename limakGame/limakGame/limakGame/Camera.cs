@@ -11,7 +11,7 @@ namespace limakGame
 
         public Camera()
         {
-            m_ScreenViewport = new RectangleF(0.0f, 0.0f, 800.0f, 480.0f);
+            m_ScreenViewport = new RectangleF(0.0f, 0.0f, 820.0f, 460.0f);
             m_WorldViewport = new RectangleF(0.0f, 0.0f, 30.0f, 15.0f);
         }
 
@@ -48,6 +48,11 @@ namespace limakGame
         {
             m_Camera = camera;
             m_Star = star;
+        }
+
+        public Camera Camera
+        {
+            get { return m_Camera; } 
         }
 
         public override void Update(GameTime gameTime)

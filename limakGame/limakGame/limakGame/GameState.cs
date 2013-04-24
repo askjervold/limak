@@ -37,7 +37,7 @@ namespace limakGame
 
         public GameState(Limak limak)
         {
-            currentGameState = State.MainMenu;
+            currentGameState = State.Playing;
             currentButtonChosen = 0;
             currentCharacter1Chosen = State.LimakState;
             currentCharacter2Chosen = State.SralState; 

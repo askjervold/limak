@@ -237,7 +237,5 @@ namespace limakGame
         {
             set { this.onLoopEnd = value; }
         }
-
-        
     }
 }

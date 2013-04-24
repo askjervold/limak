@@ -67,7 +67,6 @@ namespace limakGame
             //this.body.AngularDamping = 3.0f;
             this.body.Inertia = 5.0f;
             this.body.Position = position;
-
         }
 
         /// <summary>
@@ -101,11 +100,10 @@ namespace limakGame
                 DepthStencilState.Default, 
                 RasterizerState.CullNone,
                 null,
-                game.camera.TransformMatrix
+                game.Camera.TransformMatrix
             );
 
             // Draw the current animation frame
-
             this.animation.Draw(spriteBatch, this.body.Position, Convert.ToMeters(this.size) / 2.0f, this.body.Rotation);
 
             spriteBatch.End();

@@ -21,6 +21,11 @@ namespace limakGame
             return new RectangleF(ToMeters(pixels.X), ToMeters(pixels.Y), ToMeters(pixels.Width), ToMeters(pixels.Height));
         }
 
+        public static Rectangle ToMeters(Rectangle pixels)
+        {
+            return new Rectangle((int)ToMeters(pixels.X), (int)ToMeters(pixels.Y), (int)ToMeters(pixels.Width), (int)ToMeters(pixels.Height));
+        }
+
         public static float ToPixels(float meters)
         {
             return meters * PixelsPerMeter;

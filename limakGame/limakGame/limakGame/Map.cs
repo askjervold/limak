@@ -83,7 +83,7 @@ namespace limakGame
                 DepthStencilState.Default,
                 RasterizerState.CullNone,
                 null,
-                game.camera.TransformMatrix
+                game.Camera.TransformMatrix
             );
 
             // Draw map here!

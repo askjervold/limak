@@ -17,6 +17,8 @@ namespace limakGame
     /// </summary>
     public class Limak : Microsoft.Xna.Framework.Game
     {
+        private CameraMan m_CameraMan;
+        
         GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
         //Model and view in MVC, menus/interfaces
@@ -26,10 +28,9 @@ namespace limakGame
         private SpriteFont font;
 
         public World world;
-        public Camera camera;
-        CameraMan cameraMan;
         public CharacterInputController characterController;
 
+        GameObject noob;
         Map map;
 
         private GameCharacter character;
@@ -41,7 +42,14 @@ namespace limakGame
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            // TEST 
+
+            graphics.PreferredBackBufferWidth = 820;
+            graphics.PreferredBackBufferHeight = 460;
+        }
+
+        public Camera Camera
+        {
+            get { return m_CameraMan.Camera; }
         }
 
         /// <summary>
@@ -56,9 +64,6 @@ namespace limakGame
 
             // Physics world
             this.world = new World(new Vector2(0.0f, 10.00f));
-
-            // New camera
-            this.camera = new Camera();
 
             // new controlller!
             this.characterController = new CharacterInputController(0,
@@ -97,7 +102,6 @@ namespace limakGame
 
             this.Components.Add(this.map);
 
-
             // Setup misc graphics
 
             background = this.Content.Load<Texture2D>("bgtest");
@@ -119,8 +123,8 @@ namespace limakGame
                 bunnyAnimation
             );
 
-            this.cameraMan = new CameraMan(this, this.camera, character);
-            this.Components.Add(cameraMan);
+            m_CameraMan = new CameraMan(this, new Camera(), character);
+            Components.Add(m_CameraMan);
 
             this.Components.Add(character);
 
@@ -128,7 +132,7 @@ namespace limakGame
             this.characterController.BindCharacter(character);
 
             // Enter the noob
-            GameObject noob = new GameObject(
+            noob = new GameObject(
                 this,
                 this.world,
                 new Vector2(5.0f, 0.0f), // position (meter)
@@ -394,7 +398,7 @@ namespace limakGame
                 base.Update(gameTime);
             }
 
-           
+            System.Diagnostics.Debug.WriteLine(noob.Position);
         }
 
         /// <summary>

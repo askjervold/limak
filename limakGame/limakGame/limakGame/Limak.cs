@@ -17,30 +17,45 @@ namespace limakGame
     /// </summary>
     public class Limak : Microsoft.Xna.Framework.Game
     {
+        private CameraMan m_CameraMan;
+        
         GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
         //Model and view in MVC, menus/interfaces
         GameState gameState;
         View view;
-
+        
         private SpriteFont font;
 
+        private bool loaded;
         public World world;
-        public Camera2D camera;
-        public CharacterInputController characterController;
+        public CharacterInputController characterController, character1Controller, character2Controller;
+        private MenuInputController menuInputController, menuInputController2;
 
         Map map;
 
         private GameCharacter character;
+        private GamePlayer player1, player2;
+        Texture2D player1T, player2T;
+        SpriteAnimation player1Animation, player2Animation;
 
         Texture2D blackTexture;
         Texture2D background;
+
+        private ScrollingBackground myBackground;
 
         public Limak()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics.PreferredBackBufferWidth = 820;
+            graphics.PreferredBackBufferHeight = 460;
             // TEST 
+        }
+
+        public Camera Camera
+        {
+            get { return m_CameraMan.Camera; }
         }
 
         /// <summary>
@@ -53,11 +68,9 @@ namespace limakGame
         {
             // TODO: Add your initialization logic here
 
+
             // Physics world
             this.world = new World(new Vector2(0.0f, 10.00f));
-
-            // New camera
-            this.camera = new Camera2D((Game)this, new Vector2(0.0f, 0.0f), GraphicsDevice.Viewport);
 
             // new controlller!
             this.characterController = new CharacterInputController(0,
@@ -71,9 +84,33 @@ namespace limakGame
                 }
             );
 
+            this.character1Controller = new CharacterInputController(PlayerIndex.One,
+                new Keys[] {
+                    Keys.Left, // WALK_LEFT
+                    Keys.Right, // WALK_RIGHT
+                    Keys.Up, // JUMP
+                    Keys.Down, // CROUCH
+                    Keys.N, // ACTION1
+                    Keys.M // ACTION2
+                }
+            );
+            this.character2Controller = new CharacterInputController(PlayerIndex.Two,
+               new Keys[] {
+                    Keys.A, // WALK_LEFT
+                    Keys.D, // WALK_RIGHT
+                    Keys.W, // JUMP
+                    Keys.S, // CROUCH
+                    Keys.Tab, // ACTION1
+                    Keys.Q // ACTION2
+                }
+           );
+
             // Create all black texture
             blackTexture = new Texture2D(GraphicsDevice, 1, 1);
             blackTexture.SetData(new Color[] { Color.Black });
+
+            //loaded: true if game has been loaded, used by StateChanged():gameLoading()
+            this.loaded = false;
 
             base.Initialize();
 
@@ -90,87 +127,76 @@ namespace limakGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            myBackground = new ScrollingBackground();
 
-            // Setup the map
-            this.map = new Map(this, "level.txt");
-
-            this.Components.Add(this.map);
-            this.Components.Add(camera);
-
-
-            // Setup misc graphics
-
-            background = this.Content.Load<Texture2D>("bgtest");
-            font = this.Content.Load<SpriteFont>("SpriteFont1");
-
-            //Texture2D spriteSheetTest = this.Content.Load<Texture2D>("character2SampleNotAnimated");
-            Texture2D bunny = this.Content.Load<Texture2D>("test2");
-
-            // Setup the game character
-
-            SpriteAnimation bunnyAnimation = new SpriteAnimation(bunny, 128, 128, 7, 7);
-            bunnyAnimation.AnimationDelay = 100;
-
-            character = new GameCharacter(
-                this,
-                this.world,
-                new Vector2(0.0f, 0.0f), // position (meter)
-                new Vector2(2.0f, 2.0f), // size (meter)
-                bunnyAnimation
-            );
-
-            camera.AddCharacter(character);
-
-            this.Components.Add(character);
-
-            // Bind this as our player 1 character
-            this.characterController.BindCharacter(character);
-
-            // Enter the noob
-            GameObject noob = new GameObject(
-                this,
-                this.world,
-                new Vector2(5.0f, 0.0f), // position (meter)
-                new Vector2(2.0f, 2.0f), // size (meter)
-                new SpriteAnimation(this.Content.Load<Texture2D>("box"), 120, 120, 1, 1)
-            );
-
-            this.Components.Add(noob);
-
-            // Add a little ground
-            /*Body ground = FarseerPhysics.Factories.BodyFactory.CreateRectangle(world, 60.0f, 1.0f, 1.0f);
-
-            ground.BodyType = BodyType.Static;
-            ground.Friction = 10.0f;
-            ground.Position = new Vector2(-10.0f, 8.0f);
-
-            /*animation.AnimationDelay = 200; // 100ms between each frame
-            animation.Loop = false;
-            animation.Direction = SpriteDirection.RIGHT;
-
-            animation.OnLoopEnd = delegate()
-            {
-
-                if (animation.Direction == SpriteDirection.RIGHT)
-                {
-                    animation.Direction = SpriteDirection.LEFT;
-                }
-                else
-                {
-                    animation.Direction = SpriteDirection.RIGHT;
-                }
-                
-                animation.Reset();
-                animation.Loop = false;
-            };*/
-           
 
             //GUI
             gameState = new GameState(this);
+             //Adds this as listener to menu model: gameState
+            gameState.StateChanged += new ChangedEventHandler( StateChanged );
+
             view = new View(gameState, this.Content, this.GraphicsDevice);
             view.Load();
 
             // TODO: use this.Content to load your game content here
+
+            this.menuInputController = new MenuInputController(PlayerIndex.One,
+                new Keys[] {
+                    Keys.Left,
+                    Keys.Right, 
+                    Keys.Up,
+                    Keys.Down, 
+                    Keys.N, 
+                    Keys.M,
+                    Keys.Escape
+                }, gameState);
+            this.menuInputController2 = new MenuInputController(PlayerIndex.Two,
+                new Keys[] {
+                    Keys.A,
+                    Keys.D, 
+                    Keys.W,
+                    Keys.S, 
+                    Keys.Tab, 
+                    Keys.Q,
+                    Keys.Escape
+                }, gameState);
+        }
+        
+        //This will be called whenever gameState changes
+        private void StateChanged(object sender, State state)
+        {
+            if (state == State.Playing )
+            {
+                if (!loaded)
+                {
+                    this.GameLoading();
+                    loaded = true;
+                }
+                else
+                {
+                    //Show all objects
+                    foreach (GameComponent component in this.Components)
+                    {
+                        if (component is DrawableGameComponent)
+                            ((DrawableGameComponent)component).Visible = true;
+                    }
+                }
+
+            }
+            else if (state == State.Pause)
+            {
+                //Hide all objects
+                foreach ( GameComponent component in this.Components)
+                {
+                    if(component is DrawableGameComponent)
+                        ((DrawableGameComponent)component).Visible = false;
+                }
+                
+            }
+            else if (state == State.GameOver)
+            {
+    //TODO: Restart game
+            }
         }
 
         /// <summary>
@@ -202,193 +228,28 @@ namespace limakGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed || GamePad.GetState(PlayerIndex.Two).Buttons.Start == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 gameState.StartPressed();
 
-            // PLAYER 1
-            if (GamePad.GetState(PlayerIndex.One).IsConnected)
-            {//GAMEPAD#1
-                if (gameState.getCurrentGameState() == State.Playing)
-                {
-                    //Inside game/ State.Playing
-                    //TODO: 
-                }
-                else
-                {
-                    if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed)
-                        gameState.APressed();
-                    if (GamePad.GetState(PlayerIndex.One).Buttons.B == ButtonState.Pressed)
-                        gameState.BPressed();
-                    //if (GamePad.GetState(PlayerIndex.One).Buttons.X == ButtonState.Pressed)
-                    //if (GamePad.GetState(PlayerIndex.One).Buttons.Y == ButtonState.Pressed)
-                    if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y < 0)
-                    {
-                        gameState.updateButtonChangeState(State.ButtonDown);
-                    }
-                    else if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y > 0)
-                    {
-                        gameState.updateButtonChangeState(State.ButtonUp);
-                    }
-                    else if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X < 0)
-                    {
-                        gameState.LeftPressed();
-                    }
-                    else if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X > 0)
-                    {
-                        gameState.RightPressed();
-                    }
-                }
-            }
-            else
-            {//KEYBOARD
-                if (gameState.getCurrentGameState() == State.Playing)
-                {
-                    //Inside game/ State.Playing
-                    //TODO: 
-                }
-                else
-                {
-                    if ( Keyboard.GetState().IsKeyDown(Keys.N))
-                        gameState.APressed();
-                    if ( Keyboard.GetState().IsKeyDown(Keys.M))
-                        gameState.BPressed();
-                    //if ( Keyboard.GetState().IsKeyDown(Keys.J))
-                    //if ( Keyboard.GetState().IsKeyDown(Keys.K))
-                    if ( Keyboard.GetState().IsKeyDown(Keys.Down))
-                    {
-                        gameState.updateButtonChangeState(State.ButtonDown);
-                    }
-                    else if ( Keyboard.GetState().IsKeyDown(Keys.Up))
-                    {
-                        gameState.updateButtonChangeState(State.ButtonUp);
-                    }
-                    else if ( Keyboard.GetState().IsKeyDown(Keys.Left))
-                    {
-                        gameState.LeftPressed();
-                    }
-                    else if ( Keyboard.GetState().IsKeyDown(Keys.Right))
-                    {
-                        gameState.RightPressed();
-                    }
-                }
-            }
-
-            // PLAYER 2
-            if (GamePad.GetState(PlayerIndex.Two).IsConnected)
-            {//GAMEPAD#2
-                if (gameState.getCurrentGameState() == State.Playing)
-                {
-                    //Inside game/ State.Playing
-                    //TODO: 
-                }
-                else
-                {
-                    if (GamePad.GetState(PlayerIndex.Two).Buttons.A == ButtonState.Pressed)
-                        gameState.APressed2();
-                    if (GamePad.GetState(PlayerIndex.Two).Buttons.B == ButtonState.Pressed)
-                        gameState.BPressed();
-                    //if (GamePad.GetState(PlayerIndex.Two).Buttons.X == ButtonState.Pressed)
-                    //if (GamePad.GetState(PlayerIndex.Two).Buttons.Y == ButtonState.Pressed)
-                    if (GamePad.GetState(PlayerIndex.Two).Buttons.Start == ButtonState.Pressed)
-                        gameState.StartPressed();
-
-                    if (GamePad.GetState(PlayerIndex.Two).ThumbSticks.Left.Y < 0)
-                    {
-                        gameState.updateButtonChangeState(State.ButtonDown);
-                    }
-                    else if (GamePad.GetState(PlayerIndex.Two).ThumbSticks.Left.Y > 0)
-                    {
-                        gameState.updateButtonChangeState(State.ButtonUp);
-                    }
-                    else if (GamePad.GetState(PlayerIndex.Two).ThumbSticks.Left.X < 0)
-                    {
-                        gameState.LeftPressed2();
-                    }
-                    else if (GamePad.GetState(PlayerIndex.Two).ThumbSticks.Left.X > 0)
-                    {
-                        gameState.RightPressed2();
-                    }
-                }
-            }
-            else if (GamePad.GetState(PlayerIndex.One).IsConnected)
+            //Update menu input when inside menus
+            if (gameState.getCurrentGameState() != State.Playing)
             {
-                if (gameState.getCurrentGameState() == State.Playing)
-                {
-                    //Inside game/ State.Playing
-                    //TODO: 
-                }
-                else
-                {
-                    if (Keyboard.GetState().IsKeyDown(Keys.N))
-                        gameState.APressed2();
-                    if (Keyboard.GetState().IsKeyDown(Keys.M))
-                        gameState.BPressed();
-                    //if (Keyboard.GetState().IsKeyDown(Keys.J))
-                    //if (Keyboard.GetState().IsKeyDown(Keys.K))
-                    if (Keyboard.GetState().IsKeyDown(Keys.Down))
-                    {
-                        gameState.updateButtonChangeState(State.ButtonDown);
-                    }
-                    else if (Keyboard.GetState().IsKeyDown(Keys.Up))
-                    {
-                        gameState.updateButtonChangeState(State.ButtonUp);
-                    }
-                    else if (Keyboard.GetState().IsKeyDown(Keys.Left))
-                    {
-                        gameState.LeftPressed2();
-                    }
-                    else if (Keyboard.GetState().IsKeyDown(Keys.Right))
-                    {
-                        gameState.RightPressed2();
-                    }
-                }
+                this.menuInputController.Update();
+                this.menuInputController2.Update();
             }
             else
-            {//KEYBOARD
-                if (gameState.getCurrentGameState() == State.Playing)
-                {
-                    //Inside game/ State.Playing
-                    //TODO: 
-                }
-                else
-                {
-                    if (Keyboard.GetState().IsKeyDown(Keys.Tab))
-                        gameState.APressed2();
-                    if (Keyboard.GetState().IsKeyDown(Keys.Q))
-                        gameState.BPressed();
-                    //if (Keyboard.GetState().IsKeyDown(Keys.D1))  
-                    //if (Keyboard.GetState().IsKeyDown(Keys.D2))
-                    if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-                        gameState.StartPressed();
-
-                    if (Keyboard.GetState().IsKeyDown(Keys.S))
-                    {
-                        gameState.updateButtonChangeState(State.ButtonDown);
-                    }
-                    else if (Keyboard.GetState().IsKeyDown(Keys.W))
-                    {
-                        gameState.updateButtonChangeState(State.ButtonUp);
-                    }
-                    else if (Keyboard.GetState().IsKeyDown(Keys.A))
-                    {
-                        gameState.LeftPressed2();
-                    }
-                    else if (Keyboard.GetState().IsKeyDown(Keys.D))
-                    {
-                        gameState.RightPressed2();
-                    }
-                }
-            }
-
-
-            if (gameState.getCurrentGameState() != State.Pause)
-            {   
+            {
                 //Update logic while State.Playing
-                 // TODO: Add your update logic here
+
+
                // TimeSpan delta = gameTime.ElapsedGameTime;
 
                 //animation.Update(delta);
 
                 this.characterController.Update();
+                this.character1Controller.Update();
+                this.character2Controller.Update();
 
                 this.world.Step(((float)gameTime.ElapsedGameTime.Milliseconds) / 1000.0f);
+
+                myBackground.Update( player1.Position.X );
 
                 base.Update(gameTime);
             }
@@ -410,17 +271,20 @@ namespace limakGame
             {
                 case State.Playing:
                     //All drawing while gameState = State.Playing
+
+                    
+
+
                     //this.animation.Draw(spriteBatch, new Rectangle(0, 0, 120, 480));
                      GraphicsDevice.Clear(Color.CornflowerBlue);
                     map.Draw(gameTime);
                     this.spriteBatch.Begin();
-
-                    this.spriteBatch.DrawString(this.font, "Action: " + character.Action.ToString(), new Vector2(5.0f, 0.0f), Color.White);
-                    this.spriteBatch.DrawString(this.font, "Direction: " + character.Direction.ToString(), new Vector2(5.0f, 20.0f), Color.White);
+                    //this.spriteBatch.DrawString(this.font, "Action: " + character.Action.ToString(), new Vector2(5.0f, 0.0f), Color.White);
+                    //this.spriteBatch.DrawString(this.font, "Direction: " + character.Direction.ToString(), new Vector2(5.0f, 20.0f), Color.White);
 
                     // Draw background
-                    spriteBatch.Draw(background, new Rectangle(0, 0, 800, 600), Color.White);
-
+                    //spriteBatch.Draw(background, new Rectangle(0, 0, 800, 600), Color.White);
+                    myBackground.Draw(spriteBatch);
                     // Draw ground
                     /*spriteBatch.Draw(blackTexture, new Rectangle(0, 5 * 60, 800, 60), Color.Black);*/
             
@@ -447,5 +311,147 @@ namespace limakGame
         }
 
 
+        // This is called whenever gameState = Playing (when you enter the actually game)
+        public void GameLoading()
+        {
+            // Setup the map
+             this.map = new Map(this, "level.txt");
+
+            this.Components.Add(this.map);
+            
+
+            // Setup misc graphics
+            background = this.Content.Load<Texture2D>("bgtest");
+            font = this.Content.Load<SpriteFont>("SpriteFont1");
+
+        ////
+            ////Texture2D spriteSheetTest = this.Content.Load<Texture2D>("character2SampleNotAnimated");
+            //Texture2D bunny = this.Content.Load<Texture2D>("test2");
+
+            //// Setup the game character
+            //SpriteAnimation bunnyAnimation = new SpriteAnimation(bunny, 128, 128, 7, 7);
+            //bunnyAnimation.AnimationDelay = 100;
+
+            //character = new GameCharacter(
+            //    this,
+            //    this.world,
+            //    new Vector2(0.0f, 0.0f), // position (meter)
+            //    new Vector2(2.0f, 2.0f), // size (meter)
+            //    bunnyAnimation
+            //);
+
+            //camera.AddCharacter(character);
+
+            //this.Components.Add(character);
+
+            //// Bind this as our player 1 character
+            //this.characterController.BindCharacter(character);
+        ////
+
+            //Background
+            Texture2D level1 = this.Content.Load<Texture2D>("bg_level");
+            myBackground.Load( this.GraphicsDevice, level1);
+
+            //Assign characters to players
+            switch ( gameState.getCurrentCharacter1() )
+            {
+                case State.SralState:
+                    player1T = this.Content.Load<Texture2D>("spriteSheetCharacter1");
+                    break;
+                case State.LimakState:
+                    player1T = this.Content.Load<Texture2D>("spriteSheetCharacter2");
+                    break;
+                case State.NuduaState:
+                    player1T = this.Content.Load<Texture2D>("spriteSheetCharacter3");
+                    break;
+                case State.DHState:
+                    player1T = this.Content.Load<Texture2D>("spriteSheetCharacter4");
+                    break;
+                case State.BokajState:
+                    player1T = this.Content.Load<Texture2D>("spriteSheetCharacter5");
+                    break;
+                default:
+                    break;
+            }
+            switch (gameState.getCurrentCharacter2())
+            {
+                case State.SralState:
+                    player2T = this.Content.Load<Texture2D>("spriteSheetCharacter1");
+                    break;
+                case State.LimakState:
+                    player2T = this.Content.Load<Texture2D>("spriteSheetCharacter2");
+                    break;
+                case State.NuduaState:
+                    player2T = this.Content.Load<Texture2D>("spriteSheetCharacter3");
+                    break;
+                case State.DHState:
+                    player2T = this.Content.Load<Texture2D>("spriteSheetCharacter4");
+                    break;
+                case State.BokajState:
+                    player2T = this.Content.Load<Texture2D>("spriteSheetCharacter5");
+                    break;
+                default:
+                    break;
+            }
+
+            //Set players animation
+            player1Animation = new SpriteAnimation(player1T, 120, 120, 4, 6);
+            player1Animation.AnimationDelay = 200;
+            player2Animation = new SpriteAnimation(player2T, 120, 120, 4, 6);
+            player2Animation.AnimationDelay = 200;
+
+            //Create players
+            player1 = new GamePlayer(
+                this,
+                this.world,
+                new Vector2(0.0f, 0.0f), // position (meter)
+                new Vector2(2.0f, 2.0f), // size (meter)
+                player1Animation,
+                PlayerIndex.One
+            );
+            player2 = new GamePlayer(
+                this,
+                this.world,
+                new Vector2(1.0f, 0.0f), // position (meter)
+                new Vector2(2.0f, 2.0f), // size (meter)
+                player2Animation,
+                PlayerIndex.Two
+            );
+
+            //Add camera man
+            m_CameraMan = new CameraMan(this, new Camera(), player1);
+            this.Components.Add(m_CameraMan);
+
+            //Add players
+            this.Components.Add(player1);
+            this.Components.Add(player2);
+
+            // Bind players to characterInput
+            this.character1Controller.BindCharacter(player1);
+            this.character2Controller.BindCharacter(player2);
+
+
+
+
+            // Enter the noob
+            GameObject noob = new GameObject(
+                this,
+                this.world,
+                new Vector2(5.0f, 0.0f), // position (meter)
+                new Vector2(2.0f, 2.0f), // size (meter)
+                new SpriteAnimation(this.Content.Load<Texture2D>("box"), 120, 120, 1, 1)
+            );
+
+            this.Components.Add(noob);
+            
+
+            // Add a little ground
+            Body ground = FarseerPhysics.Factories.BodyFactory.CreateRectangle(world, 60.0f, 1.0f, 1.0f);
+
+            ground.BodyType = BodyType.Static;
+            ground.Friction = 10.0f;
+            ground.Position = new Vector2(-10.0f, 8.0f);
+
+        }
     }
 }

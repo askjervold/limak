@@ -19,7 +19,7 @@ namespace limakGame
     public enum GameObjectAction {
         STAND = 0,
         WALK,
-        ATTACK,
+        JUMP,
         DIE
     }
 
@@ -105,12 +105,12 @@ namespace limakGame
                 DepthStencilState.Default, 
                 RasterizerState.CullNone,
                 null,
-                game.camera.TransformMatrix
+                game.Camera.TransformMatrix
             );
 
             // Draw the current animation frame
 
-            this.animation.Draw(spriteBatch, this.body.Position, Camera2D.ToMeters(this.size) / 2.0f, this.body.Rotation);
+            this.animation.Draw(spriteBatch, this.body.Position, Convert.ToMeters(this.size) / 2.0f, this.body.Rotation);
 
             spriteBatch.End();
 

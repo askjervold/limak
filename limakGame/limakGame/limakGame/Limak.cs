@@ -447,9 +447,11 @@ namespace limakGame
             player1.getFixture().OnCollision += player1.CollisionWithEnemy;
             player1.getFixture().OnCollision += player1.PickUpCoin;
             player1.getFixture().OnCollision += player1.PlayerPlayerCollision;
+            player1.getFixture().OnCollision += player1.CollisionWithGround;
             player2.getFixture().OnCollision += player2.CollisionWithEnemy;
             player2.getFixture().OnCollision += player2.PickUpCoin;
             player2.getFixture().OnCollision += player2.PlayerPlayerCollision;
+            player2.getFixture().OnCollision += player2.CollisionWithGround;
 
             
 
@@ -462,140 +464,5 @@ namespace limakGame
             */
         }
 
-        /*
-        public bool Player1CollisionWithEnemy(Fixture f1, Fixture f2, Contact contact)
-        {
-            Vector2 normal;
-            FixedArray2<Vector2> points;
-            contact.GetWorldManifold(out normal, out points);
-
-            foreach (IGameComponent comp in this.Components)
-            {
-                GameEnemy enemy = comp as GameEnemy;
-                if (enemy != null)
-                {
-                    if (enemy.getFixture() == f2)
-                    {
-
-                        if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y < 0))    // The contact is coming from above
-                        {
-                            enemy.Die();
-                            player1.increaseScore(10);
-                            player1.Jump();
-                        }
-                        else
-                        {
-                            player1.Die();
-                        }
-
-                        break;
-                    }
-                }
-            }
-            
-
-            return true;
-        }
-
-        public bool Player2CollisionWithEnemy(Fixture f1, Fixture f2, Contact contact)
-        {
-            Vector2 normal;
-            FixedArray2<Vector2> points;
-            contact.GetWorldManifold(out normal, out points);
-
-            foreach (IGameComponent comp in this.Components)
-            {
-                GameEnemy enemy = comp as GameEnemy;
-                if (enemy != null)
-                {
-                    if (enemy.getFixture() == f2)
-                    {
-                        if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y < 0))    // The contact is coming from above
-                        {
-                            enemy.Die();
-                            player2.increaseScore(10);
-                            player2.Jump();
-
-                        }
-                        else
-                        {
-                            player2.Die();
-                        }
-
-                        break;
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        public bool Player1PickUpCoin(Fixture f1, Fixture f2, Contact contact)
-        {
-            foreach (IGameComponent comp in this.Components)
-            {
-                GameCoin coin = comp as GameCoin;
-                if (coin != null)
-                {
-                    if (coin.getFixture() == f2)
-                    {
-                   //     Components.Remove(coin);
-                        player1.increaseScore(1);
-                    }
-                }
-            }
-            
-            return true;
-        }
-
-        public bool Player2PickUpCoin(Fixture f1, Fixture f2, Contact contact)
-        {
-            foreach (IGameComponent comp in this.Components)
-            {
-                GameCoin coin = comp as GameCoin;
-                if (coin != null)
-                {
-                    if (coin.getFixture() == f2)
-                    {
-                    //    Components.Remove(coin);
-                        player2.increaseScore(1);
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        public bool PlayerPlayerCollision(Fixture f1, Fixture f2, Contact contact)
-        {
-            Vector2 normal;
-            FixedArray2<Vector2> points;
-            contact.GetWorldManifold(out normal, out points);
-
-            if (player1.getFixture() == f2)
-            {
-                if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y < 0))
-                {
-                    if (player1.IsDead()) // Shouldn't this work with just "if (player1.isDead)"?
-                    {
-                        player1.Revive();
-                    }
-                }
-            }
-
-            else if (player2.getFixture() == f2)
-            {
-                if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y < 0))
-                {
-                    if (player2.IsDead())
-                    {
-                        player2.Revive();
-                    }
-                }
-            }
-
-            return true;
-        }
-        */
     }
 }

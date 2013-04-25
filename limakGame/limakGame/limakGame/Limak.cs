@@ -444,14 +444,12 @@ namespace limakGame
             this.character2Controller.BindCharacter(player2);
 
             //Collision detection
-            player1.getFixture().OnCollision += Player1CollisionWithEnemy;
-            player1.getFixture().OnCollision += Player1PickUpCoin;
-            player1.getFixture().OnCollision += PlayerPlayerCollision;
-            player1.getFixture().OnCollision += Player1Finish;
-            player2.getFixture().OnCollision += Player2CollisionWithEnemy;
-            player2.getFixture().OnCollision += Player2PickUpCoin;
-            player2.getFixture().OnCollision += PlayerPlayerCollision;
-            player1.getFixture().OnCollision += Player2Finish;
+            player1.getFixture().OnCollision += player1.CollisionWithEnemy;
+            player1.getFixture().OnCollision += player1.PickUpCoin;
+            player1.getFixture().OnCollision += player1.PlayerPlayerCollision;
+            player2.getFixture().OnCollision += player2.CollisionWithEnemy;
+            player2.getFixture().OnCollision += player2.PickUpCoin;
+            player2.getFixture().OnCollision += player2.PlayerPlayerCollision;
 
             // Enter the noob
             GameObject noob = new GameObject(
@@ -474,6 +472,7 @@ namespace limakGame
             */
         }
 
+        /*
         public bool Player1CollisionWithEnemy(Fixture f1, Fixture f2, Contact contact)
         {
             Vector2 normal;
@@ -607,41 +606,6 @@ namespace limakGame
 
             return true;
         }
-
-        public bool Player1Finish(Fixture f1, Fixture f2, Contact contact)   // Change all references to coins into flag/finish
-        {
-            foreach (IGameComponent comp in this.Components)
-            {
-                GameCoin coin = comp as GameCoin;
-                if (coin != null)
-                {
-                    if (coin.getFixture() == f2)
-                    {
-                        player1.increaseScore(50);
-                        // Should end the level
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        public bool Player2Finish(Fixture f1, Fixture f2, Contact contact)   // Change all references to coins into flag/finish
-        {
-            foreach (IGameComponent comp in this.Components)
-            {
-                GameCoin coin = comp as GameCoin;
-                if (coin != null)
-                {
-                    if (coin.getFixture() == f2)
-                    {
-                        player2.increaseScore(50);
-                        // Should end the level
-                    }
-                }
-            }
-
-            return true;
-        }
+        */
     }
 }

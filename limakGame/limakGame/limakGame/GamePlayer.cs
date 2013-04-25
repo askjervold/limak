@@ -159,14 +159,14 @@ namespace limakGame
             return true;
         }
         
-        /*public bool PlayerFinish(Fixture f1, Fixture f2, Contact contact)   // Change all references to coins into flag/finish
+        public bool PlayerFinish(Fixture f1, Fixture f2, Contact contact)   // Change all references to coins into flag/finish
         {
             foreach (IGameComponent comp in this.game.Components)
             {
-                GameCoin coin = comp as GameCoin;
-                if (coin != null)
+                GameFlag flag = comp as GameFlag;
+                if (flag != null)
                 {
-                    if (coin.getFixture() == f2)
+                    if (flag.getFixture() == f2)
                     {
                         this.increaseScore(50);
                         // Should end the level
@@ -175,6 +175,6 @@ namespace limakGame
             }
 
             return true;
-        }*/
+        }
     }
 }

@@ -44,6 +44,7 @@ namespace limakGame
         protected GameObjectDirection facingDirection;
         public bool isDead { get; set; }
 
+
         /// <summary>
         /// Base class for interactive game objects.
         /// </summary>
@@ -52,7 +53,7 @@ namespace limakGame
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <param name="animation"></param>
-        public GameObject(Game game, World world, Vector2 position, Vector2 size, SpriteAnimation animation) : base(game)
+        public GameObject(Game game, World world, Vector2 position, Vector2 size, SpriteAnimation animation, BodyType bodyType) : base(game)
         {
             this.animation = animation;
 
@@ -61,7 +62,7 @@ namespace limakGame
             this.size = size;
 
             this.body = FarseerPhysics.Factories.BodyFactory.CreateRectangle(world, size.X, size.Y, 1.5f);
-            this.body.BodyType = BodyType.Dynamic;
+            this.body.BodyType = bodyType;
             this.body.Friction = 1.0f;
             this.body.Restitution = 0.01f;
             //this.body.LinearDamping = 3.0f;

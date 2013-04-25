@@ -102,7 +102,7 @@ namespace limakGame
             
             for (int i = 0; i < level.getEnemyPos.Count; i++)
             {
-                SpriteAnimation enemyAnimation = new SpriteAnimation(enemyTexture, (int)Convert.ToPixels(size.X), (int)Convert.ToPixels(size.Y), 2, 4);
+                SpriteAnimation enemyAnimation = new SpriteAnimation(enemyTexture, (int)Convert.ToPixels(size.X), (int)Convert.ToPixels(size.Y), 1, 2);
                 enemyAnimation.AnimationDelay = 400;
                 GameEnemy enemy = new GameEnemy(
                     ((Limak)game),

@@ -170,7 +170,7 @@ namespace limakGame
                         break;
                     if (text[i][j] == _coin)
                     {
-                        _coinsPosition.Add(new Vector2(j, i));
+                        _coinsPosition.Add(new Vector2(j, i-0.5f));
                     }
 
                 }

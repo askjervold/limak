@@ -482,12 +482,18 @@ namespace limakGame
             }
             */
 
-            while (this.Components.Count > 1)
+            foreach (IGameComponent comp in this.Components)
             {
-                if (this.Components.ElementAt(0) == CameraMan)
-                    continue;
-                this.Components.RemoveAt(0);
+                GameCoin coin = comp as GameCoin;
+                if (coin != null)
+                {
+                    {
+                        coin.Dispose();
+                        this.Components.Remove(coin);
+                    }
+                }
             }
+
             loaded = false;
 
         }

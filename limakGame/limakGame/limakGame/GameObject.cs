@@ -67,7 +67,12 @@ namespace limakGame
             //this.body.AngularDamping = 3.0f;
             this.body.Inertia = 5.0f;
             this.body.Position = position;
+        }
 
+        protected override void Dispose(bool disposing)
+        {
+            this.body.Dispose();
+            base.Dispose(disposing);
         }
 
         

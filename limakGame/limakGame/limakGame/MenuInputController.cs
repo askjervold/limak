@@ -84,7 +84,7 @@ namespace limakGame
         {
             if (playerIndex == PlayerIndex.One)
             {
-                if (GamePad.GetState(playerIndex).Buttons.A == ButtonState.Pressed)
+                if (GamePad.GetState(playerIndex).Buttons.A == ButtonState.Pressed )
                     gameState.APressed();
                 if (GamePad.GetState(playerIndex).Buttons.B == ButtonState.Pressed)
                     gameState.BPressed();

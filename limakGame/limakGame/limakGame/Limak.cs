@@ -134,9 +134,6 @@ namespace limakGame
 
         }
 
-        Texture2D spriteSheetTest;
-        SpriteAnimation animation;
-
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -146,7 +143,6 @@ namespace limakGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             myBackground = new ScrollingBackground();
-
 
             //GUI
             gameState = new GameState(this);
@@ -226,12 +222,6 @@ namespace limakGame
             // TODO: Unload any non ContentManager content here
         }
 
-        // Defines the speed of the game (60 ticks per second)
-        private long deltaTicks = TimeSpan.TicksPerSecond / 60;
-
-        private long gameTicks = 0;
-        private long previousTicks = 0;
-
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -245,6 +235,8 @@ namespace limakGame
                 gameState.BackPressed();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed || GamePad.GetState(PlayerIndex.Two).Buttons.Start == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 gameState.StartPressed();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Enter))
+                gameState.APressed();
 
             //Update menu input when inside menus
             if (gameState.getCurrentGameState() != State.Playing)
@@ -256,11 +248,6 @@ namespace limakGame
             else
             {
                 //Update logic while State.Playing
-
-
-               // TimeSpan delta = gameTime.ElapsedGameTime;
-
-                //animation.Update(delta);
 
                 this.characterController.Update();
                 this.character1Controller.Update();
@@ -375,11 +362,10 @@ namespace limakGame
             this.Components.Add(this.map);
 
             // Setup misc graphics
-            background = this.Content.Load<Texture2D>("bgtest");
             font = this.Content.Load<SpriteFont>("SpriteFont1");
 
             //Background
-            Texture2D level1 = this.Content.Load<Texture2D>("bg_level");
+            Texture2D level1 = this.Content.Load<Texture2D>("bg_level2");
             myBackground.Load( this.GraphicsDevice, level1);
 
             //Assign characters to players

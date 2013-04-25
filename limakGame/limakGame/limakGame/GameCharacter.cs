@@ -22,6 +22,10 @@ namespace limakGame
 
         public bool IsDead() { return isDead; } // Probably shouldn't need this method, should work with isDead property
 
+        protected int jumpDelay = 500;
+        private int timeFromLastJump = 0;
+        private bool canJump = true;
+
         public GameCharacter(Game game, World world, Vector2 position, Vector2 size, SpriteAnimation animation, BodyType bodyType)
             : base(game, world, position, size, animation, bodyType)
         {
@@ -33,7 +37,15 @@ namespace limakGame
         public override void Update(GameTime gameTime)
         {
             
-            // TODO: extend logic for y direction
+            if (!this.canJump)
+            {
+                this.timeFromLastJump += gameTime.ElapsedGameTime.Milliseconds;
+                if (this.timeFromLastJump >= this.jumpDelay)
+                {
+                    this.canJump = true;
+                }
+            }
+            
 
             if (this.Action == GameObjectAction.WALK)
             {
@@ -57,6 +69,16 @@ namespace limakGame
         public void Jump()
         {
             if (isDead || jumpState > 1) return;
+
+            if (this.canJump)
+            {
+                this.canJump = false;
+                this.timeFromLastJump = 0;
+            }
+            else
+            {
+                return;
+            }
 
             this.body.ApplyForce(new Vector2(0.0f, -2500.0f));
             this.Action = GameObjectAction.JUMP;

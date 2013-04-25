@@ -13,13 +13,13 @@ namespace limakGame
 {
     public class GameCharacter : GameObject
     {
-        private Vector2 moveForce = new Vector2(500.0f, 0.0f);
+        protected Vector2 moveForce = new Vector2(500.0f, 0.0f);
         private Vector2 maxLinearVelocity = new Vector2(5.0f, 999.0f);
 
         public bool IsDead() { return isDead; } // Probably shouldn't need this method, should work with isDead property, but for some reason doesn't
 
-        public GameCharacter(Game game, World world, Vector2 position, Vector2 size, SpriteAnimation animation) 
-            : base(game, world, position, size, animation)
+        public GameCharacter(Game game, World world, Vector2 position, Vector2 size, SpriteAnimation animation, BodyType bodyType)
+            : base(game, world, position, size, animation, bodyType)
         {
             // Don't allow characters to rotate
             this.body.FixedRotation = true;

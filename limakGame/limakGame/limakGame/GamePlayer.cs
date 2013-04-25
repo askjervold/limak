@@ -21,7 +21,7 @@ namespace limakGame
 
 
         public GamePlayer(Game game, World world, Vector2 position, Vector2 size, SpriteAnimation animation, PlayerIndex playerIndex) 
-            : base(game, world, position, size, animation)
+            : base(game, world, position, size, animation, BodyType.Dynamic)
         {
             this.playerIndex = playerIndex;
             this.game = game;

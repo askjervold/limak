@@ -56,7 +56,7 @@ namespace limakGame
         {
             if (isDead || jumpState > 1) return;
 
-            this.body.ApplyForce(new Vector2(0.0f, -1500.0f));
+            this.body.ApplyForce(new Vector2(0.0f, -2500.0f));
             this.Action = GameObjectAction.JUMP;
             this.jumpState++;
         }

@@ -68,7 +68,9 @@ namespace limakGame
 
                         if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y < 0))    // The contact is coming from above
                         {
-                            enemy.Die();
+                            enemy.Dispose();
+                            this.game.Components.Remove(enemy);
+                            // enemy.Die(); // Uncomment this line if we decide to fix the timing so we dispose after the animation
                             this.increaseScore(10);
                             this.Jump();
                         }

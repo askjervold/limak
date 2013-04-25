@@ -28,7 +28,8 @@ namespace limakGame
 
             //creating stuff
             createEnemies(game);
-            createCoins(game);    
+            createCoins(game);
+            createFlag(game);
     
         }
 
@@ -97,14 +98,16 @@ namespace limakGame
         {
 
             Texture2D enemyTexture = game.Content.Load<Texture2D>("goo");
+            Vector2 size = new Vector2(2, 2);
             for (int i = 0; i < level.getEnemyPos.Count; i++)
             {
                 GameEnemy enemy = new GameEnemy(
                     ((Limak)game),
                     ((Limak)game).world,
                     level.getEnemyPos[i], // position (meter)
-                    new Vector2(1f, 1f), // size (meter)
-                    new SpriteAnimation(enemyTexture, 24, 24, 1, 1)
+                    size, // size (meter)
+                    new SpriteAnimation(enemyTexture, (int)Convert.ToPixels(size.X), (int)Convert.ToPixels(size.Y), 1, 1)
+
                 );
                 //Console.WriteLine("i:" + level.getEnemyPos[i].X + "  j:" + level.getEnemyPos[i].Y) ;
                 ((Limak)game).addGameObject(enemy);
@@ -117,19 +120,33 @@ namespace limakGame
         {
 
             Texture2D coinTexture = game.Content.Load<Texture2D>("coin");
+            Vector2 size = new Vector2(1, 1);            
             for (int i = 0; i < level.getCoinPos.Count; i++)
             {
                 GameCoin coin = new GameCoin(
                     ((Limak)game),
                     ((Limak)game).world,
                     level.getCoinPos[i], // position (meter)
-                    new Vector2(1f, 1f), // size (meter)
-                    new SpriteAnimation(coinTexture, 60, 60, 1, 1)
+                    size, // size (meter)
+                    new SpriteAnimation(coinTexture, (int)Convert.ToPixels(size.X), (int)Convert.ToPixels(size.Y), 1, 1)
                 );
-                //Console.WriteLine("i:" + level.getEnemyPos[i].X + "  j:" + level.getEnemyPos[i].Y) ;
                 ((Limak)game).addGameObject(coin);
             }
 
+        }
+
+        private void createFlag(Game game)
+        {
+            Texture2D flagTexture = game.Content.Load<Texture2D>("finish");
+            Vector2 size = new Vector2(2, 2);
+            GameCoin flag = new GameCoin(
+                    ((Limak)game),
+                    ((Limak)game).world,
+                    level.getFlagPos, // position (meter)
+                    size, // size (meter)
+                    new SpriteAnimation(flagTexture, (int)Convert.ToPixels(size.X), (int)Convert.ToPixels(size.Y), 1, 1)
+                );
+            ((Limak)game).addGameObject(flag);
         }
 
 

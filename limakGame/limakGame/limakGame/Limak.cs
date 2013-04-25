@@ -474,11 +474,18 @@ namespace limakGame
 
         public void GameUnloading()
         {
-
-
-            while (this.Components.Count > 0)
+            /*
+            foreach (GameComponent component in this.Components)
             {
-                //if(this.Components.ElementAt(0) ==
+                if (component is DrawableGameComponent)
+                    ((DrawableGameComponent)component).Visible = true;
+            }
+            */
+
+            while (this.Components.Count > 1)
+            {
+                if (this.Components.ElementAt(0) == CameraMan)
+                    continue;
                 this.Components.RemoveAt(0);
             }
             loaded = false;

@@ -474,18 +474,14 @@ namespace limakGame
             this.character2Controller.BindCharacter(player2);
 
             //Collision detection
-            player1.getFixture().OnCollision += player1.CollisionWithEnemy;
-            player1.getFixture().OnCollision += player1.PickUpCoin;
-            player1.getFixture().OnCollision += player1.PlayerPlayerCollision;
-            player1.getFixture().OnCollision += player1.CollisionWithGround;
-            player1.getFixture().OnCollision += player1.PlayerFinish;
-            player2.getFixture().OnCollision += player2.CollisionWithEnemy;
-            player2.getFixture().OnCollision += player2.PickUpCoin;
-            player2.getFixture().OnCollision += player2.PlayerPlayerCollision;
-            player2.getFixture().OnCollision += player2.CollisionWithGround;
-            player2.getFixture().OnCollision += player2.PlayerFinish;
+            foreach (GamePlayer player in this.players) {
+                player.getFixture().OnCollision += player.CollisionWithEnemy;
+                player.getFixture().OnCollision += player.PickUpCoin;
+                player.getFixture().OnCollision += player.PlayerPlayerCollision;
+                player.getFixture().OnCollision += player.CollisionWithGround;
+                player.getFixture().OnCollision += player.PlayerFinish;
+            }
 
-            
 
             // Add a little ground
             /*Body ground = FarseerPhysics.Factories.BodyFactory.CreateRectangle(world, 60.0f, 1.0f, 1.0f);

@@ -21,7 +21,8 @@ namespace limakGame
     public class Limak : Microsoft.Xna.Framework.Game
     {
         private CameraMan m_CameraMan;
-        
+        private DateTime timeBegin;
+
         GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
         //Model and view in MVC, menus/interfaces
@@ -48,7 +49,7 @@ namespace limakGame
         Texture2D blackTexture;
         Texture2D background;
 
-
+        private String endTime;
         private ScrollingBackground myBackground;
 
         public Limak()
@@ -210,7 +211,10 @@ namespace limakGame
                 }
                 
             }
-
+            else if (state == State.Win)
+            {
+                endTime = DateTime.Now.Subtract(this.timeBegin).ToString();
+            }
         }
 
         /// <summary>
@@ -333,6 +337,8 @@ namespace limakGame
                     spriteBatch.Draw(this.Content.Load<Texture2D>("winMenu"), new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
                     spriteBatch.DrawString(font, s1, new Vector2(200, 120), Color.White);
                     spriteBatch.DrawString(font, s2, new Vector2(500, 120), Color.White);
+
+                    spriteBatch.DrawString(font, "Time: "+endTime, new Vector2(200, 200), Color.White);
                     this.spriteBatch.End();
                     break;
 
@@ -361,6 +367,8 @@ namespace limakGame
         // This is called whenever gameState = Playing (when you enter the actually game)
         public void GameLoading()
         {
+            timeBegin = DateTime.Now;
+
             // Setup the map
             this.map = new Map(this, "level.txt");
 

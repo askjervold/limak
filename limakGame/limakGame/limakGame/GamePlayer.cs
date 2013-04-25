@@ -25,6 +25,7 @@ namespace limakGame
         {
             this.playerIndex = playerIndex;
             this.game = game;
+            
         }
 
 
@@ -148,6 +149,7 @@ namespace limakGame
 
                         // Should end the level
                         Console.WriteLine("WIN!");
+                        ((Limak)game).updateState(State.Win);
                         
                     }
                 } 

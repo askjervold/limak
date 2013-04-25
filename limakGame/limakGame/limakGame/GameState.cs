@@ -7,7 +7,7 @@ using System.Timers;
 
 namespace limakGame
 {
-    public enum State { MainMenu, CharacterMenu, PlayerMenu, Playing, Options, Pause, GameOver, 
+    public enum State { MainMenu, CharacterMenu, PlayerMenu, Playing, Options, Pause, GameOver, Win,
                         ButtonUp, ButtonMiddle, ButtonDown,
                         LimakState, SralState, BokajState, NuduaState, DHState };
     public delegate void ChangedEventHandler(object sender, State state);
@@ -122,7 +122,15 @@ namespace limakGame
                         player1CharacterDone = false;
                         player2CharacterDone = false;
                         limak.GameUnloading();
-
+                        break;
+                    case State.Win:
+                        updateState(State.MainMenu);
+                        currentButtonChosen = 0;
+                        player1MenuDone = false;
+                        player2MenuDone = false;
+                        player1CharacterDone = false;
+                        player2CharacterDone = false;
+                        limak.GameUnloading();
                         break;
                     default:
                         break;
@@ -258,6 +266,15 @@ namespace limakGame
                         }
                         break;
                     case State.GameOver:
+                        updateState(State.MainMenu);
+                        currentButtonChosen = 0;
+                        player1MenuDone = false;
+                        player2MenuDone = false;
+                        player1CharacterDone = false;
+                        player2CharacterDone = false;
+                        limak.GameUnloading();
+                        break;
+                    case State.Win:
                         updateState(State.MainMenu);
                         currentButtonChosen = 0;
                         player1MenuDone = false;

@@ -497,5 +497,10 @@ namespace limakGame
 
         }
 
+        public void updateState(State state)
+        {
+            gameState.updateState(state);
+        }
+
     }
 }

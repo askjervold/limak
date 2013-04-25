@@ -237,6 +237,10 @@ namespace limakGame
                     b_continue.setIsChoosen(true);
                     b_exitPause.setIsChoosen(false);
                     break;
+
+                case State.Win:
+                    spriteBatch.Draw(content.Load<Texture2D>("winMenu"), new Rectangle(0, 0, graphics.Viewport.Width, graphics.Viewport.Height), Color.White);
+                    break;
             }
 
             if (currentState == State.CharacterMenu)

@@ -56,7 +56,6 @@ namespace limakGame
             Content.RootDirectory = "Content";
             graphics.PreferredBackBufferWidth = 820;
             graphics.PreferredBackBufferHeight = 460;
-            // TEST 
         }
 
         public Camera Camera

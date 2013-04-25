@@ -13,7 +13,7 @@ using FarseerPhysics.Common;
 
 namespace limakGame
 {
-    class GamePlayer : GameCharacter
+    public class GamePlayer : GameCharacter
     {
         private int score;
         private PlayerIndex playerIndex;

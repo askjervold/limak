@@ -42,6 +42,13 @@ namespace limakGame
             this.score += amount;
         }
 
+        public override void Die()
+        {
+            this.Action = GameObjectAction.DIE;
+            this.isDead = true;
+
+            ((Limak)game).CameraMan = new CameraMan();
+        }
 
         public void Revive()
         {

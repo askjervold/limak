@@ -95,7 +95,8 @@ namespace limakGame
                 {
                     if (coin.getFixture() == f2)
                     {
-                        //     Components.Remove(coin);
+                        coin.Dispose();
+                        this.game.Components.Remove(coin);
                         this.increaseScore(1);
                     }
                 }

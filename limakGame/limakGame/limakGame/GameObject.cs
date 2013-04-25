@@ -42,6 +42,7 @@ namespace limakGame
         protected Body body;
 
         protected GameObjectDirection facingDirection;
+        protected bool isDead { get; set; }
 
         /// <summary>
         /// Base class for interactive game objects.
@@ -124,6 +125,8 @@ namespace limakGame
 
         public GameObjectDirection Direction
         {
+            if (this.isDead) return;
+
             set
             {
                 if(this.facingDirection != value) {
@@ -139,7 +142,8 @@ namespace limakGame
 
         public GameObjectAction Action
         {
-            set { 
+            set {
+                if (this.isDead) return;
                 // TODO: shouldn't be allowed to change action if dying
                 if(this.action != value) {
                     this.action = value;

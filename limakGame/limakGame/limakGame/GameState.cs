@@ -262,6 +262,7 @@ namespace limakGame
                         player2MenuDone = false;
                         player1CharacterDone = false;
                         player2CharacterDone = false;
+                        Console.WriteLine("PLAYER2 dead");
                         break;
                     default:
                         break;

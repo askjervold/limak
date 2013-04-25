@@ -145,8 +145,12 @@ namespace limakGame
                     if (flag.getFixture() == f2)
                     {
                         this.increaseScore(50);
+
+                        // Should end the level
+                        Console.WriteLine("WIN!");
+                        
                     }
-                }
+                } 
             }
 
             return true;

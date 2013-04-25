@@ -46,12 +46,13 @@ namespace limakGame
 
         public void Die()
         {
-            this.Action = GameObjectAction.DIE;
-            this.isDead = true;
+            base.Die();
 
             List<GamePlayer> players = game.getPlayers();
-            if (players[0] == this) game.CameraMan = new CameraMan(game, game.Camera, players[1]);
-            else if (players[1] == this) game.CameraMan = new CameraMan(game, game.Camera, players[0]);
+            if (players[0] == this)
+                game.CameraMan = new CameraMan(game, game.Camera, players[1]);
+            else if (players[1] == this)
+                game.CameraMan = new CameraMan(game, game.Camera, players[0]);
         }
 
         public void Revive()

@@ -42,7 +42,7 @@ namespace limakGame
         protected Body body;
 
         protected GameObjectDirection facingDirection;
-        protected bool isDead { get; set; }
+        public bool isDead { get; set; }
 
         /// <summary>
         /// Base class for interactive game objects.
@@ -122,6 +122,8 @@ namespace limakGame
         }
 
         // Getters & setters
+
+
 
         public GameObjectDirection Direction
         {

@@ -210,10 +210,7 @@ namespace limakGame
                 }
                 
             }
-            else if (state == State.GameOver)
-            {
-    //TODO: Restart game
-            }
+
         }
 
         /// <summary>
@@ -307,27 +304,16 @@ namespace limakGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
             switch (gameState.getCurrentGameState())
             {
                 case State.Playing:
                     //All drawing while gameState = State.Playing
 
-                    
-
-
-                    //this.animation.Draw(spriteBatch, new Rectangle(0, 0, 120, 480));
-                     GraphicsDevice.Clear(Color.CornflowerBlue);
+                    GraphicsDevice.Clear(Color.CornflowerBlue);
                     map.Draw(gameTime);
                     this.spriteBatch.Begin();
-                    //this.spriteBatch.DrawString(this.font, "Action: " + character.Action.ToString(), new Vector2(5.0f, 0.0f), Color.White);
-                    //this.spriteBatch.DrawString(this.font, "Direction: " + character.Direction.ToString(), new Vector2(5.0f, 20.0f), Color.White);
-
-                    // Draw background
-                    //spriteBatch.Draw(background, new Rectangle(0, 0, 800, 600), Color.White);
+                   
                     myBackground.Draw(spriteBatch);
-                    // Draw ground
-                    /*spriteBatch.Draw(blackTexture, new Rectangle(0, 5 * 60, 800, 60), Color.Black);*/
 
                     var score1 = "Player 1: " + player1.getScore().ToString();
                     var score2 = "Player 2: " + player2.getScore().ToString();
@@ -340,6 +326,17 @@ namespace limakGame
             
                     this.spriteBatch.End();
                     break;
+                case State.Win:
+                    var s1 = player1.getScore().ToString();
+                    var s2 = player2.getScore().ToString();
+                    this.spriteBatch.Begin();
+                    spriteBatch.Draw(this.Content.Load<Texture2D>("winMenu"), new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                    spriteBatch.DrawString(font, s1, new Vector2(200, 120), Color.White);
+                    spriteBatch.DrawString(font, s2, new Vector2(500, 120), Color.White);
+                    this.spriteBatch.End();
+                    break;
+
+
                 default:
                     //All other drawing (menu etc.)
                     spriteBatch.Begin();
@@ -365,38 +362,13 @@ namespace limakGame
         public void GameLoading()
         {
             // Setup the map
-             this.map = new Map(this, "level.txt");
+            this.map = new Map(this, "level.txt");
 
             this.Components.Add(this.map);
-            
 
             // Setup misc graphics
             background = this.Content.Load<Texture2D>("bgtest");
             font = this.Content.Load<SpriteFont>("SpriteFont1");
-
-        ////
-            ////Texture2D spriteSheetTest = this.Content.Load<Texture2D>("character2SampleNotAnimated");
-            //Texture2D bunny = this.Content.Load<Texture2D>("test2");
-
-            //// Setup the game character
-            //SpriteAnimation bunnyAnimation = new SpriteAnimation(bunny, 128, 128, 7, 7);
-            //bunnyAnimation.AnimationDelay = 100;
-
-            //character = new GameCharacter(
-            //    this,
-            //    this.world,
-            //    new Vector2(0.0f, 0.0f), // position (meter)
-            //    new Vector2(2.0f, 2.0f), // size (meter)
-            //    bunnyAnimation
-            //);
-
-            //camera.AddCharacter(character);
-
-            //this.Components.Add(character);
-
-            //// Bind this as our player 1 character
-            //this.characterController.BindCharacter(character);
-        ////
 
             //Background
             Texture2D level1 = this.Content.Load<Texture2D>("bg_level");
@@ -493,14 +465,6 @@ namespace limakGame
                 player.getFixture().OnCollision += player.PlayerFinish;
             }
 
-
-            // Add a little ground
-            /*Body ground = FarseerPhysics.Factories.BodyFactory.CreateRectangle(world, 60.0f, 1.0f, 1.0f);
-
-            ground.BodyType = BodyType.Static;
-            ground.Friction = 10.0f;
-            ground.Position = new Vector2(-10.0f, 8.0f);
-            */
         }
 
 

@@ -240,6 +240,7 @@ namespace limakGame
 
                 case State.Win:
                     spriteBatch.Draw(content.Load<Texture2D>("winMenu"), new Rectangle(0, 0, graphics.Viewport.Width, graphics.Viewport.Height), Color.White);
+
                     break;
             }
 

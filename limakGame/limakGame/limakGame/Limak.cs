@@ -486,7 +486,7 @@ namespace limakGame
                     if (enemy.getFixture() == f2)
                     {
 
-                        if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y > 0))    // The contact is coming from above
+                        if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y < 0))    // The contact is coming from above
                         {
                             enemy.Die();
                             player1.increaseScore(10);
@@ -519,7 +519,7 @@ namespace limakGame
                 {
                     if (enemy.getFixture() == f2)
                     {
-                        if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y > 0))    // The contact is coming from above
+                        if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y < 0))    // The contact is coming from above
                         {
                             enemy.Die();
                             player2.increaseScore(10);

@@ -16,9 +16,6 @@ namespace limakGame
         //the world object to be passed in through the constructor
         World world;
 
-        //variables to convert between units
-        const float unitToPixel = 60.0f;
-        const float pixelToUnit = 1 / unitToPixel;
 
         //height and length of level, found by readFile()
         private int _levelHeight;
@@ -26,27 +23,17 @@ namespace limakGame
 
         //types of characters found in the .txt file
         private char _ground = '#';
-        private char _platform = '_';
-        private char _player = '|';
         private char _enemy = '@';
         private char _empty = ' ';
         private char _end = 'n';
-
+        private char _coin = 'c';
 
         //types of bodies created and returned to the draw class.
-        private Body _groundBody1;
-        private List<Body> _platforms;
         private List<Body> _groundBody;
         private List<int> _groundWidths;
-        private List<int> _platformWidths;
-        private List<GameObject> _enemies;
         private List<Vector2> _enemyPositions;
-        private GameObject _player1Object;
         private List<int> _holesInground;
-
-        //sprite animations
-        private SpriteAnimation _playerAnimation;
-        private SpriteAnimation _enemyAnimation;
+        private List<Vector2> _coinsPosition;
 
         //an array of string where each element is each line in the .txt file.
         string[] text;
@@ -56,12 +43,11 @@ namespace limakGame
         {
             this.world = world;
 
+
             _groundBody = new List<Body>();
             _groundWidths = new List<int>();
-            _platforms = new List<Body>();
-            _enemies = new List<GameObject>();
             _enemyPositions = new List<Vector2>();
-
+            _coinsPosition = new List<Vector2>();
 
         }
 
@@ -78,89 +64,59 @@ namespace limakGame
             _levelHeight = text.Length;
             _levelWidth = text[_levelHeight - 1].Length;
 
-            createPlatforms();
-            createGround();
-            createEnemyPositions();
-            findHolesInGround();
-
-        }
-        //this might not be used.
-        public void createPlayer()
-        {
-            Vector2 start = new Vector2(0, 0);
-            Vector2 size = new Vector2(2, 2);
-            // TODO:
-            //_playerAnimation = new SpriteAnimation(120,120,4,7)
-            //_playerObject = new GameObject(game, _world,  start,  size, animation);
-
-
-
-        }
-
-        
-        public void createGround()
-        //assumes no holes in the ground, creating a single body representing the entire ground floor
-        {
-            //this method assumes that the ground is always on the lowest point, which all map should be.
-            int levelHeight = text.Length - 1;
+            createGround(); //creates ground and platforms
+            createCoinPositions(); //adds coinsposition, map is rendering and adding them to the map
+            createEnemyPositions(); //same as coins but for enemies
             
+            findHolesInGround(); //finds the holes in the ground so the ai can avoid them
+        }
+
+
+
+        private void createGround()
+        {
+
             int start = 0;
             bool lastFloor = false;
 
-
-            for (int i = 0; i < _levelWidth; i++)
+            for (int h = 0; h < _levelHeight; h++)
             {
-                if (text[levelHeight][i] == _ground && !lastFloor)
+                for (int i = 0; i < _levelWidth; i++)
                 {
-                    start = i;
-                    lastFloor = true;
+                    if (text[h][i] == _ground && !lastFloor)
+                    {
+                        start = i;
+                        lastFloor = true;
+                    }
+                    else if ((text[h][i] == _empty || text[h][i] == _end || text[h][i] == _enemy) && lastFloor)
+                    {
+                        int width = i - start;
+                        Body temp = BodyFactory.CreateRectangle(world, width, 1, 1, new Vector2((start) + width / 2, h - 0.5f));
+                        //non-movable object.
+                        Console.WriteLine("ground created @" + (start) + "," + i + " width:" + (width));
+
+                        _groundWidths.Add(width);
+
+                        temp.BodyType = BodyType.Static;
+
+                        //some copy-paste code
+                        temp.Restitution = 0.3f;
+                        temp.Friction = 0.5f;
+
+                        _groundBody.Add(temp);
+                        lastFloor = false;
+                        if (text[h][i] == _end)
+                            break;
+                    }
+
                 }
-                else if ((text[levelHeight][i] == _empty || text[levelHeight][i] == _end) && lastFloor)
-                {
-                    int width = i - start;
-                    Body temp = BodyFactory.CreateRectangle(world, width, 1, 1, new Vector2((start)+width/2, levelHeight));
-                    //non-movable object.
-                    Console.WriteLine("ground created @" + (start) + "," + i + " width:" + (width));
-
-                    _groundWidths.Add(width);
-
-                    temp.BodyType = BodyType.Static;
-
-                    //some copy-paste code
-                    temp.Restitution = 0.3f;
-                    temp.Friction = 0.5f;
-                    
-                    _groundBody.Add(temp);
-                    lastFloor = false;
-                }
-
             }
 
             
-            //old method for non-hole ground, isn't used anymore but I want to keep it if we might use it later.
-            //int first = text[levelHeight].IndexOf(_ground);
-            //int last = text[levelHeight].LastIndexOf(_ground);
-            //string str2 = text[levelHeight].Substring(first, last - first); // gets the width of level.
-            //_groundSprite = Content.Load<Texture2D>("groundSprite"); // 512px x 64px =>   8m x 1m
-
-
-
-            ////create ground fixture, it assumes that the ground doesn't have any holes in it
-            //_groundBody1 = BodyFactory.CreateRectangle(world, str2.Length, 1, 1, new Vector2(levelWidth/ 2, levelHeight - 1));
-            ////_groundBody = BodyFactory.CreateRectangle(world, 60.0f, 1.0f, 1.0f);
-
-
-            ////non-movable object.
-            //_groundBody1.BodyType = BodyType.Static;
-
-            ////some copy-paste code
-            //_groundBody1.Restitution = 0.3f;
-            //_groundBody1.Friction = 0.5f;
-
         }
 
 
-        public void findHolesInGround()
+        private void findHolesInGround()
         {
             _holesInground = new List<int>();
             int levelHeight = _levelHeight - 1;
@@ -174,74 +130,65 @@ namespace limakGame
 
         }
 
-        public void createPlatforms()
+
+
+        private void createCoinPositions()
         {
-           
-            bool onPlatform = false;
-            int start = 0;
             for (int i = 0; i < _levelHeight; i++)
             {
                 for (int j = 0; j < _levelWidth; j++)
                 {
-                    if (text[i][j] == _platform && !onPlatform)
+                    if (text[i][j] == _end)
+                        break;
+                    if (text[i][j] == _coin)
                     {
-                        start = j;
-                        onPlatform= true;
-                    }
-                    else if ((text[i][j] == _empty || text[i][j] == _end || text[i][j] == _enemy)&& onPlatform)
-                    {
-                        Body temp = BodyFactory.CreateRectangle(world, (j) - start, 1, 1, new Vector2((start), i));
-                        //non-movable object.
-
-                        temp.BodyType = BodyType.Static;
-
-                        //some copy-paste code
-                        temp.Restitution = 0.3f;
-                        temp.Friction = 0.5f;
-
-                        _platforms.Add(temp);
-                        onPlatform= false;
+                        _coinsPosition.Add(new Vector2(j, i));
                     }
 
                 }
 
             }
-
-
         }
 
 
-        public void createEnemyPositions()
+
+        private void createEnemyPositions()
         {
             for (int i = 0; i < _levelHeight; i++)
             {
-                for(int j = 0; j<_levelWidth; j++)
+                for (int j = 0; j < _levelWidth; j++)
                 {
-                    if(text[i][j] == _end)
+                    if (text[i][j] == _end)
                         break;
-                    if(text[i][j] == _enemy)
+                    if (text[i][j] == _enemy)
                     {
                         _enemyPositions.Add(new Vector2(j, i));
                     }
 
                 }
-                
 
-            
+
+
 
             }
-            
+
         }
 
+
+
+
+
+        //getters ahead
         public List<Vector2> getEnemyPos
         {
             get { return _enemyPositions; }
         }
 
-        public Body Ground1
+        public List<Vector2> getCoinPos
         {
-            get { return _groundBody1; }
+            get { return _coinsPosition; }
         }
+
 
         public List<int> groundWidths
         {
@@ -256,23 +203,6 @@ namespace limakGame
         public List<Body> Ground
         {
             get { return _groundBody; }
-        }
-
-        public GameObject player1
-        {
-            get { return _player1Object; }
-        }
-
-
-        public List<Body> Platforms
-        {
-            get { return _platforms; }
-        }
-
-
-        public List<GameObject> Enemies
-        {
-            get { return _enemies; }
         }
 
         public int levelHeight //should be 12, but who knows

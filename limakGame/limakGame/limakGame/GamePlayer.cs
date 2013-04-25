@@ -17,7 +17,6 @@ namespace limakGame
     {
         private int score;
         private PlayerIndex playerIndex;
-        private Limak game;
 
 
         public GamePlayer(Game game, World world, Vector2 position, Vector2 size, SpriteAnimation animation, PlayerIndex playerIndex) 
@@ -42,10 +41,9 @@ namespace limakGame
             this.score += amount;
         }
 
-        public void Die()
+        public override void Die()
         {
-            this.Action = GameObjectAction.DIE;
-            this.isDead = true;
+            base.Die();
 
             List<GamePlayer> players = game.getPlayers();
             if (players[0] == this) game.CameraMan = new CameraMan(game, game.Camera, players[1]);
@@ -80,9 +78,7 @@ namespace limakGame
 
                         if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y < 0))    // The contact is coming from above
                         {
-                            enemy.Dispose();
-                            this.game.Components.Remove(enemy);
-                            // enemy.Die(); // Uncomment this line if we decide to fix the timing so we dispose after the animation
+                            enemy.Die(); // Uncomment this line if we decide to fix the timing so we dispose after the animation
                             this.increaseScore(10);
                             this.Jump();
                             break;
@@ -117,33 +113,28 @@ namespace limakGame
                     }
                 }
             }
-
+            
             return true;
         }
 
         public bool PlayerPlayerCollision(Fixture f1, Fixture f2, Contact contact)
         {
-            Vector2 normal;
-            FixedArray2<Vector2> points;
-            contact.GetWorldManifold(out normal, out points);
+            List<GamePlayer> players = game.getPlayers();
 
-            foreach (IGameComponent comp in this.game.Components)
-            {
-                GamePlayer player = comp as GamePlayer;
-                if (player != null)
+            foreach (GamePlayer player in players) {
+                if (player.getFixture() == f2)
                 {
-                    if ((player.getFixture() == f1 && this.getFixture() == f2) || (player.getFixture() == f2 && this.getFixture() == f1))
+                    if (player.isDead)
                     {
-                        if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y < 0))
-                        {
-                            if (player.isDead)
-                            {
-                                player.Revive();
-                            }
-                        }
+                        player.Revive();
                     }
                 }
+                
             }
+                       
+                    
+
+                
              
             return true;
         }

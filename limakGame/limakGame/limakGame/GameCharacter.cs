@@ -16,6 +16,8 @@ namespace limakGame
         protected Vector2 moveForce = new Vector2(500.0f, 0.0f);
         private Vector2 maxLinearVelocity = new Vector2(5.0f, 999.0f);
 
+        protected Limak game;
+
         protected int jumpState; // 0 means grounded, 1 means you have jumped once, 2 means you've double-jumped
 
         public bool IsDead() { return isDead; } // Probably shouldn't need this method, should work with isDead property
@@ -56,7 +58,7 @@ namespace limakGame
         {
             if (isDead || jumpState > 1) return;
 
-            this.body.ApplyForce(new Vector2(0.0f, -1500.0f));
+            this.body.ApplyForce(new Vector2(0.0f, -2500.0f));
             this.Action = GameObjectAction.JUMP;
             this.jumpState++;
         }

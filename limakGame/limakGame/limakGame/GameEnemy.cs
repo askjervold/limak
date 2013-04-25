@@ -54,5 +54,16 @@ namespace limakGame
             this.Action = GameObjectAction.WALK;
         }
 
+        public override void Die()
+        {
+            base.Die();
+
+            // We should probably do something about the timing so that we can view the death animation before we remove the enemy
+
+            GameEnemy that = this;
+
+            this.Dispose();
+        }
+
     }
 }

@@ -473,6 +473,13 @@ namespace limakGame
         {
 
 
+            while (this.Components.Count > 0)
+            {
+                //if(this.Components.ElementAt(0) ==
+                this.Components.RemoveAt(0);
+            }
+            loaded = false;
+
         }
 
     }

@@ -255,6 +255,8 @@ namespace limakGame
 
                 myBackground.Update( player1.Position.X );
 
+                if (player1.isDead && player2.isDead) gameState.updateState(State.GameOver);
+
                 base.Update(gameTime);
             }
 

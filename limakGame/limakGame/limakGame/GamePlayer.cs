@@ -147,6 +147,7 @@ namespace limakGame
                         this.increaseScore(50);
 
                         // Should end the level
+                        //game.gameState();
                         Console.WriteLine("WIN!");
                         
                     }

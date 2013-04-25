@@ -58,11 +58,26 @@ namespace limakGame
 
         public override void Update(GameTime gameTime)
         {
-            float height = MathHelper.Clamp((m_GroundLevel - m_Star1.Position.Y) * 2.0f, 8.0f, 80.0f);
-            float width = (Convert.ToMeters(m_Camera.ScreenViewport.Width) * height) / Convert.ToMeters(m_Camera.ScreenViewport.Height);
-            float x = m_Star1.Position.X - (width / 2.0f);
-            float y = m_Star1.Position.Y - (height / 2.0f);
+            float x = m_Star1.Position.X;
+            float y = m_Star1.Position.Y;
+            float height = m_GroundLevel - m_Star1.Position.Y;
+            float screenAspectRatio = 820.0f / 460.0f;
+            float width = height * screenAspectRatio;
 
+            float minWidth = 20.0f;
+            if (width < minWidth)
+            {
+                float scale = minWidth / width;
+                width *= scale;
+                height *= scale;
+            }
+
+            y -= (y + (height / 2) - 11.0f);
+
+            x -= (width / 2.0f);
+            y -= (height / 2.0f);
+
+            System.Diagnostics.Debug.WriteLine(y);
 
             m_Camera.WorldViewport = new RectangleF(x, y, width, height);
         }
@@ -104,6 +119,8 @@ namespace limakGame
 
             x -= (width / 2.0f);
             y -= (height / 2.0f);
+
+            System.Diagnostics.Debug.WriteLine(y);
 
             if (y > 11.0f - height)
                 y -= (y + height - 11.0f);

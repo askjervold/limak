@@ -478,22 +478,27 @@ namespace limakGame
             FixedArray2<Vector2> points;
             contact.GetWorldManifold(out normal, out points);
 
-            foreach (GameEnemy enemy in this.Components)
+            foreach (IGameComponent comp in this.Components)
             {
-                if (enemy.getFixture() == f2)
+                GameEnemy enemy = comp as GameEnemy;
+                if (enemy != null)
                 {
-
-                    if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y > 0))    // The contact is coming from above
+                    if (enemy.getFixture() == f2)
                     {
-                        enemy.Die();
-                        player1.increaseScore(10);
-                        player1.Jump();
-                    }
-                    else {
-                        player1.Die();
-                    }
 
-                    break;
+                        if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y > 0))    // The contact is coming from above
+                        {
+                            enemy.Die();
+                            player1.increaseScore(10);
+                            player1.Jump();
+                        }
+                        else
+                        {
+                            player1.Die();
+                        }
+
+                        break;
+                    }
                 }
             }
             
@@ -507,23 +512,27 @@ namespace limakGame
             FixedArray2<Vector2> points;
             contact.GetWorldManifold(out normal, out points);
 
-            foreach (GameEnemy enemy in this.Components)
+            foreach (IGameComponent comp in this.Components)
             {
-                if (enemy.getFixture() == f2)
+                GameEnemy enemy = comp as GameEnemy;
+                if (enemy != null)
                 {
-                    if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y > 0))    // The contact is coming from above
+                    if (enemy.getFixture() == f2)
                     {
-                        enemy.Die();
-                        player2.increaseScore(10);
-                        player2.Jump();
-                        
-                    }
-                    else
-                    {
-                        player2.Die();
-                    }
+                        if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y > 0))    // The contact is coming from above
+                        {
+                            enemy.Die();
+                            player2.increaseScore(10);
+                            player2.Jump();
 
-                    break;
+                        }
+                        else
+                        {
+                            player2.Die();
+                        }
+
+                        break;
+                    }
                 }
             }
 
@@ -532,12 +541,16 @@ namespace limakGame
 
         public bool Player1PickUpCoin(Fixture f1, Fixture f2, Contact contact)
         {
-            foreach (GameCoin coin in this.Components)
+            foreach (IGameComponent comp in this.Components)
             {
-                if (coin.getFixture() == f2)
+                GameCoin coin = comp as GameCoin;
+                if (coin != null)
                 {
-                    Components.Remove(coin);
-                    player1.increaseScore(1);
+                    if (coin.getFixture() == f2)
+                    {
+                        Components.Remove(coin);
+                        player1.increaseScore(1);
+                    }
                 }
             }
             
@@ -546,12 +559,16 @@ namespace limakGame
 
         public bool Player2PickUpCoin(Fixture f1, Fixture f2, Contact contact)
         {
-            foreach (GameCoin coin in this.Components)
+            foreach (IGameComponent comp in this.Components)
             {
-                if (coin.getFixture() == f2)
+                GameCoin coin = comp as GameCoin;
+                if (coin != null)
                 {
-                    Components.Remove(coin);
-                    player2.increaseScore(1);
+                    if (coin.getFixture() == f2)
+                    {
+                        Components.Remove(coin);
+                        player2.increaseScore(1);
+                    }
                 }
             }
 

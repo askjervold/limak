@@ -48,6 +48,7 @@ namespace limakGame
         Texture2D blackTexture;
         Texture2D background;
 
+
         private ScrollingBackground myBackground;
 
         public Limak()

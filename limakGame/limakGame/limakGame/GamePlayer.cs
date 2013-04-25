@@ -119,7 +119,7 @@ namespace limakGame
                 GamePlayer player = comp as GamePlayer;
                 if (player != null)
                 {
-                    if ((player.getFixture() == f2 && player.getFixture() == f1))
+                    if ((player.getFixture() == f2 || player.getFixture() == f1))
                     {
                         if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y < 0))
                         {
@@ -145,7 +145,6 @@ namespace limakGame
                     if (flag.getFixture() == f2)
                     {
                         this.increaseScore(50);
-                        // Should end the level
                     }
                 }
             }

@@ -149,7 +149,7 @@ namespace limakGame
                     if (text[i][j] == _flag)
                     {
                         //only one flag is allowed.
-                        _flagPosition = new Vector2(j, i);
+                        _flagPosition = new Vector2(j, i-0.5f);
                     }
 
                 }
@@ -190,7 +190,7 @@ namespace limakGame
                         break;
                     if (text[i][j] == _enemy)
                     {
-                        _enemyPositions.Add(new Vector2(j, i));
+                        _enemyPositions.Add(new Vector2(j, i-0.5f));
 
                     }
 

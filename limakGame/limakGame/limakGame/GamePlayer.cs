@@ -13,19 +13,20 @@ using FarseerPhysics.Common;
 
 namespace limakGame
 {
-    class GamePlayer : GameCharacter
+    public class GamePlayer : GameCharacter
     {
         private int score;
         private PlayerIndex playerIndex;
-        private Game game;
+        private Limak game;
 
 
         public GamePlayer(Game game, World world, Vector2 position, Vector2 size, SpriteAnimation animation, PlayerIndex playerIndex) 
             : base(game, world, position, size, animation, BodyType.Dynamic)
         {
             this.playerIndex = playerIndex;
-            this.game = game;
-            
+
+            this.game = (Limak) game;
+
         }
 
 
@@ -43,11 +44,24 @@ namespace limakGame
             this.score += amount;
         }
 
+        public void Die()
+        {
+            this.Action = GameObjectAction.DIE;
+            this.isDead = true;
+
+            List<GamePlayer> players = game.getPlayers();
+            if (players[0] == this) game.CameraMan = new CameraMan(game, game.Camera, players[1]);
+            else if (players[1] == this) game.CameraMan = new CameraMan(game, game.Camera, players[0]);
+        }
 
         public void Revive()
         {
             this.isDead = false;
             this.Action = GameObjectAction.STAND;
+
+            List<GamePlayer> players = game.getPlayers();
+
+            game.CameraMan = new DoubleTrackingCameraMan(game, game.Camera, players[0], players[1]);
         }
 
 
@@ -148,6 +162,7 @@ namespace limakGame
                         this.increaseScore(50);
 
                         // Should end the level
+                        //game.gameState();
                         Console.WriteLine("WIN!");
                         ((Limak)game).updateState(State.Win);
                         

@@ -17,14 +17,14 @@ namespace limakGame
     {
         private int score;
         private PlayerIndex playerIndex;
-        private Game game;
+        private Limak game;
 
 
         public GamePlayer(Game game, World world, Vector2 position, Vector2 size, SpriteAnimation animation, PlayerIndex playerIndex) 
             : base(game, world, position, size, animation)
         {
             this.playerIndex = playerIndex;
-            this.game = game;
+            this.game = (Limak) game;
         }
 
 
@@ -47,13 +47,19 @@ namespace limakGame
             this.Action = GameObjectAction.DIE;
             this.isDead = true;
 
-            ((Limak)game).CameraMan = new CameraMan();
+            List<GamePlayer> players = game.getPlayers();
+            if (players[0] == this) game.CameraMan = new CameraMan(game, game.Camera, players[1]);
+            else if (players[1] == this) game.CameraMan = new CameraMan(game, game.Camera, players[0]);
         }
 
         public void Revive()
         {
             this.isDead = false;
             this.Action = GameObjectAction.STAND;
+
+            List<GamePlayer> players = game.getPlayers();
+
+            game.CameraMan = new DoubleTrackingCameraMan(game, game.Camera, players[0], players[1]);
         }
 
 

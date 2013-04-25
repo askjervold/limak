@@ -37,6 +37,9 @@ namespace limakGame
 
         Map map;
 
+        private List<GamePlayer> players;
+        public List<GamePlayer> getPlayers() { return players; }
+
         private GameCharacter character;
         private GamePlayer player1, player2;
         Texture2D player1T, player2T;
@@ -425,6 +428,8 @@ namespace limakGame
             player2Animation.AnimationDelay = 200;
 
             //Create players
+            players = new List<GamePlayer>();
+            
             player1 = new GamePlayer(
                 this,
                 this.world,
@@ -440,7 +445,7 @@ namespace limakGame
                 new Vector2(2.0f, 2.0f), // size (meter)
                 player2Animation,
                 PlayerIndex.Two
-            ); 
+            );
 
             //Add camera man
             m_CameraMan = new DoubleTrackingCameraMan(this, new Camera(), player1, player2);
@@ -449,6 +454,8 @@ namespace limakGame
             //Add players
             this.Components.Add(player1);
             this.Components.Add(player2);
+            this.players.Add(player1);
+            this.players.Add(player2);
 
             // Bind players to characterInput
             this.character1Controller.BindCharacter(player1);

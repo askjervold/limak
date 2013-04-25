@@ -99,7 +99,7 @@ namespace limakGame
                     {
                         coin.Dispose();
                         this.game.Components.Remove(coin);
-                        this.increaseScore(1);
+                        this.increaseScore(5);
                         break;
                     }
                 }
@@ -119,7 +119,7 @@ namespace limakGame
                 GamePlayer player = comp as GamePlayer;
                 if (player != null)
                 {
-                    if ((player.getFixture() == f2 || player.getFixture() == f1))
+                    if ((player.getFixture() == f1 && this.getFixture() == f2) || (player.getFixture() == f2 && this.getFixture() == f1))
                     {
                         if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y < 0))
                         {

@@ -46,8 +46,7 @@ namespace limakGame
         public void Revive()
         {
             this.isDead = false;
-            
-            // Do more stuff to make the player alive again
+            this.Action = GameObjectAction.STAND;
         }
 
 

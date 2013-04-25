@@ -125,10 +125,10 @@ namespace limakGame
 
         public GameObjectDirection Direction
         {
-            if (this.isDead) return;
-
             set
             {
+                if (this.isDead) return;
+
                 if(this.facingDirection != value) {
                     this.facingDirection = value;
                     this.animation.Direction = (SpriteDirection)this.facingDirection;

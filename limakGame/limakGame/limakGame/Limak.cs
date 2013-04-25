@@ -251,6 +251,18 @@ namespace limakGame
                 this.character1Controller.Update();
                 this.character2Controller.Update();
 
+                //Update enemies
+                GameEnemy enemy;
+                foreach (IGameComponent comp in this.Components)
+                {
+                    enemy = comp as GameEnemy;
+                    if (enemy != null)
+                    {
+                        enemy.Update();
+                    }
+                }
+
+
                 this.world.Step(((float)gameTime.ElapsedGameTime.Milliseconds) / 1000.0f);
 
                 myBackground.Update( player1.Position.X );
@@ -437,7 +449,7 @@ namespace limakGame
             ); 
 
             //Add camera man
-            m_CameraMan = new CameraMan(this, new Camera(), player1, player2);
+            m_CameraMan = new DoubleTrackingCameraMan(this, new Camera(), player1, player2);
             this.Components.Add(m_CameraMan);
 
             //Add players

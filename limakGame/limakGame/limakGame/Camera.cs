@@ -40,22 +40,42 @@ namespace limakGame
 
     public class CameraMan : GameComponent
     {
-        private Camera m_Camera;
-        private GameObject m_Star1;
-        private GameObject m_Star2;
-        private int m_GroundLevel = 12;
+        protected Camera m_Camera;
+        protected GameObject m_Star1;
+        protected int m_GroundLevel = 12;
 
-        public CameraMan(Game game, Camera camera, GameObject star1, GameObject star2)
+        public CameraMan(Game game, Camera camera, GameObject star1)
             : base(game)
         {
             m_Camera = camera;
             m_Star1 = star1;
-            m_Star2 = star2;
         }
 
         public Camera Camera
         {
             get { return m_Camera; }
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            float height = MathHelper.Clamp((m_GroundLevel - m_Star1.Position.Y) * 2.0f, 8.0f, 80.0f);
+            float width = (Convert.ToMeters(m_Camera.ScreenViewport.Width) * height) / Convert.ToMeters(m_Camera.ScreenViewport.Height);
+            float x = m_Star1.Position.X - (width / 2.0f);
+            float y = m_Star1.Position.Y - (height / 2.0f);
+
+
+            m_Camera.WorldViewport = new RectangleF(x, y, width, height);
+        }
+    }
+
+    public class DoubleTrackingCameraMan : CameraMan
+    {
+        private GameObject m_Star2;
+
+        public DoubleTrackingCameraMan(Game game, Camera camera, GameObject star1, GameObject star2)
+            : base(game, camera, star1)
+        {
+            m_Star2 = star2;
         }
 
         public override void Update(GameTime gameTime)

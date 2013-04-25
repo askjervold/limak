@@ -447,9 +447,11 @@ namespace limakGame
             player1.getFixture().OnCollision += Player1CollisionWithEnemy;
             player1.getFixture().OnCollision += Player1PickUpCoin;
             player1.getFixture().OnCollision += PlayerPlayerCollision;
+            player1.getFixture().OnCollision += Player1Finish;
             player2.getFixture().OnCollision += Player2CollisionWithEnemy;
             player2.getFixture().OnCollision += Player2PickUpCoin;
             player2.getFixture().OnCollision += PlayerPlayerCollision;
+            player1.getFixture().OnCollision += Player2Finish;
 
             // Enter the noob
             GameObject noob = new GameObject(
@@ -486,7 +488,7 @@ namespace limakGame
                     if (enemy.getFixture() == f2)
                     {
 
-                        if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y > 0))    // The contact is coming from above
+                        if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y < 0))    // The contact is coming from above
                         {
                             enemy.Die();
                             player1.increaseScore(10);
@@ -519,7 +521,7 @@ namespace limakGame
                 {
                     if (enemy.getFixture() == f2)
                     {
-                        if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y > 0))    // The contact is coming from above
+                        if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y < 0))    // The contact is coming from above
                         {
                             enemy.Die();
                             player2.increaseScore(10);
@@ -577,19 +579,65 @@ namespace limakGame
 
         public bool PlayerPlayerCollision(Fixture f1, Fixture f2, Contact contact)
         {
+            Vector2 normal;
+            FixedArray2<Vector2> points;
+            contact.GetWorldManifold(out normal, out points);
+
             if (player1.getFixture() == f2)
             {
-                if (player1.IsDead()) // Shouldn't this work with just "if (player1.isDead)"?
+                if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y < 0))
                 {
-                    player1.Revive();
+                    if (player1.IsDead()) // Shouldn't this work with just "if (player1.isDead)"?
+                    {
+                        player1.Revive();
+                    }
                 }
             }
 
             else if (player2.getFixture() == f2)
             {
-                if (player2.IsDead()) 
+                if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y < 0))
                 {
-                    player2.Revive();
+                    if (player2.IsDead())
+                    {
+                        player2.Revive();
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        public bool Player1Finish(Fixture f1, Fixture f2, Contact contact)   // Change all references to coins into flag/finish
+        {
+            foreach (IGameComponent comp in this.Components)
+            {
+                GameCoin coin = comp as GameCoin;
+                if (coin != null)
+                {
+                    if (coin.getFixture() == f2)
+                    {
+                        player1.increaseScore(50);
+                        // Should end the level
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        public bool Player2Finish(Fixture f1, Fixture f2, Contact contact)   // Change all references to coins into flag/finish
+        {
+            foreach (IGameComponent comp in this.Components)
+            {
+                GameCoin coin = comp as GameCoin;
+                if (coin != null)
+                {
+                    if (coin.getFixture() == f2)
+                    {
+                        player2.increaseScore(50);
+                        // Should end the level
+                    }
                 }
             }
 

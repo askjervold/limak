@@ -65,8 +65,6 @@ namespace limakGame
         {
             this.Action = GameObjectAction.DIE;
             this.isDead = true;
-
-            // Should also disable control
         }
 
     }

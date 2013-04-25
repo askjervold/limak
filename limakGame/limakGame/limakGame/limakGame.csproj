@@ -117,7 +117,6 @@
     <Compile Include="GameCharacter.cs" />
     <Compile Include="GameCoin.cs" />
     <Compile Include="GameEnemy.cs" />
-    <Compile Include="GameFlag.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="GamePlayer.cs" />
     <Compile Include="GameState.cs" />

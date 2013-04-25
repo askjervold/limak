@@ -448,10 +448,12 @@ namespace limakGame
             player1.getFixture().OnCollision += player1.PickUpCoin;
             player1.getFixture().OnCollision += player1.PlayerPlayerCollision;
             player1.getFixture().OnCollision += player1.CollisionWithGround;
+            player1.getFixture().OnCollision += player1.PlayerFinish;
             player2.getFixture().OnCollision += player2.CollisionWithEnemy;
             player2.getFixture().OnCollision += player2.PickUpCoin;
             player2.getFixture().OnCollision += player2.PlayerPlayerCollision;
             player2.getFixture().OnCollision += player2.CollisionWithGround;
+            player2.getFixture().OnCollision += player2.PlayerFinish;
 
             
 
@@ -462,6 +464,13 @@ namespace limakGame
             ground.Friction = 10.0f;
             ground.Position = new Vector2(-10.0f, 8.0f);
             */
+        }
+
+
+        public void GameUnloading()
+        {
+
+
         }
 
     }

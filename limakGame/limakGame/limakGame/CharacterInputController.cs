@@ -96,7 +96,38 @@ namespace limakGame
 
         protected override void onInputChangeForPad()
         {
-            
+            if(this.character == null) {
+                // No use in doing anything!
+                return;
+            }
+            bool state = true;
+
+            if (playerIndex == PlayerIndex.One)
+            {
+
+                if (GamePad.GetState(playerIndex).Buttons.A == ButtonState.Pressed)
+                    if(state) {
+                        this.character.Jump();
+                    }
+                else if (GamePad.GetState(playerIndex).ThumbSticks.Left.X < 0)
+                {
+
+                }
+                else if (GamePad.GetState(playerIndex).ThumbSticks.Left.X > 0)
+                {
+                }
+            }
+            else if (playerIndex == PlayerIndex.Two)
+            {
+                if (GamePad.GetState(playerIndex).Buttons.A == ButtonState.Pressed)
+                    return;
+                else if (GamePad.GetState(playerIndex).ThumbSticks.Left.X < 0)
+                {
+                }
+                else if (GamePad.GetState(playerIndex).ThumbSticks.Left.X > 0)
+                {
+                }
+            }
         }
 
         /// <summary>

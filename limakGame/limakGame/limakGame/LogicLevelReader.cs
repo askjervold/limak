@@ -100,7 +100,6 @@ namespace limakGame
                         int width = i - start;
                         Body temp = BodyFactory.CreateRectangle(world, width, 1, 1, new Vector2((start) + width / 2, h - 0.5f));
                         //non-movable object.
-                        Console.WriteLine("ground created @" + (start) + "," + i + " width:" + (width));
 
                         _groundWidths.Add(width);
 

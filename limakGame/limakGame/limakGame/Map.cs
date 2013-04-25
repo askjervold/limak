@@ -25,9 +25,11 @@ namespace limakGame
             // add the components to the game by using ((Limak)game).addGameObject(GameObject gameObject)
             //((Limak)game).addGameObject(GameObject gameObject)
 
+
+            //creating stuff
             createEnemies(game);
-
-
+            createCoins(game);    
+    
         }
 
         public override void Update(GameTime gameTime)
@@ -94,7 +96,7 @@ namespace limakGame
         private void createEnemies(Game game)
         {
 
-            Texture2D goo = game.Content.Load<Texture2D>("goo");
+            Texture2D enemyTexture = game.Content.Load<Texture2D>("goo");
             for (int i = 0; i < level.getEnemyPos.Count; i++)
             {
                 GameEnemy enemy = new GameEnemy(
@@ -102,7 +104,7 @@ namespace limakGame
                     ((Limak)game).world,
                     level.getEnemyPos[i], // position (meter)
                     new Vector2(1f, 1f), // size (meter)
-                    new SpriteAnimation(goo, 24, 24, 1, 1)
+                    new SpriteAnimation(enemyTexture, 24, 24, 1, 1)
                 );
                 //Console.WriteLine("i:" + level.getEnemyPos[i].X + "  j:" + level.getEnemyPos[i].Y) ;
                 ((Limak)game).addGameObject(enemy);
@@ -114,15 +116,15 @@ namespace limakGame
         private void createCoins(Game game)
         {
 
-            Texture2D goo = game.Content.Load<Texture2D>("groundBlock");
+            Texture2D coinTexture = game.Content.Load<Texture2D>("coin");
             for (int i = 0; i < level.getCoinPos.Count; i++)
             {
                 GameCoin coin = new GameCoin(
                     ((Limak)game),
                     ((Limak)game).world,
-                    level.getEnemyPos[i], // position (meter)
+                    level.getCoinPos[i], // position (meter)
                     new Vector2(1f, 1f), // size (meter)
-                    new SpriteAnimation(goo, 24, 24, 1, 1)
+                    new SpriteAnimation(coinTexture, 60, 60, 1, 1)
                 );
                 //Console.WriteLine("i:" + level.getEnemyPos[i].X + "  j:" + level.getEnemyPos[i].Y) ;
                 ((Limak)game).addGameObject(coin);

@@ -14,7 +14,7 @@ namespace limakGame
     class GameFlag : GameObject
     {
         public GameFlag(Game game, World world, Vector2 position, Vector2 size, SpriteAnimation animation)
-            : base(game, world, position, size, animation)
+            : base(game, world, position, size, animation, BodyType.Dynamic)
         {
 
         }

@@ -474,27 +474,11 @@ namespace limakGame
 
         public void GameUnloading()
         {
-            /*
-            foreach (GameComponent component in this.Components)
-            {
-                if (component is DrawableGameComponent)
-                    ((DrawableGameComponent)component).Visible = true;
-            }
-            */
 
-            foreach (IGameComponent comp in this.Components)
-            {
-                GameCoin coin = comp as GameCoin;
-                if (coin != null)
-                {
-                    {
-                        coin.Dispose();
-                        this.Components.Remove(coin);
-                    }
-                }
-            }
-
+            this.Components.Clear();
+            this.world.Clear();
             loaded = false;
+            
 
         }
 

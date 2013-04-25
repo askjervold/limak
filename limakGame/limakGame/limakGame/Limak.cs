@@ -437,7 +437,7 @@ namespace limakGame
             ); 
 
             //Add camera man
-            m_CameraMan = new CameraMan(this, new Camera(), player1);
+            m_CameraMan = new CameraMan(this, new Camera(), player1, player2);
             this.Components.Add(m_CameraMan);
 
             //Add players
@@ -475,6 +475,13 @@ namespace limakGame
         public void GameUnloading()
         {
 
+
+            while (this.Components.Count > 0)
+            {
+                //if(this.Components.ElementAt(0) ==
+                this.Components.RemoveAt(0);
+            }
+            loaded = false;
 
         }
 

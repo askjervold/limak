@@ -444,7 +444,7 @@ namespace limakGame
             player1 = new GamePlayer(
                 this,
                 this.world,
-                new Vector2(0.0f, 0.0f), // position (meter)
+                new Vector2(2.0f, 0.0f), // position (meter)
                 new Vector2(2.0f, 2.0f), // size (meter)
                 player1Animation,
                 PlayerIndex.One

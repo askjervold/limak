@@ -62,7 +62,14 @@ namespace limakGame
 
             GameEnemy that = this;
 
-            this.Dispose();
+            this.body.Enabled = false;
+            this.animation.AnimationDelay = 100;
+            this.animation.OnLoopEnd = delegate()
+            { 
+                this.Dispose();
+            };
+
+            //this.Dispose();
         }
 
     }

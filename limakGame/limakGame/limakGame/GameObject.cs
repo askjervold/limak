@@ -36,7 +36,7 @@ namespace limakGame
     {
         
         protected GameObjectAction action;
-        private SpriteAnimation animation;
+        protected SpriteAnimation animation;
 
         protected Vector2 size;
         protected Body body;

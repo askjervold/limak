@@ -133,15 +133,15 @@ namespace limakGame
             foreach (IGameComponent comp in this.game.Components)
             {
                 GamePlayer player = comp as GamePlayer;
-                if (player != null)
-                {
-                    if ((player.getFixture() == f1 && this.getFixture() == f2) || (player.getFixture() == f2 && this.getFixture() == f1))
+                    if (player != null)
                     {
-                        if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y < 0))
+                        if ((player.getFixture() == f1 && this.getFixture() == f2) || (player.getFixture() == f2 && this.getFixture() == f1))
                         {
-                            if (player.isDead)
+                            if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y < 0))
                             {
-                                player.Revive();
+                                if (player.isDead)
+                                {
+                                    player.Revive();
                             }
                         }
                     }

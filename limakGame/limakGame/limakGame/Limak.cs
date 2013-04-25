@@ -437,7 +437,7 @@ namespace limakGame
             ); 
 
             //Add camera man
-            m_CameraMan = new CameraMan(this, new Camera(), player1, player2);
+            m_CameraMan = new DoubleTrackingCameraMan(this, new Camera(), player1, player2);
             this.Components.Add(m_CameraMan);
 
             //Add players

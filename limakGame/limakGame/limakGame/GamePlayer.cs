@@ -42,7 +42,7 @@ namespace limakGame
             this.score += amount;
         }
 
-        public override void Die()
+        public void Die()
         {
             this.Action = GameObjectAction.DIE;
             this.isDead = true;
@@ -160,6 +160,7 @@ namespace limakGame
                         this.increaseScore(50);
 
                         // Should end the level
+                        //game.gameState();
                         Console.WriteLine("WIN!");
                         
                     }

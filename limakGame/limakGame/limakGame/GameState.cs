@@ -7,7 +7,7 @@ using System.Timers;
 
 namespace limakGame
 {
-    public enum State { MainMenu, CharacterMenu, PlayerMenu, Playing, Options, Pause, GameOver, 
+    public enum State { MainMenu, CharacterMenu, PlayerMenu, Playing, Options, Pause, GameOver, Win,
                         ButtonUp, ButtonMiddle, ButtonDown,
                         LimakState, SralState, BokajState, NuduaState, DHState };
     public delegate void ChangedEventHandler(object sender, State state);

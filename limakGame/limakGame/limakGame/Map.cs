@@ -97,16 +97,19 @@ namespace limakGame
         private void createEnemies(Game game)
         {
 
-            Texture2D enemyTexture = game.Content.Load<Texture2D>("goo");
+            Texture2D enemyTexture = game.Content.Load<Texture2D>("enemy1_animated");
             Vector2 size = new Vector2(2, 2);
+            
             for (int i = 0; i < level.getEnemyPos.Count; i++)
             {
+                SpriteAnimation enemyAnimation = new SpriteAnimation(enemyTexture, (int)Convert.ToPixels(size.X), (int)Convert.ToPixels(size.Y), 2, 4);
+                enemyAnimation.AnimationDelay = 400;
                 GameEnemy enemy = new GameEnemy(
                     ((Limak)game),
                     ((Limak)game).world,
                     level.getEnemyPos[i], // position (meter)
                     size, // size (meter)
-                    new SpriteAnimation(enemyTexture, (int)Convert.ToPixels(size.X), (int)Convert.ToPixels(size.Y), 1, 1)
+                    enemyAnimation
 
                 );
                 //Console.WriteLine("i:" + level.getEnemyPos[i].X + "  j:" + level.getEnemyPos[i].Y) ;

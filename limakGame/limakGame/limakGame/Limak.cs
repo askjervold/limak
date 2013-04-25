@@ -66,7 +66,12 @@ namespace limakGame
         public CameraMan CameraMan
         {
             get { return m_CameraMan; }
-            set { m_CameraMan = value; }
+            set
+            {
+                Components.Remove(m_CameraMan);
+                m_CameraMan = value;
+                Components.Add(m_CameraMan);
+            }
         }
 
         /// <summary>
@@ -276,8 +281,14 @@ namespace limakGame
                 myBackground.Update( player1.Position.X );
 
 
-                if (player1.Position.Y > map.levelHeight) player1.Die();
-                if (player2.Position.Y > map.levelHeight) player2.Die();
+                if (player1.Position.Y > map.levelHeight)
+                {
+                    player1.Die();
+                }
+                if (player2.Position.Y > map.levelHeight)
+                {
+                    player2.Die();
+                }
                 if (player1.isDead && player2.isDead) gameState.updateState(State.GameOver);
 
                 base.Update(gameTime);
@@ -444,7 +455,7 @@ namespace limakGame
             player1 = new GamePlayer(
                 this,
                 this.world,
-                new Vector2(0.0f, 0.0f), // position (meter)
+                new Vector2(2.0f, 0.0f), // position (meter)
                 new Vector2(2.0f, 2.0f), // size (meter)
                 player1Animation,
                 PlayerIndex.One
@@ -500,6 +511,11 @@ namespace limakGame
             loaded = false;
             
 
+        }
+
+        public void updateState(State state)
+        {
+            gameState.updateState(state);
         }
 
     }

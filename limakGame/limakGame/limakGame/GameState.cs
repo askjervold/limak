@@ -122,7 +122,15 @@ namespace limakGame
                         player1CharacterDone = false;
                         player2CharacterDone = false;
                         limak.GameUnloading();
-
+                        break;
+                    case State.Win:
+                        updateState(State.MainMenu);
+                        currentButtonChosen = 0;
+                        player1MenuDone = false;
+                        player2MenuDone = false;
+                        player1CharacterDone = false;
+                        player2CharacterDone = false;
+                        limak.GameUnloading();
                         break;
                     default:
                         break;
@@ -258,6 +266,15 @@ namespace limakGame
                         }
                         break;
                     case State.GameOver:
+                        updateState(State.MainMenu);
+                        currentButtonChosen = 0;
+                        player1MenuDone = false;
+                        player2MenuDone = false;
+                        player1CharacterDone = false;
+                        player2CharacterDone = false;
+                        limak.GameUnloading();
+                        break;
+                    case State.Win:
                         updateState(State.MainMenu);
                         currentButtonChosen = 0;
                         player1MenuDone = false;

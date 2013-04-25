@@ -27,6 +27,7 @@ namespace limakGame
         private char _empty = ' ';
         private char _end = 'n';
         private char _coin = 'c';
+        private char _flag = 'F';
 
         //types of bodies created and returned to the draw class.
         private List<Body> _groundBody;
@@ -34,6 +35,7 @@ namespace limakGame
         private List<Vector2> _enemyPositions;
         private List<int> _holesInground;
         private List<Vector2> _coinsPosition;
+        private Vector2 _flagPosition;
 
         //an array of string where each element is each line in the .txt file.
         string[] text;
@@ -48,6 +50,7 @@ namespace limakGame
             _groundWidths = new List<int>();
             _enemyPositions = new List<Vector2>();
             _coinsPosition = new List<Vector2>();
+            _flagPosition = new Vector2();
 
         }
 
@@ -69,10 +72,11 @@ namespace limakGame
             createEnemyPositions(); //same as coins but for enemies
             
             findHolesInGround(); //finds the holes in the ground so the ai can avoid them
+            findFlag();
         }
 
 
-
+        //check if n works
         private void createGround()
         {
 
@@ -83,6 +87,9 @@ namespace limakGame
             {
                 for (int i = 0; i < _levelWidth; i++)
                 {
+                    if (text[h][i] == _end && !lastFloor)
+                        break;
+
                     if (text[h][i] == _ground && !lastFloor)
                     {
                         start = i;
@@ -105,10 +112,9 @@ namespace limakGame
 
                         _groundBody.Add(temp);
                         lastFloor = false;
-                        if (text[h][i] == _end)
-                            break;
+                        
                     }
-
+                    
                 }
             }
 
@@ -132,6 +138,27 @@ namespace limakGame
 
 
 
+        private void findFlag()
+        {
+            for (int i = 0; i < _levelHeight; i++)
+            {
+                for (int j = 0; j < _levelWidth; j++)
+                {
+                    if (text[i][j] == _end)
+                        break;
+                    if (text[i][j] == _flag)
+                    {
+                        _flagPosition = new Vector2(j, i);
+                    }
+
+                }
+
+            }
+
+
+        }
+
+        
         private void createCoinPositions()
         {
             for (int i = 0; i < _levelHeight; i++)
@@ -175,7 +202,7 @@ namespace limakGame
         }
 
 
-
+        
 
 
         //getters ahead
@@ -189,6 +216,11 @@ namespace limakGame
             get { return _coinsPosition; }
         }
 
+        public Vector2 getFlagPos
+        {
+            get {return _flagPosition; }
+
+        }
 
         public List<int> groundWidths
         {

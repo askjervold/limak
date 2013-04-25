@@ -73,6 +73,7 @@ namespace limakGame
                             // enemy.Die(); // Uncomment this line if we decide to fix the timing so we dispose after the animation
                             this.increaseScore(10);
                             this.Jump();
+                            break;
                         }
                         else
                         {
@@ -100,6 +101,7 @@ namespace limakGame
                         coin.Dispose();
                         this.game.Components.Remove(coin);
                         this.increaseScore(1);
+                        break;
                     }
                 }
             }

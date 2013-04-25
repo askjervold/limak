@@ -451,16 +451,6 @@ namespace limakGame
             player2.getFixture().OnCollision += player2.PickUpCoin;
             player2.getFixture().OnCollision += player2.PlayerPlayerCollision;
 
-            // Enter the noob
-            GameObject noob = new GameObject(
-                this,
-                this.world,
-                new Vector2(5.0f, 0.0f), // position (meter)
-                new Vector2(2.0f, 2.0f), // size (meter)
-                new SpriteAnimation(this.Content.Load<Texture2D>("box"), 120, 120, 1, 1)
-            );
-
-            this.Components.Add(noob);
             
 
             // Add a little ground

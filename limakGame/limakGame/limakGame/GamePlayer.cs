@@ -99,7 +99,7 @@ namespace limakGame
                     {
                         coin.Dispose();
                         this.game.Components.Remove(coin);
-                        this.increaseScore(1);
+                        this.increaseScore(5);
                         break;
                     }
                 }
@@ -119,7 +119,7 @@ namespace limakGame
                 GamePlayer player = comp as GamePlayer;
                 if (player != null)
                 {
-                    if ((player.getFixture() == f2))
+                    if ((player.getFixture() == f1 && this.getFixture() == f2) || (player.getFixture() == f2 && this.getFixture() == f1))
                     {
                         if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y < 0))
                         {
@@ -131,50 +131,36 @@ namespace limakGame
                     }
                 }
             }
-
-            /*
-            if (player1.getFixture() == f2)
-            {
-                if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y < 0))
-                {
-                    if (player1.IsDead()) // Shouldn't this work with just "if (player1.isDead)"?
-                    {
-                        player1.Revive();
-                    }
-                }
-            }
-
-            else if (player2.getFixture() == f2)
-            {
-                if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y < 0))
-                {
-                    if (player2.IsDead())
-                    {
-                        player2.Revive();
-                    }
-                }
-            }
-            */
              
             return true;
         }
         
-        /*public bool PlayerFinish(Fixture f1, Fixture f2, Contact contact)   // Change all references to coins into flag/finish
+        public bool PlayerFinish(Fixture f1, Fixture f2, Contact contact)   // Change all references to coins into flag/finish
         {
             foreach (IGameComponent comp in this.game.Components)
             {
-                GameCoin coin = comp as GameCoin;
-                if (coin != null)
+                GameFlag flag = comp as GameFlag;
+                if (flag != null)
                 {
-                    if (coin.getFixture() == f2)
+                    if (flag.getFixture() == f2)
                     {
                         this.increaseScore(50);
+
                         // Should end the level
+                        Console.WriteLine("WIN!");
+                        
                     }
-                }
+                } 
             }
 
             return true;
-        }*/
+}
+
+        public bool CollisionWithGround(Fixture f1, Fixture f2, Contact contact)
+        {
+            this.jumpState = 0;
+
+            return true;
+        }
     }
 }

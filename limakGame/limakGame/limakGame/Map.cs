@@ -142,7 +142,7 @@ namespace limakGame
         {
             Texture2D flagTexture = game.Content.Load<Texture2D>("finish");
             Vector2 size = new Vector2(2, 2);
-            GameCoin flag = new GameCoin(
+            GameFlag flag = new GameFlag(
                     ((Limak)game),
                     ((Limak)game).world,
                     level.getFlagPos, // position (meter)

@@ -131,30 +131,6 @@ namespace limakGame
                     }
                 }
             }
-
-            /*
-            if (player1.getFixture() == f2)
-            {
-                if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y < 0))
-                {
-                    if (player1.IsDead()) // Shouldn't this work with just "if (player1.isDead)"?
-                    {
-                        player1.Revive();
-                    }
-                }
-            }
-
-            else if (player2.getFixture() == f2)
-            {
-                if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y < 0))
-                {
-                    if (player2.IsDead())
-                    {
-                        player2.Revive();
-                    }
-                }
-            }
-            */
              
             return true;
         }
@@ -173,6 +149,13 @@ namespace limakGame
                     }
                 }
             }
+
+            return true;
+}
+
+        public bool CollisionWithGround(Fixture f1, Fixture f2, Contact contact)
+        {
+            this.jumpState = 0;
 
             return true;
         }

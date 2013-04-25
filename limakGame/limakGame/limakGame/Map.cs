@@ -24,22 +24,12 @@ namespace limakGame
             // finish loading the level in LogicLevelReader
             // add the components to the game by using ((Limak)game).addGameObject(GameObject gameObject)
             //((Limak)game).addGameObject(GameObject gameObject)
-            Texture2D goo = game.Content.Load<Texture2D>("goo");
-            for (int i = 0; i < level.getEnemyPos.Count; i++)
-            {
-                GameObject noob = new GameObject(
-                    ((Limak)game),
-                    ((Limak)game).world,
-                    level.getEnemyPos[i], // position (meter)
-                    new Vector2(1f, 1f), // size (meter)
-                    new SpriteAnimation(goo, 24, 100, 1, 1)
-                );
-                //Console.WriteLine("i:" + level.getEnemyPos[i].X + "  j:" + level.getEnemyPos[i].Y) ;
-                ((Limak)game).addGameObject(noob);
-            }
 
 
-
+            //creating stuff
+            createEnemies(game);
+            createCoins(game);    
+    
         }
 
         public override void Update(GameTime gameTime)
@@ -60,26 +50,7 @@ namespace limakGame
         {
 
             Limak game = ((Limak)this.Game);
-            //Rectangle groundToDraw = new Rectangle(0,this.level.levelHeight, this.level.levelWidth,1);//level.Ground.Position.X,level.Ground.Position.Y,...);
-            List<Rectangle> platformsToDraw = new List<Rectangle>();
-            List<Rectangle> groundsToDraw = new List<Rectangle>();
-            for (int i = 0; i < level.Platforms.Count; i++)
-            {
-
-                //Rectangle platformToDraw = new Rectangle((int)level.Platforms[i].Position.X + /*(int)(level.groundWidths[i] / 2)*/ + 1, (int)level.Platforms[i].Position.Y, 2, 2);
-
-                
-                //platformsToDraw.Add(platformToDraw);
-            }
-            for (int i = 0; i < level.Ground.Count; i++)
-            {
-                Rectangle groundToDraw = new Rectangle((int)(level.Ground[i].Position.X/2.0)+level.groundWidths[i], (int)level.Ground[i].Position.Y, level.groundWidths[i]+2, 2);
-                
-                groundsToDraw.Add(groundToDraw);
-
-            }
-            //Rectangle groundToDraw = new Rectangle((int)level.Ground1.Position.X, (int)level.Ground1.Position.Y, (level.levelWidth), 2);
-
+           
             game.spriteBatch.Begin(
                 SpriteSortMode.BackToFront,
                 null,
@@ -90,24 +61,19 @@ namespace limakGame
                 game.Camera.TransformMatrix
             );
 
-            // Draw map here!
 
-            for (int i = 0; i < groundsToDraw.Count; i++)
+            for (int i = 0; i < level.Ground.Count; i++)
             {
-                //this method adds the ground, it's not correct as of now, i need to get the ground width before it can be drawn correctly.
-                game.spriteBatch.Draw(game.Content.Load<Texture2D>("groundBlock"), new Vector2(level.Ground[i].Position.X, level.Ground[i].Position.Y-0.5f), groundsToDraw[i], Color.White, 0, new Vector2(0, 0), Convert.ToMeters(60), SpriteEffects.None, 0);
+                //credits to jakob:
+                Texture2D texture = game.Content.Load<Texture2D>("groundBlock");
+                Vector2 scale = new Vector2((Convert.ToPixels(level.groundWidths[i]) / texture.Width) / Convert.PixelsPerMeter, (Convert.ToPixels(1.0f) / texture.Height) / Convert.PixelsPerMeter);
+
+                game.spriteBatch.Draw(texture, level.Ground[i].Position, null, Color.White, 0.0f, new Vector2(30, 30), scale, SpriteEffects.None, 0.0f);
 
 
 
             }
-            //game.spriteBatch.Draw(game.Content.Load<Texture2D>("groundBlock"), new Vector2(level.Ground.Position.X - (level.levelWidth / 2), level.Ground.Position.Y - 0.5f), groundToDraw, Color.White, 0, new Vector2(0, 0), Camera2D.ToMeters(50), SpriteEffects.None, 0);
-            for (int i = 0; i < platformsToDraw.Count; i++)
-
-            {
-                game.spriteBatch.Draw(game.Content.Load<Texture2D>("groundBlock"), new Vector2(level.Platforms[i].Position.X-0.5f, level.Platforms[i].Position.Y-0.5f), platformsToDraw[i], Color.White, 0, new Vector2(0, 0), Convert.ToMeters(60), SpriteEffects.None, 0);
-                //game.spriteBatch.Draw(
-
-            }
+            
             /*game.spriteBatch.Draw(
                 Texture2D sprite,
                 Vector2 position, // position in farseer meter
@@ -126,6 +92,46 @@ namespace limakGame
         }
 
         //returning certain properties that other classes might need.
+
+        private void createEnemies(Game game)
+        {
+
+            Texture2D enemyTexture = game.Content.Load<Texture2D>("goo");
+            for (int i = 0; i < level.getEnemyPos.Count; i++)
+            {
+                GameEnemy enemy = new GameEnemy(
+                    ((Limak)game),
+                    ((Limak)game).world,
+                    level.getEnemyPos[i], // position (meter)
+                    new Vector2(1f, 1f), // size (meter)
+                    new SpriteAnimation(enemyTexture, 24, 24, 1, 1)
+                );
+                //Console.WriteLine("i:" + level.getEnemyPos[i].X + "  j:" + level.getEnemyPos[i].Y) ;
+                ((Limak)game).addGameObject(enemy);
+            }
+
+        }
+
+
+        private void createCoins(Game game)
+        {
+
+            Texture2D coinTexture = game.Content.Load<Texture2D>("coin");
+            for (int i = 0; i < level.getCoinPos.Count; i++)
+            {
+                GameCoin coin = new GameCoin(
+                    ((Limak)game),
+                    ((Limak)game).world,
+                    level.getCoinPos[i], // position (meter)
+                    new Vector2(1f, 1f), // size (meter)
+                    new SpriteAnimation(coinTexture, 60, 60, 1, 1)
+                );
+                //Console.WriteLine("i:" + level.getEnemyPos[i].X + "  j:" + level.getEnemyPos[i].Y) ;
+                ((Limak)game).addGameObject(coin);
+            }
+
+        }
+
 
         public int levelWidth
         {

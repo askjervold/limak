@@ -101,9 +101,9 @@ namespace limakGame
         /// <param name="spriteBatch"></param>
         /// <param name="position"></param>
         /// <param name="scale"></param>
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, Vector2 scale, float rotation)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, Vector2 size, float rotation)
         {
-
+            Vector2 scale = new Vector2((size.X / this.width) / Convert.PixelsPerMeter, (size.Y / this.height) / Convert.PixelsPerMeter);
             spriteBatch.Draw(
                 this.sprite,
                 position,

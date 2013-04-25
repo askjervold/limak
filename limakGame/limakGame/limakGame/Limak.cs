@@ -550,7 +550,7 @@ namespace limakGame
                 {
                     if (coin.getFixture() == f2)
                     {
-                        Components.Remove(coin);
+                   //     Components.Remove(coin);
                         player1.increaseScore(1);
                     }
                 }
@@ -568,7 +568,7 @@ namespace limakGame
                 {
                     if (coin.getFixture() == f2)
                     {
-                        Components.Remove(coin);
+                    //    Components.Remove(coin);
                         player2.increaseScore(1);
                     }
                 }

@@ -26,7 +26,7 @@ namespace limakGame
 
         public void Update(float positionX )
         {
-            if (positionX > 0 && positionX < 40)
+            if (positionX > 0 && positionX < 80)
                 screenpos.X = -positionX * 5;
 
         }

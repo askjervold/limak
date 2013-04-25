@@ -35,7 +35,7 @@ namespace limakGame
         }
         public void increaseScore(int amount)
         {
-            this.score = this.score + amount;
+            this.score += amount;
         }
 
 

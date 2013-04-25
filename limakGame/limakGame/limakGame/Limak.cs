@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Dynamics.Contacts;
+using FarseerPhysics.Common;
 
 
 namespace limakGame
@@ -473,11 +474,17 @@ namespace limakGame
 
         public bool Player1CollisionWithEnemy(Fixture f1, Fixture f2, Contact contact)
         {
+            Vector2 normal;
+            FixedArray2<Vector2> points;
+            contact.GetWorldManifold(out normal, out points);
+
             foreach (GameEnemy enemy in this.Components)
             {
                 if (enemy.getFixture() == f2)
                 {
-                    if (/* contact is between bottom of f1 and top of f2 */true) {
+
+                    if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y > 0))    // The contact is coming from above
+                    {
                         enemy.Die();
                         player1.increaseScore(10);
                         player1.Jump();
@@ -496,11 +503,15 @@ namespace limakGame
 
         public bool Player2CollisionWithEnemy(Fixture f1, Fixture f2, Contact contact)
         {
+            Vector2 normal;
+            FixedArray2<Vector2> points;
+            contact.GetWorldManifold(out normal, out points);
+
             foreach (GameEnemy enemy in this.Components)
             {
                 if (enemy.getFixture() == f2)
                 {
-                    if (/* contact is between bottom of f1 and top of f2 */true)
+                    if ((Math.Abs(normal.Y) > Math.Abs(normal.X)) && (normal.Y > 0))    // The contact is coming from above
                     {
                         enemy.Die();
                         player2.increaseScore(10);
@@ -557,7 +568,7 @@ namespace limakGame
                 }
             }
 
-            if (player2.getFixture() == f2)
+            else if (player2.getFixture() == f2)
             {
                 if (player2.IsDead()) 
                 {

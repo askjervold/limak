@@ -115,6 +115,8 @@
     <Compile Include="CharacterInputController.cs" />
     <Compile Include="Convert.cs" />
     <Compile Include="GameCharacter.cs" />
+    <Compile Include="GameCoin.cs" />
+    <Compile Include="GameEnemy.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="GamePlayer.cs" />
     <Compile Include="GameState.cs" />
